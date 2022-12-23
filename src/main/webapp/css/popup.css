@@ -1,0 +1,13 @@
+@font-face {
+	font-family: "DoHyeon";
+	src: url("../fonts/DoHyeon-Regular.ttf");
+}
+body{
+	background-color: #F4F5FF;
+	text-align: center;
+}
+h3{
+	font-family: "DoHyeon";
+	font-size: 30px;
+	padding-top: 80px;
+}

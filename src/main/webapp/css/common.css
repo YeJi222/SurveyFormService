@@ -1,0 +1,36 @@
+@font-face {
+	font-family: "DoHyeon";
+	src: url("../fonts/DoHyeon-Regular.ttf");
+}
+body{
+	background-color: #FFF3F3;
+	font-family: "DoHyeon";
+}
+*{
+	margin: 0;
+	padding: 0;
+}
+.header{
+	background-color: white;
+	height: 100px;
+}
+.serviceName{
+	display: inline;
+	font-size: 50px;
+	line-height: 100px;
+	padding: 20px 0px 20px 30px;
+	width: 600px;
+	/* background-color: tomato; */
+}
+.logInOut{
+	display: inline;
+	float: right;
+	/* background-color: yellow; */
+	margin: 30px;
+	font-size: 30px;
+	color: grey;
+}
+.middle{
+	margin-top: 170px;
+	text-align: center;
+}
