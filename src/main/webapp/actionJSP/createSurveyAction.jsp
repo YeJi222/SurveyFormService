@@ -79,7 +79,7 @@
 	System.out.println("");
 	for(i = 0 ; i < radioOption.length ; i++){
 		
-		int result = createDAO.insert(new CreateDTO(userID, formName, questionDivName[0], textContent[0], type[0], radioOption[i], regidate));
+		/* int result = createDAO.insert(new CreateDTO(userID, formName, questionDivName[0], textContent[0], type[0], radioOption[i], regidate));
 		if(result == -1){
 			System.out.println("sql error -1");
 			PrintWriter script = response.getWriter();
@@ -98,7 +98,7 @@
 			script.println("</script>");
 			script.close();
 			// return;
-		}
+		} */
 		
 		// if(i == (questionDivName.length - 1)) return;
 	}

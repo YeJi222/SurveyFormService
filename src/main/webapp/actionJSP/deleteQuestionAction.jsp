@@ -35,12 +35,12 @@
 	
 	CreateDAO createDAO = new CreateDAO();
 	
-	int result = createDAO.insertAdminSurvey(surveyID, adminID, questionID);
+	int result = createDAO.deleteQuestionList(surveyID, questionID);
 	if(result == -1){
 		System.out.println("sql error -1");
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("location.href = 'create.jsp';");
+		// script.println("location.href = 'create.jsp';");
 		script.println("</script>");
 		script.close();
 		
@@ -49,7 +49,7 @@
 		session.setAttribute("userID", adminID);
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("location.href = 'home.jsp';");
+		// script.println("location.href = 'home.jsp';");
 		script.println("</script>");
 		script.close();
 		// return;
@@ -57,7 +57,7 @@
 	
 	CreateDAO createDAO2 = new CreateDAO();
 	
-	int result2 = createDAO2.insertQuestionList(surveyID, questionID);
+	int result2 = createDAO2.deleteAdminSurvey(surveyID, questionID);
 	if(result == -1){
 		System.out.println("sql error -1");
 		PrintWriter script = response.getWriter();

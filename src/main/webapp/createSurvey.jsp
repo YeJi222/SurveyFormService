@@ -145,7 +145,7 @@
 			font-size: 23px;
 			width: 200px;
 		}
-		.radioCircle{
+		.radioCheckboxSelect{
 			width: 17px;
 			height: 17px;
 		}
@@ -282,6 +282,7 @@
 		
 		var radioOptionCount = 0; // radio option 개수 
 		var radioOptionID = '';
+		var checkboxOptionID = '';
 		
 		var existType = 0;
 		
@@ -337,28 +338,40 @@
 			})
 		})
 		
-		function radioOptionAdd(typeNum, radioTypeCount){
-			// var radioOptionCount = 0;
-			radioOptionCount++;
+		function radioOptionAdd(questionID, optionID){
+			console.log("qid : " + questionID);
+			console.log("optionID : " + optionID);
 			
-			// radioOptionID = "Q" + typeNum + " Radio " + radioOptionCount.toString();
-			radioOptionID = "Q" + radioTypeCount + " Radio" + radioOptionCount;
-			var radioDivName = "questionRadio" + radioTypeCount;
+			radioOptionID = "Radio Option" + (optionID + 1);
 			
-			$('.' + radioDivName).append(
+			$.ajax({
+				url : "actionJSP/addOptionAction.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : "radioType", "optionID" : optionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			})
+			
+			/* $('.radioDivName' + questionID).append(
 				'<div>\
-					<input type="radio" class="radioCircle" name="radioGroup" id="' + radioOptionID + '" >\
+					<input type="radio" class="radioCheckboxSelect" name="radioGroup" id="' + radioOptionID + '" >\
 					<label for="' + radioOptionID + '">\
 						<input class="optionBox" type="text" name="radioOptionID" placeholder="' + radioOptionID + '">\
-						<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;\
+						<div class="optionDelete' + questionID + '" style="display: inline; background-color: tomato;\
 							padding: 3px 8px 3px 8px; border-radius: 30px; color: white;\
 							margin-left: 2px; font-weight: bold;">-</div>\
 					</label><br>\
 				</div>\
 				'
-			);
+			); */
 			
-			$('.optionDelete' + typeNum).on('click', function(){
+			$('.optionDelete' + questionID).on('click', function(){
 				// radioOptionCount--;
 				$(this).prev().remove(); // input box
 				$(this).parent().prev().remove(); // radio circle
@@ -367,8 +380,24 @@
 			})
 		}
 		
-		function checkboxOptionAdd(){
-			$('.questionCheckbox').append(
+		function checkboxOptionAdd(questionID, optionID){
+			checkboxOptionID = "Checkbox Option" + (optionID + 1);
+			
+			$.ajax({
+				url : "actionJSP/addOptionAction.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : "checkboxType", "optionID" : optionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			})
+			
+			/* $('.questionCheckbox').append(
 				'<div>\
 					<input type="checkbox" class="checkSquare" name="checkGroup" id="check1" >\
 					<label for="check1">\
@@ -379,7 +408,7 @@
 					</label><br>\
 				</div>\
 				'
-			);
+			); */
 			
 			$('.optionDelete').on('click', function(){
 				$(this).prev().remove(); // input box
@@ -407,7 +436,6 @@
 			if(type == "textType" && existType == 0){ // 한 질문당 하나의 타입만 들어가게 
 				optionID = 0;
 				optionContent = "사용자 답변";
-				// console.log("%%%");
 				
 				$.ajax({
 					url : "actionJSP/textAction.jsp",
@@ -422,23 +450,9 @@
 						console.log("Fail to update Data");
 					}
 				})
-				
-				$('.questionDivName' + typeNum).append(
-					'<div>\
-						<input type="text" name="questionTextName" class="' + questionTextName + '" \
-							style="width: 98%; font-size: 24px; height: 40px; \
-							margin-top: 20px; border: none; \
-							border-bottom: 2px solid lightgrey;" placeholder="답변">\
-					</div>\
-					'
-				);
 			} else if(type == "radioType" && existType == 0){
-				var radioOptionCount = 0;
-				radioTypeCount++; // radio 질문 개수 
-				var radioDivName = "questionRadio" + radioTypeCount;
-				
 				$.ajax({
-					url : "actionJSP/radioFirstAction.jsp",
+					url : "actionJSP/defaultOptionAction.jsp",
 					type : "post",
 					data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : type},
 					dataType : "text",
@@ -450,65 +464,28 @@
 						console.log("Fail to update Data");
 					}
 				})
-				
-				
-				$('.questionDivName' + typeNum).append(
-					'<div class="' + radioDivName + '" style="margin-top: 20px; text-align: left;">\
-						<p style="font-size: 25px;">[ Radio Type ]</p>\
-						<div>\
-							<input type="radio" class="radioCircle" name="radioGroup" id="' + radioOptionID + '" >\
-							<label for="' + radioOptionID + '">\
-								<input class="optionBox" type="text" onchange="updateOptionContent()" name="radioOptionID" placeholder="Radio Option1">\
-								<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;\
-									padding: 3px 8px 3px 8px; border-radius: 30px; color: white;\
-									margin-left: 2px; font-weight: bold;">-</div>\
-							</label><br>\
-						</div>\
-					</div>\
-					<div onclick="radioOptionAdd(' + typeNum + ", " + radioTypeCount + ');" class="addOption">\
-						<div class="optionAdd">+</div> Add Option \
-					</div>\
-					'
-				);
-				
-				/* $('#radio1').change(function(){
-					alert('radio1');
-				}); */
 			} else if(type == "checkboxType" && existType == 0){
-				$('.questionDivName' + typeNum).append(
-					'<div class="questionCheckbox">\
-						<p style="font-size: 25px;">[ Checkbox Type ]</p>\
-					</div>\
-					<div onclick="checkboxOptionAdd();" class="addOption">\
-						<div class="optionAdd">+</div> Add Option \
-					</div>\
-					'
-				);
+				
+				$.ajax({
+					url : "actionJSP/defaultOptionAction.jsp",
+					type : "post",
+					data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : type},
+					dataType : "text",
+					success : function(result){
+						console.log("Success to update Data");	
+						window.location.reload();
+					},
+					error: function(error){
+						console.log("Fail to update Data");
+					}
+				})
 			}
 		}
+		
+		
 	</script>
 	
 	<script>
-		/*
-		var surveyID = 0; // global variable
-		
-		function loadSurveyID(){ // 추가해줄 surveyID 찾기 - <body> onload
-			console.log("Load surveyID");
-			
-			$.ajax({
-				url : "loadSurveyIDAction.jsp",
-				type : "post",
-				success : function(result){
-					console.log("Success to load surveyID");
-					
-					
-					surveyID = result - 1;
-					console.log(surveyID);
-				}
-			})
-		}
-		*/
-	
 		function updateSurveyDB(inputData){ // inputData : 입력되는 내용들 
 			console.log("Input Data : " + inputData.value);
 			console.log(inputData.name); // name
@@ -563,18 +540,34 @@
 			})
 		}
 		
-		function updateOptionContent(inputData, questionID){
+		function updateOptionContent(inputData, questionID, optionID){
 			console.log("Input Data : " + inputData.value);
 			console.log(inputData.name); // name
 			console.log("Question ID : " + questionID);
 		
 			$.ajax({
-				url : "actionJSP/contentFirstRadioAction.jsp",
+				url : "actionJSP/RadioOptionContentUpdateAction.jsp",
 				type : "post",
-				data : {"inputData" : inputData.value, "surveyID" : <%=surveyID%>, "questionID" : questionID},
+				data : {"inputData" : inputData.value, "surveyID" : <%=surveyID%>, "questionID" : questionID, "optionID" : optionID},
 				dataType : "text",
 				success : function(result){
 					console.log("Success to update Data");	
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			})
+		}
+		
+		function deleteQuestion(questionID){
+			$.ajax({
+				url : "actionJSP/deleteQuestionAction.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+					window.location.reload();
 				},
 				error: function(error){
 					console.log("Fail to update Data");
@@ -616,6 +609,9 @@
 					CreateDAO dao3 = new CreateDAO();
 					String selectType = dao3.getSelectType(surveyID, i);
 					
+					System.out.print("Select Type : ");
+					System.out.println(selectType);
+					
 					int existType = 0;
 					if(selectType.equals("")){
 						System.out.println("not determined type");
@@ -630,7 +626,7 @@
 					<div class="' + questionDivName<%=i %> + '" style="background-color: white; width: 80%; margin: auto; margin-top: 20px; padding: 20px; border-radius: 15px; border: 2px solid #E3E3E3;">
 						<div class="firstSet">
 							<input type="text" onchange="updateQuestion(this, <%=i %>);" class="questionContent" value="<%=questionContent %>" placeholder="질문 내용" name="questionDivName">
-							<div class="' + questionDeleteName + '"
+							<div onclick="deleteQuestion(<%=i %>)" class="questionDeleteName"
 									style="display: inline; background-color: tomato;
 									padding: 15px 18px 15px 18px; border-radius: 30px;
 									color: white; margin-left: 10px; font-weight: bold;">
@@ -646,6 +642,12 @@
 						<img class="arrow" src="images/pencil.png" width="27px">
 						
 						<%
+							// get max(optionID) - optionID 추가 위해 
+							CreateDAO dao7 = new CreateDAO();
+							int nextOptionID = dao7.getMaxOptionID(surveyID, i) + 1; // surveyID, questionID
+							System.out.print("nextOptionID : ");
+							System.out.println(nextOptionID);
+							
 							if(selectType.equals("textType")){
 						%>
 								<div>
@@ -656,23 +658,56 @@
 								</div>
 						<%
 							} else if(selectType.equals("radioType")){
-								// get optionContent type
-								CreateDAO dao6 = new CreateDAO();
-								String dbOptionContent = dao6.getOptionContent(surveyID, i);
 						%>
-								<div class="' + radioDivName + '" style="margin-top: 20px; text-align: left;">
-									<p style="font-size: 25px;">[ Radio Type ]</p>
+								<div class="radioDivName<%=i %>" style="margin-top: 20px; text-align: left;">
+									<p style="font-size: 25px;">[ Radio Type ]</p>	
+						<% 
+									for(int j = 0 ; j < nextOptionID ; j++){ // j : optionID
+										// get optionContent type
+										CreateDAO dao6 = new CreateDAO();
+										String dbOptionContent = dao6.getOptionContent(surveyID, i, j);
+						%>
+										<div>
+											<input type="radio" class="radioCheckboxSelect" name="radioGroup" id="' + radioOptionID + '" >
+											<!-- <label for="' + radioOptionID + '"> -->
+												<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=i %>, <%=j %>)" name="radioOptionID" placeholder="Radio Option<%=j+1 %>">
+												<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;
+													padding: 3px 8px 3px 8px; border-radius: 30px; color: white;
+													margin-left: 2px; font-weight: bold;">-</div>
+											<!-- </label><br> -->
+										</div>
+						<%
+									}
+						%>
+								</div>
+								<div onclick="radioOptionAdd(<%=i %>, <%=nextOptionID %>)" class="addOption">
+									<div class="optionAdd">+</div> Add Option 
+								</div>
+						<%
+							} else if(selectType.equals("checkboxType")){
+						%>
+								<div class="checkboxDivName<%=i %>" style="margin-top: 20px; text-align: left;">
+								<p style="font-size: 25px;">[ Radio Type ]</p>	
+						<% 
+								for(int j = 0 ; j < nextOptionID ; j++){ // j : optionID
+									// get optionContent type
+									CreateDAO dao6 = new CreateDAO();
+									String dbOptionContent = dao6.getOptionContent(surveyID, i, j);
+					%>
 									<div>
-										<input type="radio" class="radioCircle" name="radioGroup" id="' + radioOptionID + '" >
-										<label for="' + radioOptionID + '">
-											<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=i %>)" name="radioOptionID" placeholder="Radio Option1">
+										<input type="checkbox" class="radioCheckboxSelect" name="checkboxGroup" id="' + radioOptionID + '" >
+										<!-- <label for="' + radioOptionID + '"> -->
+											<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=i %>, <%=j %>)" name="radioOptionID" placeholder="Checkbox Option<%=j+1 %>">
 											<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;
 												padding: 3px 8px 3px 8px; border-radius: 30px; color: white;
 												margin-left: 2px; font-weight: bold;">-</div>
-										</label><br>
+										<!-- </label><br> -->
 									</div>
+						<%
+								}
+						%>
 								</div>
-								<div onclick="radioOptionAdd(' + typeNum + ", " + radioTypeCount + ')" class="addOption">
+								<div onclick="checkboxOptionAdd(<%=i %>, <%=nextOptionID %>)" class="addOption">
 									<div class="optionAdd">+</div> Add Option 
 								</div>
 						<%
@@ -680,7 +715,6 @@
 						%>
 					</div>
 			<%
-					// System.out.println("%%%");
 				}
 			%>
 			

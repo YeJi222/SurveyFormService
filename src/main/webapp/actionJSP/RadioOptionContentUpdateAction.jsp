@@ -8,6 +8,7 @@
 
 	int surveyID = 0;
 	int questionID = 0;
+	int optionID = 0;
 	String adminID = null;
 	String inputData = null;
 	
@@ -19,6 +20,9 @@
 	}
 	if(request.getParameter("questionID") != null){
 		questionID = Integer.parseInt(request.getParameter("questionID"));
+	}
+	if(request.getParameter("optionID") != null){
+		optionID = Integer.parseInt(request.getParameter("optionID"));
 	}
 	if(request.getParameter("inputData") != null){
 		inputData = request.getParameter("inputData");
@@ -41,7 +45,7 @@
 	
 	CreateDAO createDAO = new CreateDAO();
 	
-	int result = createDAO.updateOptionContent(surveyID, questionID, inputData);
+	int result = createDAO.updateOptionContent(surveyID, questionID, optionID, inputData);
 	if(result == -1){
 		System.out.println("sql error -1");
 		PrintWriter script = response.getWriter();

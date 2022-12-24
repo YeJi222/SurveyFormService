@@ -59,6 +59,54 @@ public class CreateDAO {
 		return -1; // insert 실패 
 	}
 	
+	// To load surveyID
+		public int getMaxOptionID(int surveyID, int questionID) {
+			String SQL = "SELECT MAX(optionID) FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			JDBConnect jdbc = new JDBConnect();
+			
+			try {
+				conn = jdbc.con;
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, surveyID);
+				pstmt.setInt(2, questionID);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					CreateDTO dto = new CreateDTO();
+					dto.setSurveyID(rs.getString(1));
+					System.out.print("max optionID : ");
+					System.out.println(rs.getInt(1));
+					
+					return rs.getInt(1);
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+			} finally { // 자원 해제
+				try {
+					if(conn != null) conn.close();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				try {
+					if(pstmt != null) pstmt.close();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				try {
+					if(rs != null) rs.close();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return -1; // insert 실패 
+		}
+	
 	// adminList Table 
 	public int insertAdminList(int surveyID, String adminID) {
 		String SQL = "INSERT INTO adminList VALUES (?, ?, ?, ?, ?)";
@@ -314,8 +362,8 @@ public class CreateDAO {
 		return -1; // insert 실패 
 	}
 	
-	public int updateOptionContent(int surveyID, int questionID, String inputData) {
-		String SQL = "UPDATE adminSurvey SET optionContent = ? WHERE surveyID = ? AND questionID = ?";
+	public int updateOptionContent(int surveyID, int questionID, int optionID, String inputData) {
+		String SQL = "UPDATE adminSurvey SET optionContent = ? WHERE surveyID = ? AND questionID = ? AND optionID = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -327,6 +375,49 @@ public class CreateDAO {
 			pstmt.setString(1, inputData);
 			pstmt.setInt(2, surveyID);
 			pstmt.setInt(3, questionID);
+			pstmt.setInt(4, optionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int insertQuestionList(int surveyID, int questionID) {
+		String SQL = "INSERT INTO questionList VALUES (?, ?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		System.out.print("SurveyID to insert : ");
+		System.out.print(surveyID);
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
 		} catch(Exception e){
@@ -373,6 +464,50 @@ public class CreateDAO {
 			pstmt.setString(4, "");
 			pstmt.setString(5, "");
 			pstmt.setInt(6, 0);
+			pstmt.setString(7, "");
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int insertOptionType(int surveyID, String adminID, int questionID, String type, int optionID) {
+		String SQL = "INSERT INTO adminSurvey VALUES (?, ?, ?, ?, ?, ?, ?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setString(2, adminID);
+			pstmt.setInt(3, questionID);
+			pstmt.setString(4, "");
+			pstmt.setString(5, type);
+			pstmt.setInt(6, optionID);
 			pstmt.setString(7, "");
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
@@ -622,7 +757,7 @@ public class CreateDAO {
 	
 	public int getQuestionNum(int surveyID) {
 		System.out.println(surveyID);
-		String SQL = "SELECT count(questionID) FROM adminSurvey WHERE surveyID = ?";
+		String SQL = "SELECT count(questionID) FROM questionList WHERE surveyID = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -668,6 +803,7 @@ public class CreateDAO {
 	
 	public String getSelectType(int surveyID, int questionID) {
 		System.out.println(surveyID);
+		System.out.println(questionID);
 		String SQL = "SELECT type FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -707,12 +843,12 @@ public class CreateDAO {
 			}
 		}
 		
-		return null;
+		return "AddOptionRow";
 	}
 	
-	public String getOptionContent(int surveyID, int questionID) {
+	public String getOptionContent(int surveyID, int questionID, int optionID) {
 		System.out.println(surveyID);
-		String SQL = "SELECT optionContent FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
+		String SQL = "SELECT optionContent FROM adminSurvey WHERE surveyID = ? AND questionID = ? AND optionID = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -723,6 +859,7 @@ public class CreateDAO {
 			stmt = conn.prepareStatement(SQL);
 			stmt.setInt(1, surveyID);
 			stmt.setInt(2, questionID);
+			stmt.setInt(3, optionID);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -798,6 +935,83 @@ public class CreateDAO {
 		return null;
 	}
 	
+	public int deleteQuestionList(int surveyID, int questionID) {
+		String SQL = "DELETE FROM questionList WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int deleteAdminSurvey(int surveyID, int questionID) {
+		String SQL = "DELETE FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
 	
 	/*
 	// 특정 회원의 이메일 자체를 반환해주는 함수 

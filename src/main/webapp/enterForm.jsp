@@ -133,6 +133,7 @@
 		ArrayList<QuestionDTO> questionList = daoQuestion.loadQuestion(surveyID);
 		
 		int questionListSize = questionList.size();
+		
 		int[] questionID = new int[questionListSize];
 		String[] questionContent = new String[questionListSize];
 		String[] type = new String[questionListSize];
@@ -182,8 +183,9 @@
 			Logout
 		</div>
 	</div>
+	
 	<div class="middle">
-		<form action="./createSurveyAction.jsp">
+		<form action="./actionJSP/answerSaveAction.jsp?surveyID=<%=surveyID%>">
 			<div class="formNameSection">
 				"<%=formName %>"
 			</div>
@@ -250,12 +252,10 @@
 				</div>
 			</div> -->
 			
+			<div class="footer">
+				<button type="submit" class="submitBtn">Submit This Form</button>
+			</div>
 		</form>
-		<div class="footer">
-			<button type="submit" class="submitBtn" onclick="location.href='/SurveyForm/home.jsp'">Submit This Form</button>
-		</div>
-		
-		
 	</div>
 	
 </body>
