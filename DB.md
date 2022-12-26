@@ -19,6 +19,7 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 ### questionList
 <li>surveyID (survey 번호 - FK)</li>
 <li>questionID (문항 번호)</li>
+<li>questionContent (질문 내용)</li>
 <li>type (문항 타입 - text/radio/checkbox)</li>
 
 ### adminSurvey
