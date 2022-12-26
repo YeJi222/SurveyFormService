@@ -4,6 +4,8 @@
 <%@ page import="create.CreateDAO" %>
 <%@ page import="create.QuestionDTO" %>
 <%@ page import="create.QuestionDAO" %>
+<%@ page import="create.EnterDTO" %>
+<%@ page import="create.EnterDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
@@ -33,12 +35,12 @@
 		.formDetailSection{
 			background-color: white;
 			margin: 20px;
-			margin-left: 70px;
-			margin-right: 70px;
-			height: 180px;
+			margin-left: 60px;
+			margin-right: 60px;
+			height: auto;
 			overflow: scroll;
 			font-size: 25px;
-			padding: 20px;
+			padding: 30px;
 			border-radius: 20px;
 		}
 		
@@ -87,6 +89,11 @@
 			position: fixed;
 			bottom: 30px;
 		}
+		.buttonArea{
+			text-align: center;
+			margin: auto;
+			padding: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -100,8 +107,12 @@
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
 		}
 		
-		System.out.print("surveyID in enterForm : ");
-		System.out.println(surveyID);
+		// get formName
+		/* EnterDAO enterDAO = new EnterDAO();
+		String formName = enterDAO.getFormName(surveyID);
+		
+		System.out.print("formName in enterForm : ");
+		System.out.println(formName); */
 		
 		// get survey info
 		String formName = null;
@@ -132,11 +143,20 @@
 		QuestionDAO daoQuestion = new QuestionDAO();
 		ArrayList<QuestionDTO> questionList = daoQuestion.loadQuestion(surveyID);
 		
-		int questionListSize = questionList.size();
+		// about question info in questionList table
+		QuestionDAO daoQuestionInfo = new QuestionDAO();
+		ArrayList<QuestionDTO> questionInfo = daoQuestionInfo.loadQuestionInfo(surveyID);
+		
+		
+		// question list count
+		QuestionDAO daoQuestionCount = new QuestionDAO();
+		int questionListSize = daoQuestionCount.questionCount(surveyID); // questionList 테이블에서 questionID 개수 
 		
 		int[] questionID = new int[questionListSize];
 		String[] questionContent = new String[questionListSize];
 		String[] type = new String[questionListSize];
+		
+		
 		int[] optionID = new int[questionListSize];
 		String[] optionContent = new String[questionListSize];
 		
@@ -144,22 +164,24 @@
 		System.out.println(questionListSize);
 		
 		for(int i = 0 ; i < questionListSize ; i++){
-			questionID[i] = questionList.get(i).getQuestionID();
-			questionContent[i] = questionList.get(i).getQuestionContent();
-			type[i] = questionList.get(i).getType();
+			questionID[i] = questionInfo.get(i).getQuestionID();
+			questionContent[i] = questionInfo.get(i).getQuestionContent();
+			type[i] = questionInfo.get(i).getType();
+			
+			
 			optionID[i] = questionList.get(i).getOptionID();
 			optionContent[i] = questionList.get(i).getOptionContent();
 		}
 	%>
 	<script>
 		function popup(){
-			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
+			window.open('popup_enter.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
 		} 
 		
 		var user_id = "<%=userID%>";
 		var enterID = "";
 		
-		if(user_id == "null"){ // 익명 사용
+		if(user_id == "null"){ // 익명 사용자 
 			/* popup();
 			location.href = "index.jsp"; */
 			console.log("익명 사용자");
@@ -167,12 +189,30 @@
 		} else{ // 로그인한 사용자 
 			enterID = "<%=userID%>";
 		}
-		console.log(enterID);
+		console.log("참여한 사용자 : " + enterID);
+		
+		function enterSurvey(){
+			$.ajax({
+				url : "actionJSP/insertEnterForm.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "enterID" : enterID, "formName" : "<%=formName%>"},
+				dataType : "text",
+				success : function(result){
+					console.log(result);
+					if(result != 0){ // 이미 응답한 내역이 있으면 
+						popup();
+					} else{ // 처음 응답하면 insert하고 홈으로 
+						location.href="/SurveyForm/home.jsp";
+					}
+					
+				},
+				error: function(error){
+					console.log("Fail to insert form");
+				}
+			})
+		}
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script>
-		
-	</script>
 	
 	<div class="header">
 		<a href="home.jsp" class="serviceName">
@@ -195,6 +235,11 @@
 			
 		<%
 			for(int i = 0 ; i < questionNum ; i++){
+				System.out.print("i : ");
+				System.out.println(i);
+				System.out.print("type[i] : ");
+				System.out.println(type[i]);
+				
 				if(type[i].equals("textType")){
 		%>
 					<div class="questionDiv">
@@ -205,55 +250,56 @@
 					</div>	
 		<%	
 				} else if(type[i].equals("radioType")){
+					// get optionID count
+					QuestionDAO daoOptionIDCount = new QuestionDAO();
+					int optionID_count = daoOptionIDCount.getOptionIDCount(surveyID, questionID[i]);
+					
+					CreateDAO maxOptionID = new CreateDAO();
+					int max_OptionID = maxOptionID.getMaxOptionID(surveyID, questionID[i]);	
 		%>
 					<div class="questionDiv">
 						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 						<div class="textAns" style="text-align: left;">
-							<input type="radio" class="radioCircle" name="radioGroup" id="radio1" >
-							<label for="radio1">기획팀</label><br>
-							<input type="radio" class="radioCircle" name="radioGroup" id="radio2">
-							<label for="radio2">데코팀</label><br>
-							<input type="radio" class="radioCircle" name="radioGroup" id="radio3">
-							<label for="radio3">새섬팀</label><br>
-							<input type="radio" class="radioCircle" name="radioGroup" id="radio4">
-							<label for="radio4">운영팀</label><br>
-						</div>
-					</div>	
 		<%
+						System.out.print("optionID_count : ");
+						System.out.println(optionID_count);
+						System.out.print("max_OptionID : ");
+						System.out.println(max_OptionID);
+						
+						int j = 0;
+						while(j < max_OptionID + 1){
+							// get optionContent type
+							CreateDAO dao6 = new CreateDAO();
+							String dbOptionContent = dao6.getOptionContent(surveyID, questionID[i], j);
+							
+							if(dbOptionContent == null){
+								optionID_count++;
+								j++;
+							} else{
+					
+		%>
+								<input type="radio" class="radioCircle" name="radioGroup" id="radio1" >
+								<label for="radio1"><%=dbOptionContent %></label><br>
+		<%
+								j++;
+							}
+						}
+		%>
+						</div>
+					</div>
+		<%				
 				}
 			}
+		
 		%>
-			
-			<!-- <div class="questionDiv">
-				<p style="text-align: left;"> Q2. 지원할 부서는 어디입니까? </p>
-				<div class="textAns" style="text-align: left;">
-					<input type="radio" class="radioCircle" name="radioGroup" id="radio1" >
-					<label for="radio1">기획팀</label><br>
-					<input type="radio" class="radioCircle" name="radioGroup" id="radio2">
-					<label for="radio2">데코팀</label><br>
-					<input type="radio" class="radioCircle" name="radioGroup" id="radio3">
-					<label for="radio3">새섬팀</label><br>
-					<input type="radio" class="radioCircle" name="radioGroup" id="radio4">
-					<label for="radio4">운영팀</label><br>
-				
-				</div>
-			</div>
-			<div class="questionDiv">
-				<p style="text-align: left;"> Q3. 관심있는 분야는 어떤 것입니까?(복수 선택 가능) </p>
-				<div class="textAns" style="text-align: left;">
-					<input type="checkbox" class="checkSquare" name="checkGroup" id="check1" >
-					<label for="check1">분야1</label><br>
-					<input type="checkbox" class="checkSquare" name="checkGroup" id="check2" >
-					<label for="check2">분야2</label><br>
-					<input type="checkbox" class="checkSquare" name="checkGroup" id="check3" >
-					<label for="check3">분야3</label><br>
-					<input type="checkbox" class="checkSquare" name="checkGroup" id="check3" >
-					<label for="check3">분야4</label><br>
-				</div>
-			</div> -->
+						
 			
 			<div class="footer">
-				<button type="submit" class="submitBtn">Submit This Form</button>
+				<div class="buttonArea">
+					<button type="button" onclick="location.href='/SurveyForm/home.jsp'" class="submitBtn" style="background-color: #A4B2FF;">Edit & Go Home</button>
+					&nbsp;&nbsp;&nbsp;
+					<button type="button" onclick="enterSurvey()" class="submitBtn">Submit This Form</button>
+				</div>
 			</div>
 		</form>
 	</div>

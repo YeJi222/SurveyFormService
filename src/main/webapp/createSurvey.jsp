@@ -642,7 +642,7 @@
 						<% 
 									// for(int j = 0 ; j < optionID_count ; j++){ // j : optionID
 									int j = 0;
-									while(j < max_OptionID){
+									while(j < max_OptionID + 1){
 										
 										// get optionContent type
 										CreateDAO dao6 = new CreateDAO();

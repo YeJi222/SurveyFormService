@@ -816,63 +816,6 @@ public class CreateDAO {
 		return dtoList; // DTO 객체 반환 
 	}
 	
-	public ArrayList<CreateDTO> getEnterFormDTO(String userID) {
-		System.out.println(userID);
-		ArrayList<CreateDTO> dtoList = new ArrayList<CreateDTO>();
-		String SQL = "SELECT formName, regidate FROM enter_form WHERE userID = ?";
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		JDBConnect jdbc = new JDBConnect();
-		
-		try {
-			conn = jdbc.con;
-			stmt = conn.prepareStatement(SQL);
-			stmt.setString(1, userID);
-			rs = stmt.executeQuery();
-			
-			// System.out.print("Form Name : ");
-			
-			while(rs.next()) {
-				
-				CreateDTO dto = new CreateDTO();
-				dto.setFormName(rs.getString("formName"));
-				dto.setRegidate(rs.getDate("regidate"));
-				
-//				System.out.print("From DB : ");
-//				System.out.println(rs.getString("formName"));
-//				System.out.print("From DTO : ");
-//				System.out.println(dto.getFormName());
-				dtoList.add(dto);
-				
-//				System.out.print("Form Name : ");
-//				System.out.println(dtoList.get(0).getFormName());
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		} finally { // 자원 해제
-			try {
-				if(conn != null) conn.close();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(stmt != null) stmt.close();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(rs != null) rs.close();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return dtoList; // DTO 객체 반환 
-	}
-	
 	public ArrayList<CreateDTO> getSurveyInfoDTO(int surveyID) {
 		System.out.print("In DAO surveyID : ");
 		System.out.println(surveyID);

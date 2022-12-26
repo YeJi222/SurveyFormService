@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="create.CreateDTO" %>
 <%@ page import="create.CreateDAO" %>
+<%@ page import="create.EnterDTO" %>
+<%@ page import="create.EnterDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Date" %>
@@ -164,10 +166,14 @@
 			surveyID[i] = list.get(i).getSurveyID();
 			formName[i] = list.get(i).getFormName();
 			regidate[i] = list.get(i).getRegidate();
+			
+			System.out.print("surveyID : ");
+			System.out.println(surveyID[i]);
 		}
 		
 		// entered form
-		ArrayList<CreateDTO> enteredList = dao.getEnterFormDTO(userID);
+		EnterDAO enterDao = new EnterDAO();
+		ArrayList<EnterDTO> enteredList = enterDao.getEnterFormDTO(userID);
 		
 		int enteredListSize = enteredList.size();
 		
@@ -176,7 +182,7 @@
 		
 		for(int i = 0 ; i < enteredListSize ; i++){
 			enteredFormName[i] = enteredList.get(i).getFormName();
-			enteredFormRegidate[i] = enteredList.get(i).getRegidate();
+			enteredFormRegidate[i] = enteredList.get(i).getEnterdate();
 			
 			/* System.out.println("In For : ");
 			System.out.println(formName[i]); */
@@ -244,15 +250,15 @@
 			for(int i = 0 ; i < enteredListSize ; i++){
 			%>
 				<div class="card">
-					<p class="cardTitle" onclick="location.href='/SurveyForm/enterForm.jsp?surveyID=2'"><%=enteredFormName[i]%></p>
-					<p class="cardDate" onclick="location.href='/SurveyForm/enterForm.jsp?surveyID=2'"><%=enteredFormRegidate[i]%></p>
+					<p class="cardTitle"><%=enteredFormName[i]%></p>
+					<p class="cardDate"><%=enteredFormRegidate[i]%></p>
 					<button class="seeInform" onclick="location.href='/SurveyForm/inform.jsp'">
 						응답 완료 후, 안내글
 					</button>
 					<br>
 					<hr class="hrCard">
 					<div class="editDelete">
-						<div class="editPart">
+						<div class="editPart" onclick="location.href='/SurveyForm/enterForm.jsp?surveyID=<%=surveyID[i] %>'">
 							<img class="emoji" src="images/pencil.png">
 							Edit
 						</div>
