@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="create.CreateDTO" %>
 <%@ page import="create.CreateDAO" %>
+<%@ page import="create.QuestionDTO" %>
+<%@ page import="create.QuestionDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
@@ -218,6 +220,8 @@
 </head>
 <body>
 	<%
+		System.out.println("========================== reload ==========================");	
+	
 		// formName, formDetail
 		String userID = null;
 		int surveyID = 0;
@@ -231,8 +235,39 @@
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
 		}
 		
-		System.out.print("surveyID from GET method : ");
-		System.out.println(surveyID);
+		// about question list
+		QuestionDAO daoQuestion = new QuestionDAO();
+		ArrayList<QuestionDTO> questionList = daoQuestion.loadQuestion(surveyID);
+		
+		// about question info in questionList table
+		QuestionDAO daoQuestionInfo = new QuestionDAO();
+		ArrayList<QuestionDTO> questionInfo = daoQuestionInfo.loadQuestionInfo(surveyID);
+		
+		
+		// question list count
+		QuestionDAO daoQuestionCount = new QuestionDAO();
+		int questionListSize = daoQuestionCount.questionCount(surveyID); // questionList 테이블에서 questionID 개수 
+		
+		int[] questionID = new int[questionListSize];
+		String[] question_content = new String[questionListSize];
+		String[] type = new String[questionListSize];
+		
+		
+		int[] optionID = new int[questionListSize];
+		String[] optionContent = new String[questionListSize];
+		
+		System.out.print("Question List Size : ");
+		System.out.println(questionListSize);
+		
+		for(int i = 0 ; i < questionListSize ; i++){
+			questionID[i] = questionInfo.get(i).getQuestionID();
+			question_content[i] = questionInfo.get(i).getQuestionContent();
+			type[i] = questionInfo.get(i).getType();
+			
+			
+			optionID[i] = questionList.get(i).getOptionID();
+			optionContent[i] = questionList.get(i).getOptionContent();
+		}
 		
 		// get survey info
 		CreateDAO dao = new CreateDAO();
@@ -243,18 +278,17 @@
 		
 		formName = list.get(0).getFormName();
 		formDetail = list.get(0).getFormDetail();
-	
-		System.out.print("formName from dto : ");
-		System.out.println(formName);
-		System.out.print("formDetail from dto : ");
-		System.out.println(formDetail);
 		
 		// about question 
 		CreateDAO dao2 = new CreateDAO();
 		int questionNum = dao2.getQuestionNum(surveyID);
 		
-		System.out.print("questionNum : ");
-		System.out.println(questionNum);
+		// get max questionID
+		CreateDAO dao5 = new CreateDAO();
+		int nextQuestionID = dao5.getMaxQuestionID(surveyID) + 1; 
+		
+		System.out.print("$$$$$$$$ nextQuestionID : ");
+		System.out.println(nextQuestionID);
 	%>
 	<script>
 		function popup(){
@@ -272,6 +306,7 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		var count = <%=questionNum%>; // 현재 추가된 질문 개수
+		var next_questionID = <%=nextQuestionID %>
 		var radioTypeCount = 0;
 		var questionDivName = '';
 		var questionDeleteName = '';
@@ -285,58 +320,6 @@
 		var checkboxOptionID = '';
 		
 		var existType = 0;
-		
-		$(document).ready(function(){
-			$('.createBtn').click(function(){
-				count++;
-				console.log("count : " + count);
-				
-				questionDivName = "questionDivName" + (count.toString() - 1);
-				questionDeleteName = "questionDelete" + (count.toString() - 1);
-				
-				/* textName = "Text" + count.toString();
-				radioName = "Radio" + count.toString();
-				checkboxName = "Checkbox" + count.toString();  */
-				
-				textName = "textType";
-				radioName = "radioType";
-				checkboxName = "checkboxType";
-				
-				$('.middle').append(
-					'<div class="' + questionDivName + '" style="background-color: white; width: 80%; margin: auto; margin-top: 20px; padding: 20px; border-radius: 15px; border: 2px solid #E3E3E3;">\
-						<div class="firstSet">\
-							<input type="text" onchange="updateQuestion(this, ' + (count.toString() - 1) + ');" class="questionContent" placeholder="질문 내용" name="questionDivName">\
-							<div class="' + questionDeleteName + '" \
-									style="display: inline; background-color: tomato;\
-									padding: 15px 18px 15px 18px; border-radius: 30px; \
-									color: white; margin-left: 10px; font-weight: bold;">\
-								-\
-							</div>\
-							<select onchange="selectionFunction(value, ' + (count.toString() - 1) + ', ' + (existType) + '); radioOptionCount = 0;" class="questionOpt" name="questionKind" id="questionKind">\
-								<option>Select Type</option>\
-								<option value="' + textName + '">Text</option>\
-								<option value="' + radioName + '">Radio</option>\
-		                        <option value="' + checkboxName + '">Checkbox</option>\
-							</select>\
-						</div>\
-						<img class="arrow" src="images/pencil.png" width="27px">\
-					</div>\
-					'
-				);
-				
-				
-				$('.' + questionDeleteName).on('click', function(){
-					console.log('$$$');
-					count--;
-					$(this).prev().remove(); // input
-					$(this).next().remove(); // select
-					$(this).parent().next().remove(); // img
-					$(this).parent().parent().remove(); // questionDiv class
-					$(this).remove(); // button
-				})
-				
-			})
-		})
 		
 		function radioOptionAdd(questionID, optionID){
 			console.log("qid : " + questionID);
@@ -358,26 +341,6 @@
 				}
 			})
 			
-			/* $('.radioDivName' + questionID).append(
-				'<div>\
-					<input type="radio" class="radioCheckboxSelect" name="radioGroup" id="' + radioOptionID + '" >\
-					<label for="' + radioOptionID + '">\
-						<input class="optionBox" type="text" name="radioOptionID" placeholder="' + radioOptionID + '">\
-						<div class="optionDelete' + questionID + '" style="display: inline; background-color: tomato;\
-							padding: 3px 8px 3px 8px; border-radius: 30px; color: white;\
-							margin-left: 2px; font-weight: bold;">-</div>\
-					</label><br>\
-				</div>\
-				'
-			); */
-			
-			$('.optionDelete' + questionID).on('click', function(){
-				// radioOptionCount--;
-				$(this).prev().remove(); // input box
-				$(this).parent().prev().remove(); // radio circle
-				$(this).parent().parent().remove(); // radio's div
-				$(this).remove(); // button	
-			})
 		}
 		
 		function checkboxOptionAdd(questionID, optionID){
@@ -397,25 +360,6 @@
 				}
 			})
 			
-			/* $('.questionCheckbox').append(
-				'<div>\
-					<input type="checkbox" class="checkSquare" name="checkGroup" id="check1" >\
-					<label for="check1">\
-						<input class="optionBox" type="text" placeholder="Option">\
-						<div class="optionDelete" style="display: inline; background-color: tomato;\
-						padding: 3px 8px 3px 8px; border-radius: 30px; color: white;\
-						margin-left: 2px; font-weight: bold;">-</div>\
-					</label><br>\
-				</div>\
-				'
-			); */
-			
-			$('.optionDelete').on('click', function(){
-				$(this).prev().remove(); // input box
-				$(this).parent().prev().remove(); // checkbox square
-				$(this).parent().parent().remove(); // checkbox's div
-				$(this).remove(); // button
-			})
 		}
 		
 		function selectionFunction(val, questionID, existType){
@@ -425,7 +369,6 @@
 			console.log(val);
 			var optionID = 0;
 			var optionContent = null;
-			
 			
 			var questionTextName = 'questionText' + typeNum;
 			console.log("ExistType : " + existType);
@@ -510,10 +453,11 @@
 			$.ajax({
 				url : "actionJSP/insertQuestionAction.jsp",
 				type : "post",
-				data : {"surveyID" : <%=surveyID%>, "questionID" : count},
+				data : {"surveyID" : <%=surveyID%>, "questionID" : <%=nextQuestionID%>},
 				dataType : "text",
 				success : function(result){
 					console.log("Success to insert question Data");	
+					window.location.reload();
 				},
 				error: function(error){
 					console.log("Fail to insert question Data");
@@ -574,6 +518,24 @@
 				}
 			})
 		}
+		
+		function deleteOption(questionID, optionID){
+			console.log("delete option function");
+			
+			$.ajax({
+				url : "actionJSP/deleteOptionAction.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "optionID" : optionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			}) 
+		}
 	</script>
 	
 	<div class="header">
@@ -600,7 +562,21 @@
 			</div>
 			
 			<%
-				for(int i = 0 ; i < questionNum ; i++){
+				System.out.print("==== Question List Size : ");
+				System.out.println(questionListSize);
+				
+				for(int i = 0 ; i < questionListSize ; i++){
+					/* System.out.print("==== questionID : ");
+					System.out.println(questionID[i]);
+					System.out.print("==== questionContent : ");
+					System.out.println(question_content[i]);
+					System.out.print("==== type : ");
+					System.out.println(type[i]);
+					System.out.print("==== optionID : ");
+					System.out.println(optionID[i]);
+					System.out.print("==== optionContent : ");
+					System.out.println(optionContent[i]);  */
+					
 					// get questionContent
 					CreateDAO dao4 = new CreateDAO();
 					String questionContent = dao4.getQuestionContent(surveyID, i);
@@ -609,30 +585,25 @@
 					CreateDAO dao3 = new CreateDAO();
 					String selectType = dao3.getSelectType(surveyID, i);
 					
-					System.out.print("Select Type : ");
-					System.out.println(selectType);
-					
 					int existType = 0;
-					if(selectType.equals("")){
+					if(type[i].equals("")){
 						System.out.println("not determined type");
 						existType = 0;
 					} else{
 						existType = 1;
 					}
 					
-					/* System.out.print("selectType : ");
-					System.out.println(selectType); */
 			%>
-					<div class="' + questionDivName<%=i %> + '" style="background-color: white; width: 80%; margin: auto; margin-top: 20px; padding: 20px; border-radius: 15px; border: 2px solid #E3E3E3;">
+					<div style="background-color: white; width: 80%; margin: auto; margin-top: 20px; padding: 20px; border-radius: 15px; border: 2px solid #E3E3E3;">
 						<div class="firstSet">
-							<input type="text" onchange="updateQuestion(this, <%=i %>);" class="questionContent" value="<%=questionContent %>" placeholder="질문 내용" name="questionDivName">
-							<div onclick="deleteQuestion(<%=i %>)" class="questionDeleteName"
+							<input type="text" onchange="updateQuestion(this, <%=questionID[i] %>);" class="questionContent" value="<%=question_content[i] %>" placeholder="질문 내용" name="questionDivName">
+							<div onclick="deleteQuestion(<%=questionID[i] %>)" class="questionDeleteName"
 									style="display: inline; background-color: tomato;
 									padding: 15px 18px 15px 18px; border-radius: 30px;
 									color: white; margin-left: 10px; font-weight: bold;">
 								-
 							</div>
-							<select onchange="selectionFunction(value, <%=i %>, <%=existType %>); radioOptionCount = 0;" class="questionOpt" name="questionKind" id="questionKind">
+							<select onchange="selectionFunction(value, <%=questionID[i] %>, <%=existType %>); radioOptionCount = 0;" class="questionOpt" name="questionKind" id="questionKind">
 								<option>Select Type</option>
 								<option value="textType">Text</option>
 								<option value="radioType">Radio</option>
@@ -644,11 +615,11 @@
 						<%
 							// get max(optionID) - optionID 추가 위해 
 							CreateDAO dao7 = new CreateDAO();
-							int nextOptionID = dao7.getMaxOptionID(surveyID, i) + 1; // surveyID, questionID
+							int nextOptionID = dao7.getMaxOptionID(surveyID, questionID[i]) + 1; // surveyID, questionID
 							System.out.print("nextOptionID : ");
 							System.out.println(nextOptionID);
 							
-							if(selectType.equals("textType")){
+							if(type[i].equals("textType")){
 						%>
 								<div>
 									<input type="text" name="questionTextName<%=i %>" class="' + questionTextName + '" 
@@ -657,57 +628,91 @@
 										border-bottom: 2px solid lightgrey;" placeholder="답변">
 								</div>
 						<%
-							} else if(selectType.equals("radioType")){
+							} else if(type[i].equals("radioType")){
+								// get optionID count
+								QuestionDAO daoOptionIDCount = new QuestionDAO();
+								int optionID_count = daoOptionIDCount.getOptionIDCount(surveyID, questionID[i]);
+								
+								CreateDAO maxOptionID = new CreateDAO();
+								int max_OptionID = maxOptionID.getMaxOptionID(surveyID, questionID[i]);	
+							
 						%>
-								<div class="radioDivName<%=i %>" style="margin-top: 20px; text-align: left;">
+								<div style="margin-top: 20px; text-align: left;">
 									<p style="font-size: 25px;">[ Radio Type ]</p>	
 						<% 
-									for(int j = 0 ; j < nextOptionID ; j++){ // j : optionID
+									// for(int j = 0 ; j < optionID_count ; j++){ // j : optionID
+									int j = 0;
+									while(j < max_OptionID){
+										
 										// get optionContent type
 										CreateDAO dao6 = new CreateDAO();
-										String dbOptionContent = dao6.getOptionContent(surveyID, i, j);
+										String dbOptionContent = dao6.getOptionContent(surveyID, questionID[i], j);
+										
+										if(dbOptionContent == null){
+											optionID_count++;
+											j++;
+										} else{
 						%>
 										<div>
 											<input type="radio" class="radioCheckboxSelect" name="radioGroup" id="' + radioOptionID + '" >
 											<!-- <label for="' + radioOptionID + '"> -->
-												<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=i %>, <%=j %>)" name="radioOptionID" placeholder="Radio Option<%=j+1 %>">
-												<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;
+												<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=questionID[i] %>, <%=j %>)" name="radioOptionID" placeholder="Radio Option">
+												<div class="optionDelete' + typeNum + '" onclick="deleteOption(<%=questionID[i] %>, <%=j %>)"
+													style="display: inline; background-color: tomato;
 													padding: 3px 8px 3px 8px; border-radius: 30px; color: white;
 													margin-left: 2px; font-weight: bold;">-</div>
 											<!-- </label><br> -->
 										</div>
 						<%
+											j++;
+										}
 									}
 						%>
 								</div>
-								<div onclick="radioOptionAdd(<%=i %>, <%=nextOptionID %>)" class="addOption">
+								<div onclick="radioOptionAdd(<%=questionID[i] %>, <%=nextOptionID %>)" class="addOption">
 									<div class="optionAdd">+</div> Add Option 
 								</div>
 						<%
-							} else if(selectType.equals("checkboxType")){
+							} else if(type[i].equals("checkboxType")){
+								// get optionID count
+								QuestionDAO daoOptionIDCount = new QuestionDAO();
+								int optionID_count = daoOptionIDCount.getOptionIDCount(surveyID, questionID[i]);
+								
+								CreateDAO maxOptionID = new CreateDAO();
+								int max_OptionID = maxOptionID.getMaxOptionID(surveyID, questionID[i]);
+							
 						%>
-								<div class="checkboxDivName<%=i %>" style="margin-top: 20px; text-align: left;">
-								<p style="font-size: 25px;">[ Radio Type ]</p>	
+								<div style="margin-top: 20px; text-align: left;">
+								<p style="font-size: 25px;">[ Checkbox Type ]</p>	
 						<% 
-								for(int j = 0 ; j < nextOptionID ; j++){ // j : optionID
+								int j = 0;
+								while(j < max_OptionID){
+									
 									// get optionContent type
 									CreateDAO dao6 = new CreateDAO();
-									String dbOptionContent = dao6.getOptionContent(surveyID, i, j);
-					%>
+									String dbOptionContent = dao6.getOptionContent(surveyID, questionID[i], j);
+									
+									if(dbOptionContent == null){
+										optionID_count++;
+										j++;
+									} else{
+						%>
 									<div>
-										<input type="checkbox" class="radioCheckboxSelect" name="checkboxGroup" id="' + radioOptionID + '" >
+										<input type="checkbox" class="radioCheckboxSelect" name="checkboxGroup">
 										<!-- <label for="' + radioOptionID + '"> -->
-											<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=i %>, <%=j %>)" name="radioOptionID" placeholder="Checkbox Option<%=j+1 %>">
-											<div class="optionDelete' + typeNum + '" style="display: inline; background-color: tomato;
+											<input class="optionBox" type="text" value="<%=dbOptionContent %>" onchange="updateOptionContent(this, <%=questionID[i] %>, <%=j %>)" name="radioOptionID" placeholder="Checkbox Option">
+											<div onclick="deleteOption(<%=questionID[i] %>, <%=j %>)" style="display: inline; background-color: tomato;
 												padding: 3px 8px 3px 8px; border-radius: 30px; color: white;
 												margin-left: 2px; font-weight: bold;">-</div>
 										<!-- </label><br> -->
 									</div>
 						<%
+										j++;
+									}
 								}
 						%>
 								</div>
-								<div onclick="checkboxOptionAdd(<%=i %>, <%=nextOptionID %>)" class="addOption">
+								<div onclick="checkboxOptionAdd(<%=questionID[i] %>, <%=nextOptionID %>)" class="addOption">
 									<div class="optionAdd">+</div> Add Option 
 								</div>
 						<%
@@ -717,7 +722,9 @@
 			<%
 				}
 			%>
-			
+		<div class="footer">
+			<button type="button" onclick="location.href='/SurveyForm/makeFinalPage.jsp?surveyID=<%=surveyID%>'" class="submitBtn">Make Final Page</button>
+		</div>
 		</div>
 	</form>
 </body>

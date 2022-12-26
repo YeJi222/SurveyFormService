@@ -10,6 +10,7 @@ public class QuestionDTO {
 	private String type;
 	private int optionID;
 	private String optionContent;
+	private int optionIDcount;
 
 	public int getSurveyID() {
 		return surveyID;
@@ -66,6 +67,14 @@ public class QuestionDTO {
 	public void setOptionContent(String optionContent) {
 		this.optionContent = optionContent;
 	}
+	
+	public int getOptionIDcount() {
+		return optionIDcount;
+	}
+
+	public void setOptionIDcount(int optionIDcount) {
+		this.optionIDcount = optionIDcount;
+	}
 
 	public QuestionDTO() {
 	}
@@ -80,4 +89,6 @@ public class QuestionDTO {
 		this.optionID = optionID;
 		this.optionContent = optionContent;
 	}
+
+	
 }

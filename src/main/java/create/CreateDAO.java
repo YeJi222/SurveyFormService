@@ -60,52 +60,98 @@ public class CreateDAO {
 	}
 	
 	// To load surveyID
-		public int getMaxOptionID(int surveyID, int questionID) {
-			String SQL = "SELECT MAX(optionID) FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			JDBConnect jdbc = new JDBConnect();
+	public int getMaxOptionID(int surveyID, int questionID) {
+		String SQL = "SELECT MAX(optionID) FROM adminSurvey WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			rs = pstmt.executeQuery();
 			
+			if(rs.next()) {
+				CreateDTO dto = new CreateDTO();
+				dto.setSurveyID(rs.getString(1));
+				System.out.print("max optionID : ");
+				System.out.println(rs.getInt(1));
+				
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
 			try {
-				conn = jdbc.con;
-				pstmt = conn.prepareStatement(SQL);
-				pstmt.setInt(1, surveyID);
-				pstmt.setInt(2, questionID);
-				rs = pstmt.executeQuery();
-				
-				if(rs.next()) {
-					CreateDTO dto = new CreateDTO();
-					dto.setSurveyID(rs.getString(1));
-					System.out.print("max optionID : ");
-					System.out.println(rs.getInt(1));
-					
-					return rs.getInt(1);
-				}
-			} catch(Exception e){
+				if(conn != null) conn.close();
+			} catch(Exception e) {
 				e.printStackTrace();
-			} finally { // 자원 해제
-				try {
-					if(conn != null) conn.close();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				
-				try {
-					if(pstmt != null) pstmt.close();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				
-				try {
-					if(rs != null) rs.close();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
 			}
 			
-			return -1; // insert 실패 
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int getMaxQuestionID(int surveyID) {
+		String SQL = "SELECT MAX(questionID) FROM adminSurvey WHERE surveyID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				CreateDTO dto = new CreateDTO();
+				dto.setSurveyID(rs.getString(1));
+				System.out.print("max optionID : ");
+				System.out.println(rs.getInt(1));
+				
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
 	
 	// adminList Table 
 	public int insertAdminList(int surveyID, String adminID) {
@@ -281,6 +327,46 @@ public class CreateDAO {
 		return -1; // insert 실패 
 	}
 	
+	public int updateQuestionList_content(int surveyID, int questionID, String inputData) {
+		String SQL = "UPDATE questionList SET questionContent = ? WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputData);
+			pstmt.setInt(2, surveyID);
+			pstmt.setInt(3, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
 	public int updateTextType(int surveyID, int questionID, String type, int optionID, String optionContent) {
 		String SQL = "UPDATE adminSurvey SET type = ?, optionContent = ? WHERE surveyID = ? AND questionID = ?";
 		Connection conn = null;
@@ -322,8 +408,88 @@ public class CreateDAO {
 		return -1; // insert 실패 
 	}
 	
+	public int updateTextType_questionList(int surveyID, int questionID, String type) {
+		String SQL = "UPDATE questionList SET type = ? WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, type);
+			pstmt.setInt(2, surveyID);
+			pstmt.setInt(3, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
 	public int updateRadioType(int surveyID, int questionID, String type) {
 		String SQL = "UPDATE adminSurvey SET type = ? WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, type);
+			pstmt.setInt(2, surveyID);
+			pstmt.setInt(3, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int updateRadioType_questionList(int surveyID, int questionID, String type) {
+		String SQL = "UPDATE questionList SET type = ? WHERE surveyID = ? AND questionID = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -404,7 +570,7 @@ public class CreateDAO {
 	}
 	
 	public int insertQuestionList(int surveyID, int questionID) {
-		String SQL = "INSERT INTO questionList VALUES (?, ?)";
+		String SQL = "INSERT INTO questionList VALUES (?, ?, ?, ?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -418,6 +584,8 @@ public class CreateDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, surveyID);
 			pstmt.setInt(2, questionID);
+			pstmt.setString(3, "");
+			pstmt.setString(4, "");
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
 		} catch(Exception e){
@@ -847,7 +1015,14 @@ public class CreateDAO {
 	}
 	
 	public String getOptionContent(int surveyID, int questionID, int optionID) {
+		System.out.println("%%%%%%%%%%% In getOptionContent %%%%%%%%%%%");
+		System.out.print("surveyID : ");
 		System.out.println(surveyID);
+		System.out.print("questionID : ");
+		System.out.println(questionID);
+		System.out.print("optionID : ");
+		System.out.println(optionID);
+		
 		String SQL = "SELECT optionContent FROM adminSurvey WHERE surveyID = ? AND questionID = ? AND optionID = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -986,6 +1161,53 @@ public class CreateDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, surveyID);
 			pstmt.setInt(2, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int deleteAdminSurvey_option(int surveyID, int questionID, int optionID) {
+		System.out.print("Survey ID : ");
+		System.out.println(surveyID);
+		System.out.print("questionID : ");
+		System.out.println(questionID);
+		System.out.print("optionID : ");
+		System.out.println(optionID);
+		
+		String SQL = "DELETE FROM adminSurvey WHERE surveyID = ? AND questionID = ? AND optionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			pstmt.setInt(3, optionID);
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
 		} catch(Exception e){

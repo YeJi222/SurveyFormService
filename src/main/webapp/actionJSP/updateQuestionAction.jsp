@@ -67,4 +67,24 @@
 		script.close();
 		// return;
 	}
+	
+	int result2 = createDAO.updateQuestionList_content(surveyID, questionID, inputData);
+	if(result2 == -1){
+		System.out.println("sql error -1");
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		// script.println("location.href = 'create.jsp';");
+		script.println("</script>");
+		script.close();
+		
+		// return;
+	} else{
+		session.setAttribute("userID", adminID);
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		// script.println("location.href = 'home.jsp';");
+		script.println("</script>");
+		script.close();
+		// return;
+	}
 %>
