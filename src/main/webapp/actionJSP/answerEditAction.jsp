@@ -10,7 +10,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	System.out.println("================== answerSaveAction ==================");
+	System.out.println("================== answerEditAction ==================");
 
 	int surveyID = 0;
 	if(request.getParameter("surveyID") != null){
@@ -104,13 +104,34 @@
 	}
 	
 	EnterDAO enterDAO = new EnterDAO();
+	// update 할 때 필요한 data : surveyID, answerUser, answerID_int[i], answerList[i]
+	for(int j = 0 ; j < answerList.length ; j++){
+		System.out.println(answerList[j]);
+		
+		int result =  enterDAO.updateAnswer(surveyID, answerUser, answerID_int[j], answerList[j]);
+		if(result == -1){
+			System.out.println("sql error -1");
+
+			return;
+		} else{
+			System.out.println("success to update answer");
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("location.href = '/SurveyForm/home.jsp';");
+			script.println("</script>");
+			script.close();
+		}
+	}
+	
+	/* 
 	// 중복 데이터 있는지 확인 
 	int check = enterDAO.checkDuplicateAnswer(surveyID, answerUser);
 	System.out.print("check : ");
-	System.out.println(check);
+	System.out.println(check); */
 	
 	// check가 0이면 중복 응답 없는 것 
-	if(check == 0){
+	
+	/* if(check == 0){
 		// insert할 data : surveyID, answerUser, type[i], answerID_int[i], answerList[i]
 		for(int j = 0 ; j < answerList.length ; j++){
 			System.out.println(answerList[j]);
@@ -138,5 +159,5 @@
 		script.println("</script>");
 		script.close();
 		
-	}
+	} */
 %>

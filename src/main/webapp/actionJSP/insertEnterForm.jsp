@@ -20,18 +20,18 @@
 		formName = request.getParameter("formName");
 	}
 	
-	System.out.print("Survey ID : ");
+	/* System.out.print("Survey ID : ");
 	System.out.println(surveyID);
 	System.out.print("Enter ID : ");
 	System.out.println(enterID);
 	System.out.print("formName : ");
-	System.out.println(formName);
+	System.out.println(formName); */
 	
 	EnterDAO enterDAO = new EnterDAO();
 	
 	int result = enterDAO.findDuplicateSurvey(surveyID, enterID);
-	System.out.print("result : ");
-	System.out.println(result);
+	/* System.out.print("result : ");
+	System.out.println(result); */
 	
 	// 0이면 이전에 응답하지 않은 경우, -1이 아니면 이전에 응답한 경우 
 	if(result == 0){

@@ -958,13 +958,13 @@ public class CreateDAO {
 	}
 	
 	public String getOptionContent(int surveyID, int questionID, int optionID) {
-		System.out.println("%%%%%%%%%%% In getOptionContent %%%%%%%%%%%");
-		System.out.print("surveyID : ");
-		System.out.println(surveyID);
-		System.out.print("questionID : ");
-		System.out.println(questionID);
-		System.out.print("optionID : ");
-		System.out.println(optionID);
+//		System.out.println("%%%%%%%%%%% In getOptionContent %%%%%%%%%%%");
+//		System.out.print("surveyID : ");
+//		System.out.println(surveyID);
+//		System.out.print("questionID : ");
+//		System.out.println(questionID);
+//		System.out.print("optionID : ");
+//		System.out.println(optionID);
 		
 		String SQL = "SELECT optionContent FROM adminSurvey WHERE surveyID = ? AND questionID = ? AND optionID = ?";
 		Connection conn = null;

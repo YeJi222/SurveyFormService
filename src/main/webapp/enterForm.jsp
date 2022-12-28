@@ -38,7 +38,7 @@
 			margin-left: 60px;
 			margin-right: 60px;
 			height: auto;
-			overflow: scroll;
+			/* overflow: scroll; */
 			font-size: 25px;
 			padding: 30px;
 			border-radius: 20px;
@@ -107,12 +107,42 @@
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
 		}
 		
-		// get formName
-		/* EnterDAO enterDAO = new EnterDAO();
-		String formName = enterDAO.getFormName(surveyID);
+		System.out.print("userID : ");
+		System.out.println(userID);
 		
-		System.out.print("formName in enterForm : ");
-		System.out.println(formName); */
+		String loginState = "";
+		if(userID == null){ // logout 상태 
+			loginState = "Login";
+		} else{ // login 상태 
+			loginState = "Logout";
+		}
+		
+		EnterDAO enterDAO = new EnterDAO();
+		// 중복 데이터 있는지 확인 
+		System.out.println("================= checkDuplicateAnswer =================");
+		int check = 0;
+		if(userID != null){ // 익명 사용자가 아닌 경우 중복 여부 판단 
+			check = enterDAO.checkDuplicateAnswer(surveyID, userID);
+			System.out.print("check : ");
+			System.out.println(check);
+		} else{
+			System.out.println("check: 익명 사용자");
+		}
+		
+		// 버튼 내용 
+		String buttonContent = "";
+		String actionPage = "";
+		if(check == 0){ // 처음 응답하면 
+			buttonContent = "Submit This Form";
+			actionPage = "./actionJSP/answerSaveAction.jsp";
+		} else{
+			buttonContent = "Edit & Go Home";
+			actionPage = "./actionJSP/answerEditAction.jsp";
+		}
+		
+		System.out.print("actionPage : ");
+		System.out.println(actionPage);
+		
 		
 		// get survey info
 		String formName = null;
@@ -136,8 +166,8 @@
 		CreateDAO dao2 = new CreateDAO();
 		int questionNum = dao2.getQuestionNum(surveyID);
 		
-		System.out.print("questionNum : ");
-		System.out.println(questionNum);
+		/* System.out.print("questionNum : ");
+		System.out.println(questionNum); */
 		
 		// about question list
 		QuestionDAO daoQuestion = new QuestionDAO();
@@ -157,20 +187,19 @@
 		String[] type = new String[questionListSize];
 		
 		
-		int[] optionID = new int[questionListSize];
-		String[] optionContent = new String[questionListSize];
+		/* int[] optionID = new int[questionListSize];
+		String[] optionContent = new String[questionListSize]; */
 		
-		System.out.print("Question List Size : ");
-		System.out.println(questionListSize);
+		/* System.out.print("Question List Size : ");
+		System.out.println(questionListSize); */
 		
 		for(int i = 0 ; i < questionListSize ; i++){
 			questionID[i] = questionInfo.get(i).getQuestionID();
 			questionContent[i] = questionInfo.get(i).getQuestionContent();
 			type[i] = questionInfo.get(i).getType();
 			
-			
-			optionID[i] = questionList.get(i).getOptionID();
-			optionContent[i] = questionList.get(i).getOptionContent();
+			/* optionID[i] = questionList.get(i).getOptionID();
+			optionContent[i] = questionList.get(i).getOptionContent(); */
 		}
 	%>
 	<script>
@@ -192,6 +221,10 @@
 		console.log("참여한 사용자 : " + enterID);
 		
 		function enterSurvey(){
+			console.log("enterSurevey function");
+			
+			
+			
 			$.ajax({
 				url : "actionJSP/insertEnterForm.jsp",
 				type : "post",
@@ -200,7 +233,7 @@
 				success : function(result){
 					console.log(result);
 					if(result != 0){ // 이미 응답한 내역이 있으면 
-						popup();
+						// popup();
 					} else{ // 처음 응답하면 insert하고 홈으로 
 						location.href="/SurveyForm/home.jsp";
 					}
@@ -220,12 +253,14 @@
 		</a>
 		<img class="profileImg" src="images/profile.png">
 		<div class="logInOut" onclick="location.href='logoutAction.jsp'">
-			Logout
+			<%=loginState %>
 		</div>
 	</div>
 	
 	<div class="middle">
-		<form action="./actionJSP/answerSaveAction.jsp?surveyID=<%=surveyID%>">
+		<form action=<%=actionPage %>>
+			<input type="hidden" name="surveyID" value="<%=surveyID %>">
+			
 			<div class="formNameSection">
 				"<%=formName %>"
 			</div>
@@ -235,17 +270,48 @@
 			
 		<%
 			for(int i = 0 ; i < questionNum ; i++){
-				System.out.print("i : ");
-				System.out.println(i);
-				System.out.print("type[i] : ");
-				System.out.println(type[i]);
+				// get answerValue - edit 할 때 기존의 답변을 불러오기 위해 
+				EnterDAO answerDAO = new EnterDAO();
+				System.out.println("================= getAnswerValue =================");
+				System.out.print("questionID : ");
+				System.out.println(questionID[i]);
+				System.out.print("answerUser : ");
+				System.out.println(userID);
 				
+				String answerUser = "";
+				if(userID != null){ // 익명 사용자가 아니면 
+					answerUser = userID;
+				} else{ // 익명 사용자이면 
+					answerUser = "익명 사용자";
+				}
+				
+				String answerValue = null;
+				if(answerUser.equals(userID)){ // 익명 사용자가 아니면 
+					System.out.println("익명 사용자가 아닙니다 ");
+					answerValue = answerDAO.getAnswerValue(surveyID, answerUser, questionID[i]);
+					
+					/* System.out.print("answerValue : ");
+					System.out.println(answerValue); */
+				} else{
+					System.out.println("익명 사용자입니다 ");
+				}
+				
+				// type - 0 : text / 1 : radio / 2 : checkbox
 				if(type[i].equals("textType")){
+					
 		%>
 					<div class="questionDiv">
 						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 						<div class="textAns" style="text-align: left;">
-							<input type="text" class="questionText" placeholder="답변">
+							<input type="text" class="questionText" 
+		<%
+							if(answerValue != null){ // 익명 사용자일 때는 placeholder만 보이게 
+		%>		
+								value="<%=answerValue %>"
+		<%
+							}
+		%>
+								placeholder="답변" name="0answer<%=questionID[i]%>">
 						</div>
 					</div>	
 		<%	
@@ -261,10 +327,10 @@
 						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 						<div class="textAns" style="text-align: left;">
 		<%
-						System.out.print("optionID_count : ");
+						/* System.out.print("optionID_count : ");
 						System.out.println(optionID_count);
 						System.out.print("max_OptionID : ");
-						System.out.println(max_OptionID);
+						System.out.println(max_OptionID); */
 						
 						int j = 0;
 						while(j < max_OptionID + 1){
@@ -276,10 +342,77 @@
 								optionID_count++;
 								j++;
 							} else{
-					
+								
 		%>
-								<input type="radio" class="radioCircle" name="radioGroup" id="radio1" >
-								<label for="radio1"><%=dbOptionContent %></label><br>
+								<input type="radio" name="1answer<%=questionID[i]%>" value="<%=dbOptionContent %>" 
+		<%
+								if(dbOptionContent.equals(answerValue)){
+		%>	
+									checked
+		<% 
+								}
+		%>					
+								>
+								<label for="radio"><%=dbOptionContent %></label><br>
+		<%
+								j++;
+							}
+						}
+		%>
+						</div>
+					</div>
+		<%				
+				} else if(type[i].equals("checkboxType")){
+					System.out.print("answerValue : ");
+					System.out.println(answerValue);
+					
+					String[] checkList = answerValue.split(", ");
+					System.out.println("%%% checkList %%%");
+					for(int k = 0 ; k < checkList.length ; k++){
+						System.out.println(checkList[k]);
+					}
+					
+					// get optionID count
+					QuestionDAO daoOptionIDCount = new QuestionDAO();
+					int optionID_count = daoOptionIDCount.getOptionIDCount(surveyID, questionID[i]);
+					
+					CreateDAO maxOptionID = new CreateDAO();
+					int max_OptionID = maxOptionID.getMaxOptionID(surveyID, questionID[i]);	
+		%>
+					<div class="questionDiv">
+						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
+						<div class="textAns" style="text-align: left;">
+		<%
+						/* System.out.print("optionID_count : ");
+						System.out.println(optionID_count);
+						System.out.print("max_OptionID : ");
+						System.out.println(max_OptionID); */
+						
+						int j = 0;
+						while(j < max_OptionID + 1){
+							// get optionContent type
+							CreateDAO dao6 = new CreateDAO();
+							String dbOptionContent = dao6.getOptionContent(surveyID, questionID[i], j);
+							
+							if(dbOptionContent == null){
+								optionID_count++;
+								j++;
+							} else{
+		%>
+								<input type="checkbox" name="2answer<%=questionID[i]%>" value="<%=dbOptionContent %>" 
+		<%
+								for(int k = 0 ; k < checkList.length ; k++){
+									// System.out.println(checkList[k]);
+									if(dbOptionContent.equals(checkList[k])){
+		%>
+										checked
+		<%
+									}
+								}
+		%>
+								
+								>
+								<label for="checkbox"><%=dbOptionContent %></label><br>
 		<%
 								j++;
 							}
@@ -289,6 +422,7 @@
 					</div>
 		<%				
 				}
+				
 			}
 		
 		%>
@@ -296,9 +430,10 @@
 			
 			<div class="footer">
 				<div class="buttonArea">
-					<button type="button" onclick="location.href='/SurveyForm/home.jsp'" class="submitBtn" style="background-color: #A4B2FF;">Edit & Go Home</button>
-					&nbsp;&nbsp;&nbsp;
-					<button type="button" onclick="enterSurvey()" class="submitBtn">Submit This Form</button>
+					<!-- <button type="button" onclick="location.href='/SurveyForm/home.jsp'" class="submitBtn" style="background-color: #A4B2FF;">Edit & Go Home</button>
+					&nbsp;&nbsp;&nbsp; -->
+					<button type="submit" onclick="return enterSurvey()" class="submitBtn"><%=buttonContent %></button>
+					<!-- <button type="button" onclick="enterSurvey()" class="submitBtn">Submit This Form</button> -->
 				</div>
 			</div>
 		</form>

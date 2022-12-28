@@ -256,8 +256,8 @@
 		int[] optionID = new int[questionListSize];
 		String[] optionContent = new String[questionListSize];
 		
-		System.out.print("Question List Size : ");
-		System.out.println(questionListSize);
+		/* System.out.print("Question List Size : ");
+		System.out.println(questionListSize); */
 		
 		for(int i = 0 ; i < questionListSize ; i++){
 			questionID[i] = questionInfo.get(i).getQuestionID();
@@ -273,8 +273,8 @@
 		CreateDAO dao = new CreateDAO();
 		ArrayList<CreateDTO> list = dao.getSurveyInfoDTO(surveyID);
 		
-		System.out.print("list size : ");
-		System.out.println(list.size());
+		/* System.out.print("list size : ");
+		System.out.println(list.size()); */
 		
 		formName = list.get(0).getFormName();
 		formDetail = list.get(0).getFormDetail();
@@ -287,8 +287,8 @@
 		CreateDAO dao5 = new CreateDAO();
 		int nextQuestionID = dao5.getMaxQuestionID(surveyID) + 1; 
 		
-		System.out.print("$$$$$$$$ nextQuestionID : ");
-		System.out.println(nextQuestionID);
+		/* System.out.print("$$$$$$$$ nextQuestionID : ");
+		System.out.println(nextQuestionID); */
 	%>
 	<script>
 		function popup(){
@@ -562,8 +562,8 @@
 			</div>
 			
 			<%
-				System.out.print("==== Question List Size : ");
-				System.out.println(questionListSize);
+				/* System.out.print("==== Question List Size : ");
+				System.out.println(questionListSize); */
 				
 				for(int i = 0 ; i < questionListSize ; i++){
 					/* System.out.print("==== questionID : ");
@@ -616,8 +616,8 @@
 							// get max(optionID) - optionID 추가 위해 
 							CreateDAO dao7 = new CreateDAO();
 							int nextOptionID = dao7.getMaxOptionID(surveyID, questionID[i]) + 1; // surveyID, questionID
-							System.out.print("nextOptionID : ");
-							System.out.println(nextOptionID);
+							/* System.out.print("nextOptionID : ");
+							System.out.println(nextOptionID); */
 							
 							if(type[i].equals("textType")){
 						%>
@@ -686,7 +686,7 @@
 								<p style="font-size: 25px;">[ Checkbox Type ]</p>	
 						<% 
 								int j = 0;
-								while(j < max_OptionID){
+								while(j < max_OptionID + 1){
 									
 									// get optionContent type
 									CreateDAO dao6 = new CreateDAO();
@@ -725,6 +725,7 @@
 		<div class="footer">
 			<button type="button" onclick="location.href='/SurveyForm/makeFinalPage.jsp?surveyID=<%=surveyID%>'" class="submitBtn">Make Final Page</button>
 		</div>
+		<br><br><br><br><br><br>
 		</div>
 	</form>
 </body>

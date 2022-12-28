@@ -26,12 +26,12 @@
 		return;
 	}
 	
-	System.out.print("Survey ID : ");
+	/* System.out.print("Survey ID : ");
 	System.out.println(surveyID);
 	System.out.print("Admin ID : ");
 	System.out.println(adminID);
 	System.out.print("questionID : ");
-	System.out.println(questionID);
+	System.out.println(questionID); */
 	
 	CreateDAO createDAO = new CreateDAO();
 	

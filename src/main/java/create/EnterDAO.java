@@ -102,6 +102,50 @@ public class EnterDAO {
 		return null;
 	}
 	
+	public String getAnswerValue(int surveyID, String answerUser, int answerID) {
+		String SQL = "SELECT answer FROM answerSurvey WHERE surveyID = ? AND answerUser = ? AND answerID = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setString(2, answerUser);
+			stmt.setInt(3, answerID);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				return rs.getString(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+	
 	public int insertAdminList(int surveyID, String enterID, String formName) {
 		String SQL = "INSERT INTO enterList VALUES (?, ?, ?, ?)";
 		Connection conn = null;
@@ -164,6 +208,137 @@ public class EnterDAO {
 			stmt = conn.prepareStatement(SQL);
 			stmt.setInt(1, surveyID);
 			stmt.setString(2, enterID);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int insertAnswer(int surveyID, String answerUser, String type, int answerID, String answer) {
+		String SQL = "INSERT INTO answerSurvey VALUES (?, ?, ?, ?, ?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setString(2, answerUser);
+			pstmt.setString(3, type); // formName
+			pstmt.setInt(4, answerID);
+			pstmt.setString(5, answer);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int updateAnswer(int surveyID, String answerUser, int answerID, String answer) {
+		String SQL = "UPDATE answerSurvey SET answer = ? WHERE surveyID = ? AND answerUser = ? AND answerID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, answer);
+			pstmt.setInt(2, surveyID);
+			pstmt.setString(3, answerUser);
+			pstmt.setInt(4, answerID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int checkDuplicateAnswer(int surveyID, String answerUser) {
+		System.out.println("============ findDuplicateAnswer ============");
+		System.out.print("surveyID : ");
+		System.out.println(surveyID);
+		System.out.print("answerUser : ");
+		System.out.println(answerUser);
+		
+		String SQL = "SELECT count(*) FROM answerSurvey WHERE surveyID = ? AND answerUser = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setString(2, answerUser);
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
