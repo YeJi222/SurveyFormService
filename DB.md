@@ -42,5 +42,4 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 <li>questionID (문항 번호 - FK)</li>
 <li>answerID (답변 ID)</li>
 <li>answer (질문 답변) </li>
-<li>tempSave (임시 저장 여부)</li>
 
