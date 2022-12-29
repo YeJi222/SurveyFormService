@@ -1178,6 +1178,55 @@ public class CreateDAO {
 		return -1; // insert 실패 
 	}
 	
+	public ArrayList<CreateDTO> getAnswerOptionContent(int surveyID, int questionID, String type) {
+		ArrayList<CreateDTO> dtoList = new ArrayList<CreateDTO>();
+		
+		String SQL = "SELECT optionContent FROM adminSurvey WHERE surveyID = ? AND questionID = ? AND type = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setInt(2, questionID);
+			stmt.setString(3, type);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				CreateDTO dto = new CreateDTO();
+				dto.setOptionContent(rs.getString("optionContent"));
+				
+				dtoList.add(dto);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dtoList; // DTO 객체 반환 
+	}
+	
 	/*
 	// 특정 회원의 이메일 자체를 반환해주는 함수 
 	public String getUserEmail(String userID) {

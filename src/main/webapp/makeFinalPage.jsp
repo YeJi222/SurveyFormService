@@ -77,7 +77,7 @@
 		}
 		.finishOpt{
 			float: right;
-			margin-right: 30px;
+			margin-right: 20px;
 			background-color: #D4DEFF;
 			height: 23px;
 			width: 130px;
@@ -102,7 +102,7 @@
 		}
 		
 		.finishTextarea{
-			width: 95%;
+			width: 93%;
 			background-color: #F4F5FF;
 			margin-top: 20px;
 			border: none;

@@ -11,6 +11,7 @@ public class CreateDTO {
 	private String textContent = null;
 	private String type = null;
 	private String radioOption = null;
+	private String optionContent = null;
 	private Date regidate;
 	
 	private int questionNum = 0; // question 개수 
@@ -75,11 +76,17 @@ public class CreateDTO {
 	public void setRegidate(Date regidate) {
 		this.regidate = regidate;
 	}
+	public String getOptionContent() {
+		return optionContent;
+	}
+	public void setOptionContent(String optionContent) {
+		this.optionContent = optionContent;
+	}
 	
 	public CreateDTO() {
 	}
 	
-	public CreateDTO(String userID, String formName, String formDetail, String questionName, String textContent, String type, String radioOption, Date regidate) {
+	public CreateDTO(String userID, String formName, String formDetail, String questionName, String textContent, String type, String radioOption, Date regidate, String optionContent) {
 		super();
 		this.userID = userID;
 		this.formName = formName;
@@ -89,5 +96,7 @@ public class CreateDTO {
 		this.type = type;
 		this.radioOption = radioOption;
 		this.regidate = regidate;
+		this.optionContent = optionContent;
 	}
+	
 }

@@ -4,6 +4,8 @@
 <%@ page import="create.CreateDAO" %>
 <%@ page import="create.QuestionDTO" %>
 <%@ page import="create.QuestionDAO" %>
+<%@ page import="create.AnswerDTO" %>
+<%@ page import="create.AnswerDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
@@ -11,9 +13,9 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link href="css/common.css" rel="stylesheet">
-	<script>
-		
-	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+
 	<style>
 		.serviceName{
 			text-decoration: none;
@@ -51,12 +53,45 @@
 			border: 2px solid #E3E3E3;
 			font-size: 30px;
 		}
+		.answerLenDiv{
+			background-color: white;
+			font-size: 25px;
+			text-align: left;
+			padding-left: 5px;
+			color: darkorange;
+			margin-bottom: 10px;
+		}
+		.textAnswerDiv{
+			background-color: #F4F5FF;
+			width: 95%;
+			margin: auto;
+			margin-top: 5px;
+			margin-bottom: 5px;
+			padding: 10px 20px 10px 20px;
+			border-radius: 15px;
+			/* border: 2px solid #E3E3E3; */
+			font-size: 30px;
+			text-align: left;
+		}
 		.textAns{
 			font-size: 22px;
 			margin-top: 10px;
 		}
 		.ansResult{
 			color: tomato;
+		}
+		
+		.radioResultInfo{
+			float: right;
+			position: relative;
+			top: -290px;
+			right: 40px;
+			text-align: left;
+			font-size: 20px;
+		}
+		.countText{
+			color: tomato;
+			text-align: right;
 		}
 		
 		.okBtn{
@@ -71,6 +106,9 @@
 			height: 60px;
 			border: none;
 			background-color: #D5DEFF;
+		}
+		.middle{
+			margin-bottom: 120px;
 		}
 		.footer{
 			width: 100%;
@@ -175,18 +213,337 @@
 			for(int i = 0 ; i < questionNum ; i++){
 				// type - 0 : text / 1 : radio / 2 : checkbox
 				if(type[i].equals("textType")){
+					System.out.print("textType questionID : ");
+					System.out.println(questionID[i]);
+					
+					// surveyID와 questionID에 따른 answer 가져오기 
+					AnswerDAO answerArr = new AnswerDAO();
+					ArrayList<AnswerDTO> textAnswerArr = answerArr.getTextAnswer(surveyID, questionID[i]);
+					
+					System.out.print("textType answer 개수 : ");
+					System.out.println(textAnswerArr.size());
+					
+					int textAnswerLen = textAnswerArr.size();
+					
+					String[] textAnswerUser = new String[textAnswerLen];
+					String[] textAnswer = new String[textAnswerLen];
+					
+					for(int j = 0 ; j < textAnswerLen ; j++){
+						textAnswerUser[j] = textAnswerArr.get(j).getAnswerUser();
+						textAnswer[j] = textAnswerArr.get(j).getAnswer();
+					}
+		%>
+					<div class="questionDiv">
+						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
+						<div class="answerLenDiv">응답 <%=textAnswerLen %>개</div>
+		<%
+						for(int j = 0 ; j < textAnswerLen ; j++){
+		%>
+							<%-- <div class="textAnswerUserDiv"><%=textAnswerUser[j] %></div> --%>
+							<div class="textAnswerDiv">
+								<%=textAnswer[j] %> 
+							</div>
+		<%					
+						}
+		%>
+					</div>	
+		<%	
+				} else if(type[i].equals("radioType")){
+					// get optionContent list
+					CreateDAO optionDAO = new CreateDAO();
+					ArrayList<CreateDTO> optionArr = optionDAO.getAnswerOptionContent(surveyID, questionID[i], type[i]);
+					
+					/* System.out.print("optionArr 개수 : ");
+					System.out.println(optionArr.size()); */
+					
+					int radioOptionLen = optionArr.size();
+					
+					ArrayList<String> radioOptionList = new ArrayList<>();
+					ArrayList<Integer> radioOptionCountList = new ArrayList<>();
+					int answerUserCount = 0;
+					int checkedCount = 0;
+					
+					AnswerDAO answerArr = new AnswerDAO();
+					for(int j = 0 ; j < radioOptionLen ; j++){
+						radioOptionList.add('"' + optionArr.get(j).getOptionContent() + '"');
+						// System.out.println(optionArr.get(j).getOptionContent());
+						
+						int radioAnswerNum = answerArr.getRadioAnswer(surveyID, questionID[i], type[i], optionArr.get(j).getOptionContent());
+						
+						System.out.print("radioAnswerNum : ");
+						System.out.println(radioAnswerNum);
+						
+						if(radioAnswerNum > 0){
+							answerUserCount += radioAnswerNum;
+							checkedCount++;
+						}
+						
+						radioOptionCountList.add(radioAnswerNum);
+					}
+					/* System.out.print("answerCount : ");
+					System.out.println(radioAnswerNum); */
+					
+					
+					
+					/* System.out.print("getRadioAnswer 개수 : ");
+					System.out.println(radioAnswerArr.size());
+					
+					int radioAnswerLen = radioAnswerArr.size();
+					
+					String[] radioAnswer = new String[radioAnswerLen];
+					
+					for(int j = 0 ; j < radioAnswerLen ; j++){
+						radioAnswer[j] = radioAnswerArr.get(j).getAnswer();
+					} */
 					
 		%>
 					<div class="questionDiv">
 						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
+						<div class="answerLenDiv">응답 <%=answerUserCount %>개</div>
+						<canvas id="radioChart<%=questionID[i] %>" width="400" height="186" style="margin-top: -20px;"></canvas>
+						<div class="radioResultInfo">
+		<%
+							for(int j = 0 ; j < radioOptionCountList.size() ; j++){
+		%>
+								● <%=radioOptionList.get(j) %> &nbsp;&nbsp; <span class="countText">응답 <%=radioOptionCountList.get(j) %>개</span><br>
+		<%
+							}
+		%>
 						
-						
+						</div>
+						<script type="text/javascript">
+							var ctx = document.getElementById("radioChart<%=questionID[i] %>").getContext('2d');
+							
+							Chart.Chart.pluginService.register({
+							    beforeDraw: function(chart) {
+							    	var width = chart.chart.width,
+								    height = chart.chart.height,
+								    ctx = chart.chart.ctx;
+							    	// console.log(width);
+								 
+								    ctx.restore();
+								    // var fontSize = 2;
+								    ctx.font = "95% DoHyeon"
+								    ctx.fillStyle = "darkorange";
+								    ctx.textBaseline = "middle";
+								 
+								    var text = chart.config.centerText.text,
+								    textX = Math.round((width - ctx.measureText(text).width) / 2),
+								    textY = height / 1.85;
+								 
+								    ctx.fillText(text, textX, textY);
+								    ctx.save();
+							    },
+							});
+							
+							var optionList = <%=radioOptionList%>;
+							var colorList = ['#A8C8F9', '#DFDFDF', '#FFCCCC', '#B8F3B8', '#FFAC33', '#FFA0A0', '#C177FB', '#FFDDA6', '#61AE76', '#969191'];
+							var dataList = <%=radioOptionCountList%>
+							
+							var myChart = new Chart(ctx, {
+							  type: 'doughnut',
+							    data: {
+							      labels: optionList,
+							      datasets: [{
+							            data: dataList,
+							            backgroundColor: colorList,
+							            borderWidth: 0.5 ,
+							            borderColor: '#ddd',
+							        }]
+							  },
+							  options: {
+							        title: {
+							            display: true,
+							            text: 'Radio Type 응답',
+							            position: 'top',
+							            fontFamily: "DoHyeon",
+							            fontSize: 25,
+							            fontColor: '#111',
+							            padding: 20
+							        },
+							        legend: {
+							            display: true,
+							            position: 'bottom',
+							            labels: {
+							            	fontSize: 20,
+							            	fontFamily: "DoHyeon",
+							            	fontWeight: 800,
+							                boxWidth: 20,
+							                fontColor: '#111',
+							                padding: 15
+							            }
+							        },
+							        
+							    },
+							    centerText: {
+							        display: true,
+							        text: "선택 <%=checkedCount %>개"
+							    }
+							});
+						</script>
 					</div>	
-		<%	
+		<%			
+				} else if(type[i].equals("checkboxType")){
+					System.out.println("============ checkboxType ============");
+					// get optionContent list
+					CreateDAO optionDAO = new CreateDAO();
+					ArrayList<CreateDTO> optionArr = optionDAO.getAnswerOptionContent(surveyID, questionID[i], type[i]);
+					
+					int checkboxOptionLen = optionArr.size();
+					
+					ArrayList<String> checkboxOptionList = new ArrayList<>();
+					ArrayList<String> checkedList = new ArrayList<>();
+					ArrayList<Integer> checkboxOptionCountList = new ArrayList<>();
+					// int answerUserCount = 0;
+					
+					AnswerDAO answerArr = new AnswerDAO();
+					for(int j = 0 ; j < checkboxOptionLen ; j++){
+						checkboxOptionList.add('"' + optionArr.get(j).getOptionContent() + '"');
+						// System.out.println(optionArr.get(j).getOptionContent());
+					}
+					
+					AnswerDAO checkOptionDAO = new AnswerDAO();
+					ArrayList<AnswerDTO> checkAnswers = checkOptionDAO.getCheckboxAnswer(surveyID, questionID[i], type[i]);
+					
+					/* System.out.print("answerID : ");
+					System.out.println(questionID[i]);
+					System.out.print("checkAnswers len : ");
+					System.out.println(checkAnswers.size()); */
+					
+					int checkAnswersLen = checkAnswers.size();
+					
+					for(int j = 0 ; j < checkAnswers.size() ; j++){
+						String[] splitAnswer = checkAnswers.get(j).getAnswer().split(", ");
+						for(int k = 0 ; k < splitAnswer.length ; k++){
+							// System.out.println(splitAnswer[k]);
+							
+							/*
+							// 중복 제외하고 optionContent 리스트에 넣기 
+							if(!checkedList.contains(splitAnswer[k])){ 
+								checkedList.add(splitAnswer[k]);
+								
+							}
+							System.out.print("checkedList : ");
+							System.out.println(checkedList);
+							*/
+							
+							checkedList.add('"' + splitAnswer[k] + '"');
+						}
+					}
+					/* System.out.print("checkedList : ");
+					System.out.println(checkedList);
+					
+					System.out.print("checkboxOptionList : ");
+					System.out.println(checkboxOptionList); */
+					
+					for(int j = 0 ; j < checkboxOptionList.size() ; j++){
+						int optionCount = 0;
+						for(int k = 0 ; k < checkedList.size() ; k++){
+							if(checkboxOptionList.get(j).equals(checkedList.get(k))){
+								optionCount++;
+							}
+						}
+						/* System.out.print("optionCount : ");
+						System.out.println(optionCount); */
+						
+						checkboxOptionCountList.add(optionCount);
+					}
+					/* System.out.print("checkboxOptionCountList : ");
+					System.out.println(checkboxOptionCountList); */
+					
+		%>
+					<div class="questionDiv">
+						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
+						<div class="answerLenDiv">응답 <%=checkAnswersLen %>개</div>
+						<canvas id="radioChart<%=questionID[i] %>" width="400" height="186" style="margin-top: -20px;"></canvas>
+						<div class="radioResultInfo">
+		<%
+							for(int j = 0 ; j < checkboxOptionCountList.size() ; j++){
+		%>
+								● <%=checkboxOptionList.get(j) %> &nbsp;&nbsp; <span class="countText">응답 <%=checkboxOptionCountList.get(j) %>개</span><br>
+								
+		<%
+							}
+		%>
+						
+						</div>
+						<script type="text/javascript">
+							var ctx = document.getElementById("radioChart<%=questionID[i] %>").getContext('2d');
+							
+							Chart.Chart.pluginService.register({
+							    beforeDraw: function(chart) {
+							    	var width = chart.chart.width,
+								    height = chart.chart.height,
+								    ctx = chart.chart.ctx;
+							    	// console.log(width);
+								 
+								    ctx.restore();
+								    // var fontSize = 2;
+								    ctx.font = "95% DoHyeon"
+								    ctx.fillStyle = "darkorange";
+								    ctx.textBaseline = "middle";
+								 
+								    var text = chart.config.centerText.text,
+								    textX = Math.round((width - ctx.measureText(text).width) / 2),
+								    textY = height / 1.85;
+								 
+								    ctx.fillText(text, textX, textY);
+								    ctx.save();
+							    },
+							});
+							
+							var optionList = <%=checkboxOptionList%>;
+							var colorList = ['#A8C8F9', '#DFDFDF', '#FFCCCC', '#B8F3B8', '#FFAC33', '#FFA0A0', '#C177FB', '#FFDDA6', '#61AE76', '#969191'];
+							var dataList = <%=checkboxOptionCountList%>
+							
+							var myChart = new Chart(ctx, {
+							  type: 'polarArea',
+							    data: {
+							      labels: optionList,
+							      datasets: [{
+							            data: dataList,
+							            backgroundColor: colorList,
+							            borderWidth: 0.5 ,
+							            borderColor: '#ddd',
+							        }]
+							  },
+							  options: {
+							        title: {
+							            display: true,
+							            text: 'Checkbox Type 응답',
+							            position: 'top',
+							            fontFamily: "DoHyeon",
+							            fontSize: 25,
+							            fontColor: '#111',
+							            padding: 20
+							        },
+							        legend: {
+							            display: true,
+							            position: 'bottom',
+							            labels: {
+							            	fontSize: 20,
+							            	fontFamily: "DoHyeon",
+							            	fontWeight: 800,
+							                boxWidth: 20,
+							                fontColor: '#111',
+							                padding: 15
+							            }
+							        },
+							        
+							    },
+							    centerText: {
+							        display: false,
+							        text: ""
+							    }
+							});
+						</script>
+					</div>	
+		<%			
 				}
 			}
 		%>	
-			<div class="questionDiv">
+		
+			<!-- <div class="questionDiv">
 				<p style="text-align: left;"> Q1. 지원동기를 작성하세요. </p>
 				<div class="textAns" style="text-align: left;">
 				[A1] ~~~ 경험을 해보고 싶어 지원하게 되었습니다.<br>
@@ -212,7 +569,7 @@
 					■ 분야3 <span class="ansResult">&nbsp;&nbsp;1명</span><br>
 					■ 분야4 <span class="ansResult">&nbsp;&nbsp;3명</span><br>
 				</div>
-			</div>
+			</div> -->
 			
 			
 		</form>
