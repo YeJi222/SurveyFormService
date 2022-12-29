@@ -156,18 +156,10 @@
 		
 		formName = list.get(0).getFormName();
 		formDetail = list.get(0).getFormDetail();
-	
-		/* System.out.print("formName from dto : ");
-		System.out.println(formName);
-		System.out.print("formDetail from dto : ");
-		System.out.println(formDetail); */
 		
 		// about question 개수 
 		CreateDAO dao2 = new CreateDAO();
 		int questionNum = dao2.getQuestionNum(surveyID);
-		
-		/* System.out.print("questionNum : ");
-		System.out.println(questionNum); */
 		
 		// about question list
 		QuestionDAO daoQuestion = new QuestionDAO();
@@ -177,7 +169,6 @@
 		QuestionDAO daoQuestionInfo = new QuestionDAO();
 		ArrayList<QuestionDTO> questionInfo = daoQuestionInfo.loadQuestionInfo(surveyID);
 		
-		
 		// question list count
 		QuestionDAO daoQuestionCount = new QuestionDAO();
 		int questionListSize = daoQuestionCount.questionCount(surveyID); // questionList 테이블에서 questionID 개수 
@@ -186,24 +177,11 @@
 		String[] questionContent = new String[questionListSize];
 		String[] type = new String[questionListSize];
 		
-		
-		/* int[] optionID = new int[questionListSize];
-		String[] optionContent = new String[questionListSize]; */
-		
-		/* System.out.print("Question List Size : ");
-		System.out.println(questionListSize); */
-		
 		for(int i = 0 ; i < questionListSize ; i++){
 			questionID[i] = questionInfo.get(i).getQuestionID();
 			questionContent[i] = questionInfo.get(i).getQuestionContent();
 			type[i] = questionInfo.get(i).getType();
-			
-			/* optionID[i] = questionList.get(i).getOptionID();
-			optionContent[i] = questionList.get(i).getOptionContent(); */
 		}
-		
-		/* String displayAttr = "none";
-		String alertContent = ""; */
 	%>
 	<script>
 		function popup(){

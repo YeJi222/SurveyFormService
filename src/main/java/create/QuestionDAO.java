@@ -339,5 +339,49 @@ public class QuestionDAO {
 		
 		return dtoList;
 	}
+	
+	// answerSurvey Table
+	public int getAnswerCount(int surveyID) {
+		String SQL = "SELECT count(DISTINCT answerUser) FROM answerSurvey WHERE surveyID = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // error 
+	}
 }
 

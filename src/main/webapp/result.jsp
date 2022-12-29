@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="create.CreateDTO" %>
+<%@ page import="create.CreateDAO" %>
+<%@ page import="create.QuestionDTO" %>
+<%@ page import="create.QuestionDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,6 +85,52 @@
 		if(session.getAttribute("userID") != null){ // 로그인한 상태여서, userID 세션 값이 존재한다면 
 			userID = (String) session.getAttribute("userID");
 		}
+		
+		int surveyID = 0;
+		if(request.getParameter("surveyID") != null){
+			surveyID = Integer.parseInt(request.getParameter("surveyID"));
+		}
+		
+		// get survey info
+		String formName = null;
+		String formDetail = null;
+		
+		CreateDAO dao = new CreateDAO();
+		ArrayList<CreateDTO> list = dao.getSurveyInfoDTO(surveyID);
+		
+		formName = list.get(0).getFormName();
+		// formDetail = list.get(0).getFormDetail();
+		
+		QuestionDAO answerDAO = new QuestionDAO();
+		int answerCount = 0;
+		answerCount = answerDAO.getAnswerCount(surveyID);
+		
+		// about question 개수 
+		CreateDAO dao2 = new CreateDAO();
+		int questionNum = dao2.getQuestionNum(surveyID);
+		
+		// about question list
+		QuestionDAO daoQuestion = new QuestionDAO();
+		ArrayList<QuestionDTO> questionList = daoQuestion.loadQuestion(surveyID);
+		
+		// about question info in questionList table
+		QuestionDAO daoQuestionInfo = new QuestionDAO();
+		ArrayList<QuestionDTO> questionInfo = daoQuestionInfo.loadQuestionInfo(surveyID);
+		
+		// question list count
+		QuestionDAO daoQuestionCount = new QuestionDAO();
+		int questionListSize = daoQuestionCount.questionCount(surveyID); // questionList 테이블에서 questionID 개수 
+		
+		int[] questionID = new int[questionListSize];
+		String[] questionContent = new String[questionListSize];
+		String[] type = new String[questionListSize];
+		
+		for(int i = 0 ; i < questionListSize ; i++){
+			questionID[i] = questionInfo.get(i).getQuestionID();
+			questionContent[i] = questionInfo.get(i).getQuestionContent();
+			type[i] = questionInfo.get(i).getType();
+		}
+		
 	%>
 	<script>
 		function popup(){
@@ -113,13 +164,28 @@
 	<div class="middle">
 		<form action="./createSurveyAction.jsp">
 			<div class="formNameSection">
-				"한스트 Staff 지원서" Result
+				"<%=formName %>" Form Result
 			</div>
 			
 			<div class="responseNumDiv">
-				<p style="text-align: left;"> 응답 3명 </p>
+				<p style="text-align: left;"> 응답 <%=answerCount %>명 </p>
 			</div>
 			
+			<%
+			for(int i = 0 ; i < questionNum ; i++){
+				// type - 0 : text / 1 : radio / 2 : checkbox
+				if(type[i].equals("textType")){
+					
+		%>
+					<div class="questionDiv">
+						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
+						
+						
+					</div>	
+		<%	
+				}
+			}
+		%>	
 			<div class="questionDiv">
 				<p style="text-align: left;"> Q1. 지원동기를 작성하세요. </p>
 				<div class="textAns" style="text-align: left;">

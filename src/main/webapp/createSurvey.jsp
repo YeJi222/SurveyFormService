@@ -584,6 +584,16 @@
 					// get select type
 					CreateDAO dao3 = new CreateDAO();
 					String selectType = dao3.getSelectType(surveyID, i);
+					String displayType = "Select Type";
+					
+					if(type[i].equals("textType")){
+						displayType = "Text";
+					} else if(type[i].equals("radioType")){
+						displayType = "Radio";
+					} else if (type[i].equals("checkboxType")){
+						displayType = "CheckBox";
+					} 
+					
 					
 					int existType = 0;
 					if(type[i].equals("")){
@@ -596,7 +606,15 @@
 			%>
 					<div style="background-color: white; width: 80%; margin: auto; margin-top: 20px; padding: 20px; border-radius: 15px; border: 2px solid #E3E3E3;">
 						<div class="firstSet">
-							<input type="text" onchange="updateQuestion(this, <%=questionID[i] %>);" class="questionContent" value="<%=question_content[i] %>" placeholder="질문 내용" name="questionDivName">
+							<input type="text" onchange="updateQuestion(this, <%=questionID[i] %>);" class="questionContent" 
+			<%
+						if(!question_content[i].equals("질문 미입력")){
+			%>
+							value="<%=question_content[i] %>" 
+			<%
+						}
+			%>
+							placeholder="질문 내용" name="questionDivName">
 							<div onclick="deleteQuestion(<%=questionID[i] %>)" class="questionDeleteName"
 									style="display: inline; background-color: tomato;
 									padding: 15px 18px 15px 18px; border-radius: 30px;
@@ -604,7 +622,7 @@
 								-
 							</div>
 							<select onchange="selectionFunction(value, <%=questionID[i] %>, <%=existType %>); radioOptionCount = 0;" class="questionOpt" name="questionKind" id="questionKind">
-								<option>Select Type</option>
+								<option><%=displayType %></option>
 								<option value="textType">Text</option>
 								<option value="radioType">Radio</option>
 		                        <option value="checkboxType">CheckBox</option>

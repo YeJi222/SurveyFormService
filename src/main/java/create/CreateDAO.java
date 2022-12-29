@@ -14,7 +14,7 @@ import common.JDBConnect;
 public class CreateDAO {
 	// To load surveyID
 	public int loadSurveyID(String adminID) {
-		String SQL = "SELECT MAX(surveyID) FROM adminList WHERE adminID = ?";
+		String SQL = "SELECT MAX(surveyID) FROM adminList";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -23,7 +23,7 @@ public class CreateDAO {
 		try {
 			conn = jdbc.con;
 			pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, adminID);
+			// pstmt.setString(1, adminID);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -584,7 +584,7 @@ public class CreateDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, surveyID);
 			pstmt.setInt(2, questionID);
-			pstmt.setString(3, "");
+			pstmt.setString(3, "질문 미입력");
 			pstmt.setString(4, "");
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
@@ -629,7 +629,7 @@ public class CreateDAO {
 			pstmt.setInt(1, surveyID);
 			pstmt.setString(2, adminID);
 			pstmt.setInt(3, questionID);
-			pstmt.setString(4, "");
+			pstmt.setString(4, "질문 미입력");
 			pstmt.setString(5, "");
 			pstmt.setInt(6, 0);
 			pstmt.setString(7, "");

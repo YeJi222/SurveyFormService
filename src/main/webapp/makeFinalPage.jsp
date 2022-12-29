@@ -130,7 +130,7 @@
 			font-size: 25px;
 			margin-bottom: 10px;
 		}
-		.shareLinkText{
+		#shareLinkText{
 			font-size: 30px;
 			color: darkgrey;
 		}
@@ -182,6 +182,20 @@
 			popup();
 			location.href = "index.jsp";
 		} 
+		
+		function copyAction(){
+			console.log("copyAction");
+			
+			var copyArea = document.getElementById("shareLinkText").innerText;
+			const textArea = document.createElement('textarea');
+			document.body.appendChild(textArea);
+			textArea.value = copyArea;
+			textArea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textArea);
+			
+			document.getElementById("copyMessage").style.display = "inline";
+		}
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -208,10 +222,16 @@
 	</div>
 	
 	<div class="shareLinkDiv">
-		<div class="linkText">Survey Form Link</div>
-		<div class="shareLinkText">
+		<div class="linkText">Survey Form Link &nbsp; 
+			<img src="images/copyIcon.png" width="30px;" onclick="copyAction()" style="display: inline;">
+			
+			<label id="copyMessage" style="display: none; color: darkblue; font-size: 27px; float: right; margin-right: 10px;">링크 복사완료 :)</label>
+		</div>
+		
+		<div id="shareLinkText">
 			http://localhost:8080/SurveyForm/enterForm.jsp?surveyID=<%=surveyID %>
 		</div>
+		
 	</div>
 </body>
 </html>

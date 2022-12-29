@@ -224,7 +224,7 @@
 				<div class="card">
 					<p class="cardTitle"><%=formName[i]%></p>
 					<p class="cardDate"><%=regidate[i]%></p>
-					<button type="button" class="seeResult" onclick="location.href='/SurveyForm/result.jsp'">
+					<button type="button" class="seeResult" onclick="location.href='/SurveyForm/result.jsp?surveyID=<%=surveyID[i]%>'">
 						전체 결과보기
 					</button>
 					<br>
@@ -260,7 +260,7 @@
 					<br>
 					<hr class="hrCard">
 					<div class="editDelete">
-						<div class="editPart" onclick="location.href='/SurveyForm/enterForm.jsp?surveyID=<%=surveyID[i] %>'">
+						<div class="editPart" onclick="location.href='/SurveyForm/enterForm.jsp?surveyID=<%=enterSurveyID[i] %>'">
 							<img class="emoji" src="images/pencil.png">
 							Edit
 						</div>
