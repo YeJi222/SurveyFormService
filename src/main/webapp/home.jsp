@@ -177,10 +177,12 @@
 		
 		int enteredListSize = enteredList.size();
 		
+		int[] enterSurveyID = new int[enteredListSize];
 		String[] enteredFormName = new String[enteredListSize];
 		Date[] enteredFormRegidate = new Date[enteredListSize];
 		
 		for(int i = 0 ; i < enteredListSize ; i++){
+			enterSurveyID[i] = enteredList.get(i).getSurveyID();
 			enteredFormName[i] = enteredList.get(i).getFormName();
 			enteredFormRegidate[i] = enteredList.get(i).getEnterdate();
 			
@@ -262,7 +264,7 @@
 							<img class="emoji" src="images/pencil.png">
 							Edit
 						</div>
-						<div class="deletePart">
+						<div class="deletePart" onclick="deleteEnter(<%=enterSurveyID[i]%>);">
 							<img class="emoji" src="images/trash.png">
 							Delete
 						</div>
@@ -326,6 +328,25 @@
 				
 				$.ajax({
 					url : "actionJSP/deleteSurveyAction.jsp",
+					type : "post",
+					data : {"surveyID" : idx},
+					dataType : "text",
+					success : function(result){
+						console.log("Success to delete Data");
+						location.href='/SurveyForm/home.jsp';
+					},
+					error: function(error){
+						console.log("Fail to delete Data");
+					}
+				})
+			}
+			
+			function deleteEnter(idx){
+				console.log("Delete Enter Survey");
+				console.log(idx); // enterSurveyID
+				
+				$.ajax({
+					url : "actionJSP/deleteEnterSurveyAction.jsp",
 					type : "post",
 					data : {"surveyID" : idx},
 					dataType : "text",

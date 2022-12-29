@@ -16,7 +16,7 @@ public class EnterDAO {
 		System.out.println(userID);
 		ArrayList<EnterDTO> dtoList = new ArrayList<EnterDTO>();
 		
-		String SQL = "SELECT formName, enterdate FROM enterList WHERE enterID = ?";
+		String SQL = "SELECT surveyID, formName, enterdate FROM enterList WHERE enterID = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -30,6 +30,7 @@ public class EnterDAO {
 			
 			while(rs.next()) {
 				EnterDTO dto = new EnterDTO();
+				dto.setSurveyID(rs.getInt("surveyID"));
 				dto.setFormName(rs.getString("formName"));
 				dto.setEnterdate(rs.getDate("enterdate"));
 				
@@ -367,6 +368,51 @@ public class EnterDAO {
 		}
 		
 		return -1;
+	}
+	
+	// delete survey 
+	public int deleteEnterList(String surveyID, String enterID) {
+		String SQL = "DELETE FROM enterList WHERE enterID = ? AND surveyID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+//		System.out.print("SurveyID to delete : ");
+//		System.out.println(surveyID);
+//		System.out.print("enterID to delete : ");
+//		System.out.println(enterID);
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, enterID);
+			pstmt.setString(2, surveyID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
 	}
 }
 

@@ -201,6 +201,9 @@
 			/* optionID[i] = questionList.get(i).getOptionID();
 			optionContent[i] = questionList.get(i).getOptionContent(); */
 		}
+		
+		/* String displayAttr = "none";
+		String alertContent = ""; */
 	%>
 	<script>
 		function popup(){
@@ -220,30 +223,7 @@
 		}
 		console.log("참여한 사용자 : " + enterID);
 		
-		function enterSurvey(){
-			console.log("enterSurevey function");
-			
-			
-			
-			$.ajax({
-				url : "actionJSP/insertEnterForm.jsp",
-				type : "post",
-				data : {"surveyID" : <%=surveyID%>, "enterID" : enterID, "formName" : "<%=formName%>"},
-				dataType : "text",
-				success : function(result){
-					console.log(result);
-					if(result != 0){ // 이미 응답한 내역이 있으면 
-						// popup();
-					} else{ // 처음 응답하면 insert하고 홈으로 
-						location.href="/SurveyForm/home.jsp";
-					}
-					
-				},
-				error: function(error){
-					console.log("Fail to insert form");
-				}
-			})
-		}
+		
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	
@@ -258,7 +238,7 @@
 	</div>
 	
 	<div class="middle">
-		<form action=<%=actionPage %>>
+		<form action=<%=actionPage %> id="formID">
 			<input type="hidden" name="surveyID" value="<%=surveyID %>">
 			
 			<div class="formNameSection">
@@ -303,7 +283,7 @@
 					<div class="questionDiv">
 						<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 						<div class="textAns" style="text-align: left;">
-							<input type="text" class="questionText" 
+							<input type="text" class="questionText"
 		<%
 							if(answerValue != null){ // 익명 사용자일 때는 placeholder만 보이게 
 		%>		
@@ -313,6 +293,8 @@
 		%>
 								placeholder="답변" name="0answer<%=questionID[i]%>">
 						</div>
+						
+						<label id="alertArea<%=questionID[i] %>" style="color: red; font-size: 23px;"></label>
 					</div>	
 		<%	
 				} else if(type[i].equals("radioType")){
@@ -360,11 +342,16 @@
 						}
 		%>
 						</div>
+						<label id="alertArea<%=questionID[i] %>" style="color: red; font-size: 23px;"></label>
 					</div>
 		<%				
 				} else if(type[i].equals("checkboxType")){
 					System.out.print("answerValue : ");
 					System.out.println(answerValue);
+					
+					if(answerValue == null){
+						answerValue = "";
+					}
 					
 					String[] checkList = answerValue.split(", ");
 					System.out.println("%%% checkList %%%");
@@ -399,7 +386,7 @@
 								j++;
 							} else{
 		%>
-								<input type="checkbox" name="2answer<%=questionID[i]%>" value="<%=dbOptionContent %>" 
+								<input type="checkbox" id="checkboxID<%=j %>" name="2answer<%=questionID[i]%>" value="<%=dbOptionContent %>" 
 		<%
 								for(int k = 0 ; k < checkList.length ; k++){
 									// System.out.println(checkList[k]);
@@ -419,6 +406,8 @@
 						}
 		%>
 						</div>
+						
+						<label id="alertArea<%=questionID[i] %>" style="color: red; font-size: 23px;"></label>
 					</div>
 		<%				
 				}
@@ -430,14 +419,135 @@
 			
 			<div class="footer">
 				<div class="buttonArea">
-					<!-- <button type="button" onclick="location.href='/SurveyForm/home.jsp'" class="submitBtn" style="background-color: #A4B2FF;">Edit & Go Home</button>
-					&nbsp;&nbsp;&nbsp; -->
-					<button type="submit" onclick="return enterSurvey()" class="submitBtn"><%=buttonContent %></button>
-					<!-- <button type="button" onclick="enterSurvey()" class="submitBtn">Submit This Form</button> -->
+					<button type="button" onclick="return enterSurvey()" class="submitBtn"><%=buttonContent %></button>
 				</div>
 			</div>
 		</form>
 	</div>
-	
+	<script>
+		function enterSurvey(){
+			console.log("enterSurevey function");
+			
+			var submitCount = 0; // submitCount가 0일때 submit되도록 
+			
+			// 입력되지 않은 사항이 있을 경우 예외처리 
+			<%
+				for(int i = 0 ; i < questionNum ; i++){
+					/* System.out.print("type : ");
+					System.out.println(type[i]); */
+					
+					if(type[i].equals("textType")){
+			%>
+						// 텍스트 박스 입력되지 않았을 때 발생하는 예외처리 
+						var textContent = document.getElementsByName("0answer<%=questionID[i] %>");
+						// console.log("textContent : " + textContent[0].value);
+						
+						if(textContent[0].value == ""){ // 텍스트박스에 입력이 안되었다면 
+							submitCount++;
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "# 응답하지 않은 사항이 있습니다. 응답한 후 제출 버튼을 눌러주세요 :) #";
+						} else{
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "";
+						}
+			<%
+					} else if(type[i].equals("radioType")){
+			%>
+						var checkFlag = 0;
+						var optionList = document.getElementsByName("1answer<%=questionID[i] %>");
+						
+						for(var j = 0 ; j < optionList.length ; j++){
+							console.log("optionList value : " + optionList[j].value);
+							console.log("option 체크 여부 : " + optionList[j].checked);
+							
+							// 하나라도 선택이 되면 break하고 checkFlag에 더하지 않음 
+							if(optionList[j].checked == true){
+								break;
+							}
+							
+							// 마지막꺼까지 선택이 하나도 안되면 checkFlag에 1을 더함으로써 모두 선택이 안되었음을 표시
+							if((j == (optionList.length - 1)) &&  optionList[j].checked == false){
+								checkFlag++;
+								// console.log("================ checkFlag : " + checkFlag);
+							}
+						}
+						
+						// checkFlag가 1이면 모두 선택이 안된 경우를 의미 
+						if(checkFlag == 1){
+							submitCount += 1;
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "# 응답하지 않은 사항이 있습니다. 응답한 후 제출 버튼을 눌러주세요 :) #";
+						} else{
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "";
+						}
+			<%
+					} else if(type[i].equals("checkboxType")){
+						// System.out.println("================== checkboxType 예외처리 ==================");
+			%>
+						<%-- console.log("questionID : " + <%=questionID[i]%>);
+						console.log("tagName : " + "2answer<%=questionID[i]%>"); --%>
+						
+						var checkFlag = 0;
+						var optionList = document.getElementsByName("2answer<%=questionID[i]%>");
+						// console.log("optionList : " + optionList.length);
+						
+						for(var j = 0 ; j < optionList.length ; j++){
+							/* console.log("optionList value : " + optionList[j].value);
+							console.log("option 체크 여부 : " + optionList[j].checked); */
+							
+							// 하나라도 선택이 되면 break하고 checkFlag에 더하지 않음 
+							if(optionList[j].checked == true){
+								// console.log("선택~~~~~~!!!!!");
+								break;
+							}
+							
+							// console.log("j : " + j);
+							
+							// 마지막꺼까지 선택이 하나도 안되면 checkFlag에 1을 더함으로써 모두 선택이 안되었음을 표시
+							if((j == (optionList.length - 1)) &&  optionList[j].checked == false){
+								checkFlag++;
+								// console.log("================ checkFlag : " + checkFlag);
+							}
+						}
+						
+						// checkFlag가 1이면 모두 선택이 안된 경우를 의미 
+						if(checkFlag == 1){
+							submitCount += 1;
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "# 응답하지 않은 사항이 있습니다. 응답한 후 제출 버튼을 눌러주세요 :) #";
+						} else{
+							document.getElementById("alertArea<%=questionID[i] %>").innerHTML = "";
+						}
+			<%
+					}
+				}
+				
+			%>
+			console.log("submitCount : " + submitCount);
+			
+			// submitCount가 0이면 form submit되게 
+			if(submitCount == 0){
+				console.log("form submit");
+				
+				$.ajax({
+					url : "actionJSP/insertEnterForm.jsp",
+					type : "post",
+					data : {"surveyID" : <%=surveyID%>, "enterID" : enterID, "formName" : "<%=formName%>"},
+					dataType : "text",
+					success : function(result){
+						console.log(result);
+						if(result != 0){ // 이미 응답한 내역이 있으면 
+							// popup();
+						} else{ // 처음 응답하면 insert하고 홈으로 
+							location.href="/SurveyForm/home.jsp";
+						}
+					},
+					error: function(error){
+						console.log("Fail to insert form");
+					}
+				})
+				
+				formID.submit();
+			}
+			
+			
+		}
+	</script>
 </body>
 </html>
