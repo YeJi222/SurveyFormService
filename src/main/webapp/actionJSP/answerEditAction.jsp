@@ -108,18 +108,38 @@
 	for(int j = 0 ; j < answerList.length ; j++){
 		System.out.println(answerList[j]);
 		
-		int result =  enterDAO.updateAnswer(surveyID, answerUser, answerID_int[j], answerList[j]);
-		if(result == -1){
-			System.out.println("sql error -1");
+		int existCheck = enterDAO.existAnswer(surveyID, answerUser, answerID_int[j]);
+		System.out.print("existCheck : ");
+		System.out.println(existCheck);
+		
+		if(existCheck == 0){ // answerSurvey 테이블에 항목이 없음 - insert 해줘야 함 
+			int insertResult = enterDAO.insertAnswer(surveyID, answerUser, type[j], answerID_int[j], answerList[j]);
+			if(insertResult == -1){
+				System.out.println("sql error -1");
 
-			return;
+				return;
+			} else{
+				System.out.println("success to insert answer");
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("location.href = '/SurveyForm/home.jsp';");
+				script.println("</script>");
+				script.close();
+			}
 		} else{
-			System.out.println("success to update answer");
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("location.href = '/SurveyForm/home.jsp';");
-			script.println("</script>");
-			script.close();
+			int result =  enterDAO.updateAnswer(surveyID, answerUser, answerID_int[j], answerList[j]);
+			if(result == -1){
+				System.out.println("sql error -1");
+
+				return;
+			} else{
+				System.out.println("success to update answer");
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("location.href = '/SurveyForm/home.jsp';");
+				script.println("</script>");
+				script.close();
+			}
 		}
 	}
 	

@@ -281,6 +281,57 @@ public class EnterDAO {
 		return -1; // insert 실패 
 	}
 	
+	public int existAnswer(int surveyID, String answerUser, int answerID) {
+		System.out.println("============ findDuplicateSurvey ============");
+		System.out.print("surveyID : ");
+		System.out.println(surveyID);
+		System.out.print("answerUser : ");
+		System.out.println(answerUser);
+		System.out.print("answerID : ");
+		System.out.println(answerID);
+		
+		String SQL = "SELECT count(*) FROM answerSurvey WHERE surveyID = ? AND answerUser = ? AND answerID = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setString(2, answerUser);
+			stmt.setInt(3, answerID);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1;
+	}
+	
 	public int updateAnswer(int surveyID, String answerUser, int answerID, String answer) {
 		String SQL = "UPDATE answerSurvey SET answer = ? WHERE surveyID = ? AND answerUser = ? AND answerID = ?";
 		Connection conn = null;

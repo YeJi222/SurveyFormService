@@ -20,13 +20,6 @@
 		formName = request.getParameter("formName");
 	}
 	
-	/* System.out.print("Survey ID : ");
-	System.out.println(surveyID);
-	System.out.print("Enter ID : ");
-	System.out.println(enterID);
-	System.out.print("formName : ");
-	System.out.println(formName); */
-	
 	EnterDAO enterDAO = new EnterDAO();
 	
 	int result = enterDAO.findDuplicateSurvey(surveyID, enterID);
