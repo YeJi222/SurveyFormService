@@ -18,7 +18,6 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 
 ### questionList
 <li>surveyID (survey 번호 - FK)</li>
-<li>adminID</li>
 <li>questionID (문항 번호)</li>
 <li>questionContent (질문 내용)</li>
 <li>type (문항 타입 - text/radio/checkbox)</li>
@@ -35,12 +34,19 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 ### enterList
 <li>surveyID (survey 번호 - FK)</li>
 <li>enterID (survey 참여하는 사람)</li>
+<li>formName (survey 이름)</li>
 <li>enterdate (survey 참여 시간)</li>
 
 ### answerSurvey
 <li>surveyID (survey 번호 - FK)</li>
 <li>answerUser (응답자)</li>
-<li>questionID (문항 번호 - FK)</li>
+<li>type</li>
 <li>answerID (답변 ID)</li>
 <li>answer (질문 답변) </li>
 
+### resultContent
+<li>surveyID (survey 번호 - PK)</li>
+<li>adminID (result page 만든 사람)</li>
+<li>commonTitle (공통적으로 보여질 결과 페이지 제목)</li>
+<li>commonContent (공통적으로 보여질 결과 페이지 내용)</li>
+<li> (radio option ID)</li>
