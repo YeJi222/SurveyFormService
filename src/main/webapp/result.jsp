@@ -12,10 +12,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- <link href="css/bootstrap-switch/bootstrap-switch.css" rel="stylesheet"> -->
 	<link href="css/common.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
-
+	
+	
 	<style>
 		.serviceName{
 			text-decoration: none;
@@ -28,14 +31,21 @@
 		}
 		
 		.formNameSection{
-			margin-top: -140px;
+			margin-top: -150px;
 			text-align: center;
 			font-size: 40px;
+		}
+		.toggleArea{
+			text-align: right;
+			position: relative;
+			left: 5px;
+			top: -63px; 
 		}
 		
 		.responseNumDiv{
 			background-color: white;
 			width: 80%;
+			height: 85px;
 			margin: auto;
 			margin-top: 20px;
 			padding: 10px 20px 10px 20px;
@@ -115,6 +125,7 @@
 			position: fixed;
 			bottom: 30px;
 		}
+	
 	</style>
 </head>
 <body>
@@ -184,6 +195,32 @@
 			popup();
 			location.href = "index.jsp";
 		} 
+		
+		function staticsAnswer(){
+			console.log("staticsAnswer");
+			
+			document.getElementById("eachAnserBtn").style.background = "white";
+			document.getElementById("eachAnserBtn").style.color = "black";
+			
+			document.getElementById("staticsrBtn").style.background = "tomato";
+			document.getElementById("staticsrBtn").style.color = "white";
+			document.getElementById("staticsrBtn").style.border = "lightgrey";
+			
+			location.href="http://localhost:8080/SurveyForm/result.jsp?surveyID=9";
+		}
+		
+		function eachAnswer(){
+			console.log("eachAnswer");
+			
+			document.getElementById("eachAnserBtn").style.background = "tomato";
+			document.getElementById("eachAnserBtn").style.color = "white";
+			
+			document.getElementById("staticsrBtn").style.background = "white";
+			document.getElementById("staticsrBtn").style.color = "black";
+			document.getElementById("staticsrBtn").style.border = "lightgrey";
+			
+			location.href="http://localhost:8080/SurveyForm/eachResult.jsp?surveyID=9";
+		}
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
@@ -200,13 +237,37 @@
 		</div>
 	</div>
 	<div class="middle">
-		<form action="./createSurveyAction.jsp">
+		<!-- <div class="toggleArea">
+			<div class="btn-group">
+	             <button type="button" id="staticsrBtn" data-switch-toggle="state" class="btn btn-danger" style="background-color: tomato; height: 60px; width: 140px; font-size: 20px;" onclick="staticsAnswer()">
+	             	Statistics
+	             </button>
+	             
+	             <button type="button" id="eachAnserBtn" data-switch-set="state" data-switch-value="true" class="btn btn-default" style="height: 60px; width: 140px; font-size: 20px;" onclick="eachAnswer()">
+	             	Each Answer
+	             </button>
+	        </div>
+		</div> -->
+		
+		<form>
 			<div class="formNameSection">
 				"<%=formName %>" Form Result
 			</div>
 			
 			<div class="responseNumDiv">
-				<p style="text-align: left;"> 응답 <%=answerCount %>명 </p>
+				<p style="text-align: left; padding-top: 10px;"> 응답 <%=answerCount %>명 </p>
+			
+				<div class="toggleArea">
+					<div class="btn-group">
+			             <button type="button" id="staticsrBtn" data-switch-toggle="state" class="btn btn-danger" style="background-color: tomato; height: 60px; width: 140px; font-size: 20px;" onclick="staticsAnswer()">
+			             	Statistics
+			             </button>
+			             
+			             <button type="button" id="eachAnserBtn" data-switch-set="state" data-switch-value="true" class="btn btn-default" style="height: 60px; width: 140px; font-size: 20px;" onclick="eachAnswer()">
+			             	Each Answer
+			             </button>
+			        </div>
+				</div>
 			</div>
 			
 			<%
@@ -231,6 +292,9 @@
 					for(int j = 0 ; j < textAnswerLen ; j++){
 						textAnswerUser[j] = textAnswerArr.get(j).getAnswerUser();
 						textAnswer[j] = textAnswerArr.get(j).getAnswer();
+						
+						System.out.print("answerUsers : ");
+						System.out.println(textAnswerUser[j]);
 					}
 		%>
 					<div class="questionDiv">
@@ -542,43 +606,10 @@
 				}
 			}
 		%>	
-		
-			<!-- <div class="questionDiv">
-				<p style="text-align: left;"> Q1. 지원동기를 작성하세요. </p>
-				<div class="textAns" style="text-align: left;">
-				[A1] ~~~ 경험을 해보고 싶어 지원하게 되었습니다.<br>
-				[A2] ~~~ 역할을 해보고 싶어 지원하게 되었습니다.<br>
-				[A3] ~~~ 를 배워보고 싶어 지원하게 되었습니다.<br>
-				</div>
-			</div>
-			
-			<div class="questionDiv">
-				<p style="text-align: left;"> Q2. 지원할 부서는 어디입니까? </p>
-				<div class="textAns" style="text-align: left;">
-					● 기획팀 <span class="ansResult">&nbsp;&nbsp;0명</span><br>
-					● 데코팀 <span class="ansResult">&nbsp;&nbsp;1명</span><br>
-					● 새섬팀 <span class="ansResult">&nbsp;&nbsp;0명</span><br>
-					● 운영팀 <span class="ansResult">&nbsp;&nbsp;2명</span><br>
-				</div>
-			</div>
-			<div class="questionDiv">
-				<p style="text-align: left;"> Q3. 관심있는 분야는 어떤 것입니까?(복수 선택 가능) </p>
-				<div class="textAns" style="text-align: left;">
-					■ 분야1 <span class="ansResult">&nbsp;&nbsp;1명</span><br>
-					■ 분야2 <span class="ansResult">&nbsp;&nbsp;2명</span><br>
-					■ 분야3 <span class="ansResult">&nbsp;&nbsp;1명</span><br>
-					■ 분야4 <span class="ansResult">&nbsp;&nbsp;3명</span><br>
-				</div>
-			</div> -->
-			
-			
 		</form>
 		<div class="footer">
 			<button type="submit" class="okBtn" onclick="location.href='/SurveyForm/home.jsp'">OK</button>
 		</div>
-		
-		
 	</div>
-	
 </body>
 </html>

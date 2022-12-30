@@ -330,6 +330,7 @@
 			$.ajax({
 				url : "actionJSP/addOptionAction.jsp",
 				type : "post",
+				async: false,
 				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : "radioType", "optionID" : optionID},
 				dataType : "text",
 				success : function(result){
