@@ -11,6 +11,7 @@ public class QuestionDTO {
 	private int optionID;
 	private String optionContent;
 	private int optionIDcount;
+	private String resultContent;
 
 	public int getSurveyID() {
 		return surveyID;
@@ -75,11 +76,19 @@ public class QuestionDTO {
 	public void setOptionIDcount(int optionIDcount) {
 		this.optionIDcount = optionIDcount;
 	}
+	
+	public String getResultContent() {
+		return resultContent;
+	}
+
+	public void setResultContent(String resultContent) {
+		this.resultContent = resultContent;
+	}
 
 	public QuestionDTO() {
 	}
 	
-	public QuestionDTO(int surveyID, String adminID, int questionID, String questionContent, String type, int optionID, String optionContent) {
+	public QuestionDTO(int surveyID, String adminID, int questionID, String questionContent, String type, int optionID, String optionContent, String resultContent) {
 		super();
 		this.surveyID = surveyID;
 		this.adminID = adminID;
@@ -88,9 +97,6 @@ public class QuestionDTO {
 		this.type = type;
 		this.optionID = optionID;
 		this.optionContent = optionContent;
+		this.resultContent = resultContent;
 	}
-
-	
-
-	
 }

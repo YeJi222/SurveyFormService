@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="create.QuestionDTO" %>
+<%@ page import="create.QuestionDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +37,7 @@
 			width: 900px;
 			height: 900px;
 			background-color: #FFBDBD;
+			overflow: scroll;
 		}
 		.closeBtn{
 			font-size: 30px;
@@ -45,14 +49,21 @@
 			color: black;
 		}
 		.informTitle{
-			font-size: 60px;
+			font-size: 25px;
 			text-align: center;
 			margin-top: 50px;
+			margin-bottom: 30px;
+		}
+		.informContent{
+			font-size: 20px;
+			text-align: center;
+			margin-top: 10px;
 			margin-bottom: 50px;
 		}
 		
 		.btn{
 			background-color: white;
+			box-shadow: 4px 4px 10px lightgrey;
 			border-radius: 40px;
 			width: 370px;
 			height: 75px;
@@ -74,8 +85,10 @@
 		}
 		
 		.btnArea{
+			position: fixed;
+			bottom: 250px;
 			text-align: center;
-			margin-top: 80px;
+			width: 100%;
 		}
 	</style>
 </head>
@@ -127,23 +140,6 @@
 			    scale: 1
 			  }).then(function (canvas) {
 			    const imageURL = canvas.toDataURL('image/jpeg');
-			    
-			    /* var bstr = atob(imageURL.split(",")[1]);
-			    console.log(imageURL.split(",")[1]);
-			    var n = bstr.length;
-			    var u8arr = new Uint8Array(n);
-
-			    while(n--) {
-			    	u8arr[n] = bstr.charCodeAt(n);
-			    }
-
-			    var file = new File([u8arr], "파일이름", {type:"mime"});
-			    
-			    console.log(file);
-			    console.log(file.size);
-			    
-			    var url = window.URL.createObjectURL(file); */
-				// console.log("created url : " + url);
 			    console.log(imageURL);
 			    
 			    saveAs(imageURL, 'SurveyFormService.jpg');
@@ -202,10 +198,7 @@
 					})
 				})
 			}
-			
 			getData();
-			
-			
 		}
 	</script>
 	<div class="header">
@@ -217,19 +210,21 @@
 			Logout
 		</div>
 		
-		<!-- <img id="test" src="images/copyIcon.png"> -->
+		<%
+			QuestionDAO commonDTO = new QuestionDAO();
+			String commonTitle = commonDTO.getCommonText(surveyID, "commonTitle");
+			String commonContent = commonDTO.getCommonText(surveyID, "commonContent");
+		%>
 		
 		<div id="informBox">
 			<a class="closeBtn" href="/SurveyForm/home.jsp">
 				X
 			</a>
-			<p class="informTitle">
-				응답해 주셔서 감사합니다 :)
-			</p>
+			<div class="informTitle"><%=commonTitle %></div>
 			
-			<br><br><br><br>
+			<div class="informContent"><%=commonContent %></div>
 			
-			<h1 style="text-align: center;">
+			<!-- <h1 style="text-align: center;">
 				면접 일정은 2022.12.22 오후 2시 입니다. <br>
 				아래의 줌 링크로 들어오시면 됩니다 :) <br>
 				<br>
@@ -238,9 +233,9 @@
 				<br>
 				면접 때 뵙겠습니다~ <br>
 				[문의] 21900806@handong.ac.kr
-			</h1>
-			
-			<div class="btnArea">
+			</h1> -->
+		</div>
+		<div class="btnArea">
 				<button class="btn" onclick="screenshot()">
 					<img class="Logo" src="images/download.png" width="45px;">
 					<p class="btnText">Download This Page<p>
@@ -251,8 +246,6 @@
 					<p class="btnText">Send to Email<p>
 				</button>
 			</div>
-			
-		</div>
 	</div>
 </body>
 </html>

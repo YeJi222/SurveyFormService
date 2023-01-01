@@ -82,7 +82,6 @@ public class CreateDTO {
 	public void setOptionContent(String optionContent) {
 		this.optionContent = optionContent;
 	}
-	
 	public CreateDTO() {
 	}
 	
@@ -98,5 +97,6 @@ public class CreateDTO {
 		this.regidate = regidate;
 		this.optionContent = optionContent;
 	}
+	
 	
 }

@@ -256,14 +256,10 @@
 		int[] optionID = new int[questionListSize];
 		String[] optionContent = new String[questionListSize];
 		
-		/* System.out.print("Question List Size : ");
-		System.out.println(questionListSize); */
-		
 		for(int i = 0 ; i < questionListSize ; i++){
 			questionID[i] = questionInfo.get(i).getQuestionID();
 			question_content[i] = questionInfo.get(i).getQuestionContent();
 			type[i] = questionInfo.get(i).getType();
-			
 			
 			optionID[i] = questionList.get(i).getOptionID();
 			optionContent[i] = questionList.get(i).getOptionContent();
@@ -272,9 +268,6 @@
 		// get survey info
 		CreateDAO dao = new CreateDAO();
 		ArrayList<CreateDTO> list = dao.getSurveyInfoDTO(surveyID);
-		
-		/* System.out.print("list size : ");
-		System.out.println(list.size()); */
 		
 		formName = list.get(0).getFormName();
 		formDetail = list.get(0).getFormDetail();
@@ -286,9 +279,6 @@
 		// get max questionID
 		CreateDAO dao5 = new CreateDAO();
 		int nextQuestionID = dao5.getMaxQuestionID(surveyID) + 1; 
-		
-		/* System.out.print("$$$$$$$$ nextQuestionID : ");
-		System.out.println(nextQuestionID); */
 	%>
 	<script>
 		function popup(){
@@ -341,7 +331,6 @@
 					console.log("Fail to update Data");
 				}
 			})
-			
 		}
 		
 		function checkboxOptionAdd(questionID, optionID){
@@ -360,7 +349,6 @@
 					console.log("Fail to update Data");
 				}
 			})
-			
 		}
 		
 		function selectionFunction(val, questionID, existType){
@@ -425,8 +413,6 @@
 				})
 			}
 		}
-		
-		
 	</script>
 	
 	<script>
@@ -563,20 +549,7 @@
 			</div>
 			
 			<%
-				/* System.out.print("==== Question List Size : ");
-				System.out.println(questionListSize); */
-				
 				for(int i = 0 ; i < questionListSize ; i++){
-					/* System.out.print("==== questionID : ");
-					System.out.println(questionID[i]);
-					System.out.print("==== questionContent : ");
-					System.out.println(question_content[i]);
-					System.out.print("==== type : ");
-					System.out.println(type[i]);
-					System.out.print("==== optionID : ");
-					System.out.println(optionID[i]);
-					System.out.print("==== optionContent : ");
-					System.out.println(optionContent[i]);  */
 					
 					// get questionContent
 					CreateDAO dao4 = new CreateDAO();

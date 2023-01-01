@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="create.QuestionDTO" %>
+<%@ page import="create.QuestionDAO" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,11 +38,30 @@
 			border-radius: 15px;
 			border: 2px solid #E3E3E3;
 		}
-		.commonText{
+		.finalPageText{
 			font-size: 30px;
-			margin-left: 80px;
+			width: 85%;
+			margin: auto;
 			margin-top: 30px;
 			color: black;
+			/* background-color: yellow; */
+		}
+		.radioQquestion{
+			text-align: center;
+			font-size: 30px;
+			margin-top: 10px;
+			color: black;
+		}
+		
+		.questionDiv{
+			background-color: white;
+			width: 80%;
+			margin: auto;
+			margin-top: 20px;
+			padding: 10px 20px 10px 20px;
+			border-radius: 15px;
+			border: 2px solid #E3E3E3;
+			font-size: 30px;
 		}
 		
 		.firstSet{
@@ -52,7 +74,7 @@
 			/* position: relative;
 			right: 245px; */
 			background-color: #E3E5F3;
-			width: 400px;
+			width: 500px;
 			font-size: 24px;
 			border: none;
 			border-radius: 10px;
@@ -84,6 +106,28 @@
 			border-bottom: 2px solid lightgrey;
 		}
 		
+		.questionOpt{
+			background-color: #D4DEFF;
+			height: 40px;
+			width: 150px;
+			border: none;
+			border-radius: 10px;
+			padding: 10px;
+			text-align: center;
+			font-family: "DoHyeon";
+			font-size: 20px;
+			appearance: none;
+		}
+		
+		.optionDiv{
+			background-color: #EBECEE;
+			font-size: 24px;
+			border: none;
+			border-radius: 10px;
+			padding: 10px;
+			font-family: "DoHyeon";
+			margin-right: 10px;
+		}
 		
 		.finishTextarea{
 			width: 93%;
@@ -91,10 +135,23 @@
 			margin-top: 20px;
 			border: none;
 			resize: none;
-			height: 300px;
+			height: 250px;
 			border-radius: 15px;
 			padding: 20px;
 			font-size: 23px;
+			
+		}
+		.resultTextarea{
+			width: 93%;
+			background-color: #F4F5FF;
+			margin-top: 20px;
+			border: none;
+			resize: none;
+			height: 200px;
+			border-radius: 15px;
+			padding: 20px;
+			font-size: 23px;
+			overflow: scroll;
 			
 		}
 		textarea::placeholder{
@@ -105,7 +162,7 @@
 			background-color: white;
 			width: 80%;
 			margin: auto;
-			margin-bottom: 100px;
+			margin-bottom: 120px;
 			padding: 20px;
 			border-radius: 15px;
 			border: 2px solid #E3E3E3;
@@ -133,11 +190,11 @@
 			background-color: #D5DEFF;
 		}
 		.footer{
+			text-align: center;
 			width: 100%;
 			position: fixed;
 			bottom: 30px;
 		}
-		
 	</style>
 </head>
 <body>
@@ -151,16 +208,31 @@
 		if(request.getParameter("surveyID") != null){
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
 		}
+		
+		// radio type question 불러오기 
+		QuestionDAO radioDTO = new QuestionDAO();
+		ArrayList<QuestionDTO> radioQuestion = radioDTO.getRadioQuestion(surveyID);
+		
+		int radioQuestionSize = radioQuestion.size();
+		System.out.print("radioQuestionSize : ");
+		System.out.println(radioQuestionSize);
+		
+		int[] questionID = new int[radioQuestionSize];
+		String[] question_content = new String[radioQuestionSize];
+		
+		for(int i = 0 ; i < radioQuestionSize ; i++){
+			questionID[i] = radioQuestion.get(i).getQuestionID();
+			question_content[i] = radioQuestion.get(i).getQuestionContent();
+		}
+		
 	%>
 	<script>
 		function popup(){
-			// alert('before popup function');
 			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
 		} 
 		
 		// alert("<%=userID%>");
 		var user_id = "<%=userID%>";
-		// alert(user_id);
 		
 		if(user_id == "null"){
 			popup();
@@ -180,6 +252,80 @@
 			
 			document.getElementById("copyMessage").style.display = "inline";
 		}
+		
+		function updateCommonText(inputData, commonType){
+			// console.log(inputData.value);
+			
+			$.ajax({
+				url : "actionJSP/updateCommonText.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "commonType" : commonType, "inputData" : inputData.value},
+				dataType : "text",
+				success : function(result){
+					console.log("Success");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail");
+				}
+			})
+		}
+		
+		function selectionFunction(val){
+			var questionID = val.substring(8);
+			console.log("questionID : " + questionID);
+			
+			$.ajax({
+				url : "actionJSP/insertResultContent.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail");
+				}
+			})
+		}
+		
+		function deleteSelect(questionID){
+			console.log("delete");
+			
+			$.ajax({
+				url : "actionJSP/deleteQuestionInResult.jsp",
+				type : "post",
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+					window.location.reload();
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			})
+		}
+		
+		function updateResultContent(inputData, questionID, optionID){
+			console.log("Input Data : " + inputData.value);
+			console.log(inputData.name); // name
+			console.log("Option ID : " + optionID);
+		
+			$.ajax({
+				url : "actionJSP/updateResultContent.jsp",
+				type : "post",
+				data : {"inputData" : inputData.value, "surveyID" : <%=surveyID%>, "questionID" : questionID, "optionID" : optionID},
+				dataType : "text",
+				success : function(result){
+					console.log("Success to update Data");	
+				},
+				error: function(error){
+					console.log("Fail to update Data");
+				}
+			})
+		}
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -193,21 +339,142 @@
 		</div>
 	</div>
 	
-	<div class="commonText">
+	<%
+		QuestionDAO commonDTO = new QuestionDAO();
+		String commonTitle = commonDTO.getCommonText(surveyID, "commonTitle");
+		String commonContent = commonDTO.getCommonText(surveyID, "commonContent");
+	
+	%>
+	
+	<div class="finalPageText">
 		공통적으로 보여질 내용
 	</div>
 	
 	<div class="finalQuestionDiv">
-		
 		<div class="firstSet">
-			<input type="text" onchange="" class="questionContent" placeholder="폼 작성 완료 후, 페이지 제목" name="questionName">
+			<input type="text" onchange="updateCommonText(this, 'commonTitle')" class="questionContent" 
+	<%
+			if(commonTitle == null || (commonTitle != null && commonTitle.equals(""))){
+	%>
+				placeholder="폼 작성 완료 후, 페이지 제목"
+	<%
+			} else{
+	%>
+				value="<%=commonTitle %> "
+	<%
+			}
+	%>
+			>
 			<div class="finishOpt">
 				Finish
 			</div>
-			<textarea onchange="" class="finishTextarea" placeholder="폼 작성 완료 후, 페이지 내용"></textarea>
+			
+			<textarea onchange="updateCommonText(this, 'commonContent')" class="finishTextarea" 
+	
+			placeholder="폼 작성 완료 후, 페이지 내용"
+			
+			><%=commonContent %></textarea>
 		</div>
 	</div>
 	
+	<div class="finalPageText">
+		응답자가 선택한 옵션에 따라 보여질 내용 
+		
+		<div class="radioQquestion">
+			Radio Type 총 <%=radioQuestionSize %>개 &nbsp;
+			<select onchange="selectionFunction(value)" class="questionOpt">
+				<option>질문 선택 ▼</option>
+				<%
+					for(int i = 0 ; i < radioQuestionSize ; i++){
+				%>
+						<option value="question<%=questionID[i] %>"><%=questionID[i] %>번 문제</option>
+				<%
+					}
+				%>
+			</select>
+		</div>
+	</div>
+	
+	<%
+		QuestionDAO radio_dto = new QuestionDAO();	
+		ArrayList<QuestionDTO> questionInResult = radio_dto.getQuestionInResult(surveyID);
+		
+		int questionInResultSize = questionInResult.size();
+		System.out.print("questionInResultSize : ");
+		System.out.println(questionInResultSize);
+		
+		int[] questionID_InResult = new int[questionInResultSize];
+		String[] questionContent_InResult = new String[questionInResultSize];
+		
+		for(int i = 0 ; i < questionInResultSize ; i++){
+			questionID_InResult[i] = questionInResult.get(i).getQuestionID();
+			questionContent_InResult[i] = questionInResult.get(i).getQuestionContent();
+		}
+	
+		for(int i = 0 ; i < questionInResultSize ; i++){
+			ArrayList<QuestionDTO> radioOptionInfo = radio_dto.getRadioResult(surveyID, questionID_InResult[i]);
+			
+			int radioOptionSize = radioOptionInfo.size();
+			System.out.print("radioOptionInfo size : ");
+			System.out.println(radioOptionSize);
+			
+			int[] optionID = new int[radioOptionSize];
+			String[] optionContent = new String[radioOptionSize];
+			String[] resultContent = new String[radioOptionSize];
+			
+			for(int j = 0 ; j < radioOptionSize ; j++){
+				optionID[j] = radioOptionInfo.get(j).getOptionID();
+				optionContent[j] = radioOptionInfo.get(j).getOptionContent();
+				resultContent[j] = radioOptionInfo.get(j).getResultContent();
+			}
+			
+	%>
+			<div class="questionDiv">
+				<div>
+					Q<%=questionID_InResult[i] %>. <%=questionContent_InResult[i] %>
+					<img onclick="deleteSelect(<%=questionID_InResult[i]%>)" width="35px;" src="images/trashcan.png" style="float: right;">
+				</div>
+				<%
+					for(int j = 0 ; j < radioOptionSize ; j++){
+				%>
+						<table width="100%">
+							<tr>
+								<td valign="top">
+									<div style="margin-top: 30px;">
+										[ Radio Option <%=optionID[j] + 1 %> ]
+										<div class="optionDiv">
+											<%=optionContent[j] %>
+										</div>
+									</div>
+								</td>
+								<td>
+									<textarea onchange="updateResultContent(this, <%=questionID_InResult[i]%>, <%=optionID[j]%>)" class="resultTextarea"
+				<%
+										if(resultContent[j] == null){
+				%>
+											placeholder="내용을 입력하세요"
+				<%							
+										} else{
+											if(resultContent[j].equals("")){
+				%>
+												placeholder="내용을 입력하세요"
+				<%
+											}
+										}
+				%>					
+									><% if(resultContent[j] != null){%><%=resultContent[j] %><%} %></textarea>
+								</td>
+							</tr>
+						</table>
+				<%		
+					}
+				%>
+			</div>
+	<%
+		}
+	%>
+	
+	<br>
 	<div class="shareLinkDiv">
 		<div class="linkText">Survey Form Link &nbsp; 
 			<img src="images/copyIcon.png" width="30px;" onclick="copyAction()" style="display: inline;">
@@ -220,5 +487,8 @@
 		</div>
 		
 	</div>
+	<div class="footer">
+			<button type="button" onclick="location.href='/SurveyForm/createSurvey.jsp?surveyID=<%=surveyID%>'" class="submitBtn">Previous Page</button>
+		</div>
 </body>
 </html>
