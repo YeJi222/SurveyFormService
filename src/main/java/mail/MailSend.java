@@ -59,7 +59,7 @@ public class MailSend {
         
         MimeMessage msg = new MimeMessage(session);
         msg.setSentDate(new Date());
-        msg.setFrom(new InternetAddress("21900806@handong.ac.kr", "VISITOR"));
+        msg.setFrom(new InternetAddress("21900806@handong.ac.kr", "SurveyForm 관리자"));
         InternetAddress to = new InternetAddress("21900806@handong.ac.kr");         
         msg.setRecipient(Message.RecipientType.TO, to);            
         msg.setSubject("Survey Form Service - '" + formName + "'", "UTF-8");     

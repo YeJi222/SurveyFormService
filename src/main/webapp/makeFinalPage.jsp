@@ -53,6 +53,16 @@
 			color: black;
 		}
 		
+		.previewBtn{
+			background-color: tomato;
+			border: none;
+			border-radius: 15px;
+			font-size: 25px;
+			color: white;
+			padding: 10px;
+			font-family: "DoHyeon";
+		}
+		
 		.questionDiv{
 			background-color: white;
 			width: 80%;
@@ -378,7 +388,8 @@
 	</div>
 	
 	<div class="finalPageText">
-		응답자가 선택한 옵션에 따라 보여질 내용 
+		응답자가 선택한 옵션에 따라 보여질 내용 &nbsp;
+		<button class="previewBtn">결과 안내 페이지 미리보기</button>
 		
 		<div class="radioQquestion">
 			Radio Type 총 <%=radioQuestionSize %>개 &nbsp;

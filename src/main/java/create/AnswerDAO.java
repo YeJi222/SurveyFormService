@@ -62,15 +62,6 @@ public class AnswerDAO {
 	}
 	
 	public int getRadioAnswer(int surveyID, int answerID, String type, String answer) {
-//		System.out.print("surveyID: ");
-//		System.out.println(surveyID);
-//		System.out.print("answerID: ");
-//		System.out.println(answerID);
-//		System.out.print("type: ");
-//		System.out.println(type);
-//		System.out.print("answer: ");
-//		System.out.println(answer);
-		
 		String SQL = "SELECT count(*) FROM answerSurvey WHERE surveyID = ? AND answerID = ? AND type = ? AND answer = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -165,16 +156,10 @@ public class AnswerDAO {
 		return dtoList; // DTO 객체 반환 
 	}
 	
-	/*
-	public String getCheckboxAnswer(int surveyID, int answerID, String type) {
-//		System.out.print("surveyID: ");
-//		System.out.println(surveyID);
-//		System.out.print("answerID: ");
-//		System.out.println(answerID);
-//		System.out.print("type: ");
-//		System.out.println(type);
+	public ArrayList<AnswerDTO> getAnswer(int surveyID, String answerUser, String type) {
+		ArrayList<AnswerDTO> dtoList = new ArrayList<AnswerDTO>();
 		
-		String SQL = "SELECT answer FROM answerSurvey WHERE surveyID = ? AND answerID = ? AND type = ?";
+		String SQL = "SELECT answerID, answer FROM answerSurvey WHERE surveyID = ? AND answerUser = ? AND type = ?";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -184,15 +169,18 @@ public class AnswerDAO {
 			conn = jdbc.con;
 			stmt = conn.prepareStatement(SQL);
 			stmt.setInt(1, surveyID);
-			stmt.setInt(2, answerID);
+			stmt.setString(2, answerUser);
 			stmt.setString(3, type);
+			
 			rs = stmt.executeQuery();
 			
 			while(rs.next()) {
-				return rs.getString(1);
+				AnswerDTO dto = new AnswerDTO();
+				dto.setAnswerID(rs.getInt("answerID"));
+				dto.setAnswer(rs.getString("answer"));
+				
+				dtoList.add(dto);
 			}
-			
-			
 		} catch(Exception e){
 			e.printStackTrace();
 		} finally { // 자원 해제
@@ -215,8 +203,7 @@ public class AnswerDAO {
 			}
 		}
 		
-		return null;
+		return dtoList; // DTO 객체 반환 
 	}
-	*/
 }
 

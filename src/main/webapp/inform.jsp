@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="create.QuestionDTO" %>
 <%@ page import="create.QuestionDAO" %>
+<%@ page import="create.AnswerDTO" %>
+<%@ page import="create.AnswerDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
@@ -55,10 +57,15 @@
 			margin-bottom: 30px;
 		}
 		.informContent{
-			font-size: 20px;
+			font-size: 25px;
 			text-align: center;
 			margin-top: 10px;
 			margin-bottom: 50px;
+		}
+		.radioAnswerResultDiv{
+			text-align: center;
+			font-size: 25px;
+			margin-bottom: 20px;
 		}
 		
 		.btn{
@@ -102,6 +109,34 @@
 		int surveyID = 0;
 		if(request.getParameter("surveyID") != null){
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
+		}
+		
+		// 참여자가 응답한 라디오타입 응답 결과 가져오기
+		// surveyID, answerUser, radioType으로 answerSurvey 테이블에서 조회하고 
+		// answerID, answer 가져오기
+		AnswerDAO answerDAO = new AnswerDAO();	
+		ArrayList<AnswerDTO> radioAnswer = answerDAO.getAnswer(surveyID, userID, "radioType");
+		
+		int radioAnswerSize = radioAnswer.size();
+		System.out.print("radioAnswerSize : ");
+		System.out.println(radioAnswerSize);
+		
+		int[] answerID = new int[radioAnswerSize];
+		String[] answer = new String[radioAnswerSize];
+		String[] answerResult = new String[radioAnswerSize];
+		
+		for(int i = 0 ; i < radioAnswerSize ; i++){
+			answerID[i] = radioAnswer.get(i).getAnswerID();
+			answer[i] = radioAnswer.get(i).getAnswer();
+			
+			System.out.println(answerID[i]);
+			System.out.println(answer[i]);
+			
+			// surveyID, answer로 resultContent 테이블에서 resultContent 알아내
+			QuestionDAO questionDAO = new QuestionDAO();	
+			answerResult[i] = questionDAO.geResultContent(surveyID, answer[i]);
+			
+			System.out.println(answerResult[i]);
 		}
 	%>
 	
@@ -223,17 +258,17 @@
 			<div class="informTitle"><%=commonTitle %></div>
 			
 			<div class="informContent"><%=commonContent %></div>
-			
-			<!-- <h1 style="text-align: center;">
-				면접 일정은 2022.12.22 오후 2시 입니다. <br>
-				아래의 줌 링크로 들어오시면 됩니다 :) <br>
-				<br>
-				줌 링크 : https://us05web.zoom.us/j/~~ <br>
-				<br>
-				<br>
-				면접 때 뵙겠습니다~ <br>
-				[문의] 21900806@handong.ac.kr
-			</h1> -->
+		
+		<%
+			for(int i = 0 ; i < radioAnswerSize ; i++){
+		%>
+				<div class="radioAnswerResultDiv">
+					<%=answerResult[i] %>
+				</div>
+		<%
+			}
+		%>	
+		
 		</div>
 		<div class="btnArea">
 				<button class="btn" onclick="screenshot()">

@@ -5,6 +5,7 @@ import java.util.Date;
 public class AnswerDTO {
 	private String answerUser;
 	private String answer;
+	private int answerID;
 	private int answerCount;
 
 	public String getAnswer() {
@@ -30,16 +31,23 @@ public class AnswerDTO {
 	public void setAnswerCount(int answerCount) {
 		this.answerCount = answerCount;
 	}
+	
+	public int getAnswerID() {
+		return answerID;
+	}
+
+	public void setAnswerID(int answerID) {
+		this.answerID = answerID;
+	}
 
 	public AnswerDTO() {
 	}
 	
-	public AnswerDTO(String answerUser, String answer, int answerCount) {
+	public AnswerDTO(String answerUser, String answer, int answerCount, int answerID) {
 		super();
 		this.answerUser = answerUser;
 		this.answer = answer;
+		this.answerID = answerID;
 		this.answerCount = answerCount;
 	}
-
-	
 }

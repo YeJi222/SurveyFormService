@@ -571,6 +571,49 @@ public class QuestionDAO {
 		return dtoList; // DTO 객체 반환 
 	}
 	
+	public String geResultContent(int surveyID, String optionContent) {
+		String SQL = "SELECT resultContent FROM resultContent WHERE surveyID = ? AND optionContent = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setString(2, optionContent);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return rs.getString(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null; // DTO 객체 반환 
+	}
+	
 	public ArrayList<QuestionDTO> getRadioOption(int surveyID, int questionID) {
 		ArrayList<QuestionDTO> dtoList = new ArrayList<QuestionDTO>();
 		
