@@ -395,7 +395,7 @@
 			<div id="appendAnwerInfo"></div>
 		
 		<div class="footer">
-			<button type="submit" class="okBtn" onclick="location.href='/SurveyForm/home.jsp'">OK</button>
+			<button type="button" class="okBtn" onclick="location.href='/SurveyForm/home.jsp'">OK</button>
 		</div>
 	</div>
 </body>

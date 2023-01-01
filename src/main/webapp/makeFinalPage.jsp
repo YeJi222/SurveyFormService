@@ -29,11 +29,17 @@
 			background-color: white;
 			width: 80%;
 			margin: auto;
-			margin-top: 50px;
+			margin-top: 10px;
 			margin-bottom: 30px;
 			padding: 20px;
 			border-radius: 15px;
 			border: 2px solid #E3E3E3;
+		}
+		.commonText{
+			font-size: 30px;
+			margin-left: 80px;
+			margin-top: 30px;
+			color: black;
 		}
 		
 		.firstSet{
@@ -41,15 +47,6 @@
 			width: 100%;
 			text-align: left;
 			margin-left: 10px;
-		}
-		.questionDelete{
-			display: inline;
-			background-color: tomato;
-			padding: 15px 18px 15px 18px;
-			border-radius: 30px;
-			color: white;
-			margin-left: 10px;
-			font-weight: bold;
 		}
 		.questionContent{
 			/* position: relative;
@@ -61,19 +58,6 @@
 			border-radius: 10px;
 			padding: 10px;
 			font-family: "DoHyeon";
-		}
-		.questionOpt{
-			float: right;
-			background-color: #D4DEFF;
-			height: 40px;
-			width: 150px;
-			border: none;
-			border-radius: 10px;
-			padding: 10px;
-			text-align: center;
-			font-family: "DoHyeon";
-			font-size: 20px;
-			appearance: none;
 		}
 		.finishOpt{
 			float: right;
@@ -88,7 +72,6 @@
 			font-family: "DoHyeon";
 			font-size: 20px;
 			appearance: none;
-			
 		}
 		
 		.questionText{
@@ -100,6 +83,7 @@
 			border: none;
 			border-bottom: 2px solid lightgrey;
 		}
+		
 		
 		.finishTextarea{
 			width: 93%;
@@ -209,15 +193,18 @@
 		</div>
 	</div>
 	
+	<div class="commonText">
+		공통적으로 보여질 내용
+	</div>
+	
 	<div class="finalQuestionDiv">
+		
 		<div class="firstSet">
-			<input type="text" class="questionContent" placeholder="폼 작성 완료 후, 페이지 제목" name="questionName">
+			<input type="text" onchange="" class="questionContent" placeholder="폼 작성 완료 후, 페이지 제목" name="questionName">
 			<div class="finishOpt">
 				Finish
 			</div>
-			
-			<textarea class="finishTextarea" placeholder="폼 작성 완료 후, 페이지 내용"></textarea>
-			
+			<textarea onchange="" class="finishTextarea" placeholder="폼 작성 완료 후, 페이지 내용"></textarea>
 		</div>
 	</div>
 	

@@ -254,7 +254,7 @@
 				<div class="card">
 					<p class="cardTitle"><%=enteredFormName[i]%></p>
 					<p class="cardDate"><%=enteredFormRegidate[i]%></p>
-					<button class="seeInform" onclick="location.href='/SurveyForm/inform.jsp'">
+					<button class="seeInform" onclick="location.href='/SurveyForm/inform.jsp?surveyID=<%=enterSurveyID[i] %>'">
 						응답 완료 후, 안내글
 					</button>
 					<br>
