@@ -47,6 +47,8 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 ### resultContent
 <li>surveyID (survey 번호 - PK)</li>
 <li>adminID (result page 만든 사람)</li>
-<li>commonTitle (공통적으로 보여질 결과 페이지 제목)</li>
-<li>commonContent (공통적으로 보여질 결과 페이지 내용)</li>
-<li> (radio option ID)</li>
+<li>questionID</li>
+<li>questionContent</li>
+<li>optionID</li>
+<li>optionContent</li>
+<li>resultContent</li>
