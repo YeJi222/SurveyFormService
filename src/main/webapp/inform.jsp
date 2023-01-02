@@ -5,6 +5,8 @@
 <%@ page import="create.AnswerDTO" %>
 <%@ page import="create.AnswerDAO" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +14,12 @@
 	<title>Insert title here</title>
 	<link href="css/common.css" rel="stylesheet">
 	<style>
+		@font-face {
+		    font-family: 'GangwonEduSaeeum_OTFMediumA';
+		    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduSaeeum_OTFMediumA.woff') format('woff');
+		    font-weight: normal;
+		    font-style: normal;
+		}
 		.serviceName{
 			text-decoration: none;
 			color: black;
@@ -33,14 +41,24 @@
 			margin: 0;
 			padding: 0;
 		}
+		#captureDiv{
+			margin-bottom: 20px;
+		}
 		#informBox{
+			position: relative;
 			margin: auto;
 			margin-top: 120px;
 			width: 900px;
-			height: 900px;
+			min-height: 900px;
+			/* height: 1000px; */
 			background-color: #FFBDBD;
 			overflow: scroll;
 		}
+		/* .contactBox{
+			margin: auto;
+			width: 1000px;
+			background-color: #FFBDBD;
+		} */
 		.closeBtn{
 			font-size: 30px;
 			margin: 20px;
@@ -62,10 +80,57 @@
 			margin-top: 10px;
 			margin-bottom: 50px;
 		}
-		.radioAnswerResultDiv{
+		.contactTagDiv{ /* 부모가 relative, 자식이 absolute */
 			text-align: center;
-			font-size: 25px;
-			margin-bottom: 20px;
+			font-size: 30px;
+			margin: auto;
+			margin-bottom: 10px;
+			padding-bottom: 30px;
+			width: 900px;
+			background-color: #FFBDBD;
+			/* min-height: 20px; */
+		}
+		.contactTag{ 
+			position: relative;
+		}
+		.centerTextTagDiv{ /* 부모가 relative, 자식이 absolute */
+			text-align: center;
+			font-size: 30px;
+			position: relative;
+			/* height: 100%; */
+			margin-bottom: 30px;
+			top: 5;
+			bottom: 10;
+			width: 100%;
+			font-family: "GangwonEduSaeeum_OTFMediumA";
+		}
+		.centerTextTag{
+			color: black;
+		}
+		
+		.titleTagDiv{ /* 부모가 relative, 자식이 absolute */
+			text-align: center;
+			font-size: 45px;
+			position: relative;
+			margin-bottom: 30px;
+			top: 0;
+			width: 100%;
+		}
+		.titleTag{
+			color: black;
+		}
+		
+		.headerTextTagDiv{ /* 부모가 relative, 자식이 absolute */
+			text-align: center;
+			font-size: 30px;
+			position: relative;
+			top: 0;
+			margin-bottom: 40px;
+			width: 100%;
+			/* background-color: lightgreen; */
+		}
+		.headerTextTag{
+			color: darkblue;
 		}
 		
 		.btn{
@@ -92,10 +157,8 @@
 		}
 		
 		.btnArea{
-			position: fixed;
-			bottom: 250px;
+			/* background-color: yellow; */
 			text-align: center;
-			width: 100%;
 		}
 	</style>
 </head>
@@ -165,7 +228,7 @@
 		}
 		
 		function screenshot(){
-			var informBox = document.getElementById("informBox");
+			var informBox = document.getElementById("captureDiv");
 			
 			html2canvas(informBox, {
 			    allowTaint: true,
@@ -184,7 +247,7 @@
 		}
 		
 		async function getImageURL() {
-			var informBox = document.getElementById("informBox");
+			var informBox = document.getElementById("captureDiv");
 			var imageURL = null;
 			
 			let promise = html2canvas(informBox, {
@@ -208,15 +271,10 @@
 		}
 		
 		function sendMail(){
-			// window.open("./actionJSP/sendMailAction.jsp", "", "width=370, height=360, resizable=no, scrollbars=no, status=no");
 			console.log("send mail");
 			var promise = getImageURL();
 			var getData = () => {
 				promise.then((imageURL) => {
-					// console.log(imageURL);
-					
-					// document.getElementById("test").src = imageURL;
-					
 					$.ajax({
 						url : "actionJSP/sendMailAction.jsp",
 						type : "post",
@@ -241,48 +299,131 @@
 			Survey Form Service
 		</a>
 		<img class="profileImg" src="images/profile.png">
-		<div class="logInOut">
+		<div class="logInOut" onclick="location.href='logoutAction.jsp'">
 			Logout
 		</div>
-		
+	</div>
 		<%
 			QuestionDAO commonDTO = new QuestionDAO();
 			String commonTitle = commonDTO.getCommonText(surveyID, "commonTitle");
 			String commonContent = commonDTO.getCommonText(surveyID, "commonContent");
 		%>
-		
+		<div id="captureDiv">
 		<div id="informBox">
 			<a class="closeBtn" href="/SurveyForm/home.jsp">
 				X
 			</a>
-			<div class="informTitle"><%=commonTitle %></div>
+			<%-- <div class="informTitle"><%=commonTitle %></div>
+			<div class="informContent"><%=commonContent %></div> --%>
 			
-			<div class="informContent"><%=commonContent %></div>
-		
 		<%
+		String displayResultText = commonTitle + commonContent;
 			for(int i = 0 ; i < radioAnswerSize ; i++){
-				if(answerResult[i] != null){
-		%>
-				<div class="radioAnswerResultDiv">
-					<%=answerResult[i] %>
-				</div>
-		<%
-				}
-			}
-		%>	
-		
-		</div>
-		<div class="btnArea">
-				<button class="btn" onclick="screenshot()">
-					<img class="Logo" src="images/download.png" width="45px;">
-					<p class="btnText">Download This Page<p>
-				</button>
+				// 사용자 정의 태그 check 
+				System.out.println();
+				System.out.print("radio question ");
+				System.out.println(i);
 				
-				<button class="btn" onclick="sendMail()">
-					<img class="Logo" src="images/sendLogo.png" width="45px;">
-					<p class="btnText">Send to Email<p>
-				</button>
+				displayResultText += answerResult[i];
+				System.out.print("사용자 정의 태그 : ");
+				System.out.println(displayResultText);
+			}	
+				// if(answerResult[i] != null){
+					Pattern pattern = Pattern.compile("(<contact>)(.*.)(</contact>)");
+					Pattern pattern2 = Pattern.compile("(<centerText>)(.*.)(</centerText>)");
+					Pattern pattern3 = Pattern.compile("(<headerText>)(.*.)(</headerText>)");
+					Pattern pattern4 = Pattern.compile("(<title>)(.*.)(</title>)");
+					
+					Matcher matcher = pattern.matcher(displayResultText);
+					Matcher matcher2 = pattern2.matcher(displayResultText);
+					Matcher matcher3 = pattern3.matcher(displayResultText);
+					Matcher matcher4 = pattern4.matcher(displayResultText);
+		%>
+					<div class="titleTagDiv">
+		<%
+					while(matcher4.find()){ // <contact></contact> 태그 
+						System.out.println("title 태그 포함되어 있음!");
+						System.out.println(matcher4.group(2));
+						String titleStr = matcher4.group(2);
+		%>
+		
+						<div class="titleTag"> <%=titleStr %></div>
+		<%
+						if(matcher4.group(2) == null){
+							break;
+						}
+					}
+		%>
+					</div> 
+					<div class="headerTextTagDiv">
+		<%
+					while(matcher3.find()){ // <contact></contact> 태그 
+						System.out.println("headerText 태그 포함되어 있음!");
+						System.out.println(matcher3.group(2));
+						String headerTextStr = matcher3.group(2);
+		%>
+		
+						<div class="headerTextTag"> <%=headerTextStr %></div>
+		<%
+						if(matcher3.group(2) == null){
+							break;
+						}
+					}
+		%>
+					</div> 
+		
+					<div class="centerTextTagDiv">
+		<%
+					while(matcher2.find()){ // <contact></contact> 태그 
+						System.out.println("centerText 태그 포함되어 있음!");
+						System.out.println(matcher2.group(2));
+						String centerTextStr = matcher2.group(2);
+		%>
+		
+						<div class="centerTextTag"> <%=centerTextStr %></div>
+		<%
+						if(matcher2.group(2) == null){
+							break;
+						}
+					}
+		%>
+					</div> 
+				</div>
+				<div class="contactTagDiv">
+		<%
+					while(matcher.find()){ // <contact></contact> 태그 
+						System.out.println("contact 태그 포함되어 있음!");
+						System.out.println(matcher.group(2));
+						String contactStr = matcher.group(2);
+		%>
+		
+						<div class="contactTag"> <%=contactStr %></div>
+		<%
+						if(matcher.group(2) == null){
+							break;
+						}
+					}
+					
+				/* } 
+				else{
+					System.out.println("사용자 정의 태그로 시작하지 않음!");
+				} */
+		%>
+				</div>
 			</div>
-	</div>
+		
+	
+		<div class="btnArea">
+			<button class="btn" onclick="screenshot()">
+				<img class="Logo" src="images/download.png" width="45px;">
+				<p class="btnText">Download This Page<p>
+			</button>
+			
+			<button class="btn" onclick="sendMail()">
+				<img class="Logo" src="images/sendLogo.png" width="45px;">
+				<p class="btnText">Send to Email<p>
+			</button>
+		</div>
+	
 </body>
 </html>

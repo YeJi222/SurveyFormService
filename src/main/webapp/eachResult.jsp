@@ -276,7 +276,7 @@
 			document.getElementById("staticsrBtn").style.color = "white";
 			document.getElementById("staticsrBtn").style.border = "lightgrey";
 			
-			location.href="http://localhost:8080/SurveyForm/result.jsp?surveyID=9";
+			location.href="http://localhost:8080/SurveyForm/result.jsp?surveyID=<%=surveyID %>";
 		}
 		
 		function eachAnswer(){

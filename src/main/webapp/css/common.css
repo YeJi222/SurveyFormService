@@ -2,6 +2,10 @@
 	font-family: "DoHyeon";
 	src: url("../fonts/DoHyeon-Regular.ttf");
 }
+@font-face {
+	font-family: "iLove";
+	src: url("../fonts/iLove.ttf");
+}
 body{
 	background-color: #FFF3F3;
 	font-family: "DoHyeon";

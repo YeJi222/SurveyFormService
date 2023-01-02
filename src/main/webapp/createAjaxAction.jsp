@@ -54,7 +54,7 @@
 	QuestionDAO questionDAO = new QuestionDAO();
 	
 	// resultContent 테이블에 공통 질문 삽입 - commonTitle
-	int result2 = questionDAO.insertCommonResult(surveyID, adminID, "commonTitle", "<h1>해당 Form에 대한 안내 페이지입니다</h1>");
+	int result2 = questionDAO.insertCommonResult(surveyID, adminID, "commonTitle", "<title>해당 Form에 대한 안내 페이지입니다</title>");
 	if(result2 == -1){
 		System.out.println("sql error -1");
 	} else{
@@ -62,7 +62,7 @@
 	}
 	
 	// resultContent 테이블에 공통 질문 삽입 - commonContent
-	int result3 = questionDAO.insertCommonResult(surveyID, adminID, "commonContent", "<h2>응답해주셔서 감사합니다 :)</h2>");
+	int result3 = questionDAO.insertCommonResult(surveyID, adminID, "commonContent", "<headerText>응답해주셔서 감사합니다 :)</headerText>");
 	if(result3 == -1){
 		System.out.println("sql error -1");
 	} else{

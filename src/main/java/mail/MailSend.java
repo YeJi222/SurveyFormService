@@ -72,7 +72,7 @@ public class MailSend {
         final String bodyContent = String.join(
             System.getProperty("line.separator"),
             "<h3>" + "'" + formName + "' 응답 안내글입니다 :)" + "</h3>" + 
-            "<img width='80%' src=\"cid:image\" alt='img'>"
+            "<img width='90%' src=\"cid:image\" alt='img'>"
         );
         messageBodyPart.setContent(bodyContent, "text/html;charset=UTF-8");
         multipart.addBodyPart(messageBodyPart);

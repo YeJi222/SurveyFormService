@@ -60,7 +60,7 @@
 			padding: 10px 20px 10px 20px;
 			border-radius: 15px;
 			border: 2px solid #E3E3E3;
-			font-size: 27px;
+			font-size: 25px;
 		}
 		xmp{
 			/* font-family: 'Comic Sans MS'; */
@@ -410,8 +410,12 @@
 		<button class="previewBtn">결과 안내 페이지 미리보기</button>
 		
 		<div class="tagUsingInfo">
-			기본적인 html 태그들과 아래의 사용자 태그들을 사용할 수 있습니다 :) <br>
-			(EX) 문의 연락처를 남겨두고 싶은 경우 :  <xmp> <contact>[문의] 21900806@handong.ac.kr</contact> </xmp> <br>
+			<div style="color: tomato;">
+			기본적인 html 태그들과 아래의 사용자 정의 태그들을 사용할 수 있습니다 :) <br>
+			단, 아래에 정의된 태그들 안에서 기본적인 html 태그를 사용하여야 적용됩니다!! <br>
+			</div><br>
+			(EX) 문의 연락처를 남겨두고 싶은 경우 :
+			<xmp><contact>[문의] 21900806@handong.ac.kr</contact></xmp><br>
 			
 			<xmp>[1] <title></title> : 상단 제목을 나타내는 태그 </xmp> 
 			<xmp>[2] <headerText></headerText> : 상단 헤더 부분을 나타내는 태그 </xmp> 

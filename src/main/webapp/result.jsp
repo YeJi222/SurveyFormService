@@ -219,7 +219,7 @@
 			document.getElementById("staticsrBtn").style.color = "black";
 			document.getElementById("staticsrBtn").style.border = "lightgrey";
 			
-			location.href="http://localhost:8080/SurveyForm/eachResult.jsp?surveyID=9";
+			location.href="http://localhost:8080/SurveyForm/eachResult.jsp?surveyID=<%=surveyID %>";
 		}
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -580,7 +580,6 @@
 						                padding: 15
 						            }
 						        },
-						        
 						    },
 						    centerText: {
 						        display: false,
