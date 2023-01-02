@@ -203,7 +203,7 @@ public class CreateDAO {
 	}
 	
 	// delete survey 
-	public int deleteAdminList(String surveyID, String adminID) {
+	public int deleteAdminList(int surveyID, String adminID) {
 		String SQL = "DELETE FROM adminList WHERE adminID = ? AND surveyID = ?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -219,7 +219,47 @@ public class CreateDAO {
 			conn = jdbc.con;
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, adminID);
-			pstmt.setString(2, surveyID);
+			pstmt.setInt(2, surveyID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	// delete survey 
+	public int deleteAdminSurvey(int surveyID, String adminID) {
+		String SQL = "DELETE FROM adminSurvey WHERE adminID = ? AND surveyID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, adminID);
+			pstmt.setInt(2, surveyID);
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
 		} catch(Exception e){

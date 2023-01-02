@@ -4,6 +4,7 @@ public class UserDTO {
 	// user 변수 선언 
 	private String userID;
 	private String userPW;
+	private String userEmail;
 	// private String regidate;
 	
 	// user 변수별 게터와 세터
@@ -19,6 +20,12 @@ public class UserDTO {
 	public void setUserPW(String userPW) {
 		this.userPW = userPW;
 	}
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 	/*
 	public String getRegidate() {
 		return regidate;
@@ -32,9 +39,11 @@ public class UserDTO {
 	public UserDTO() {
 	}
 	
-	public UserDTO(String userID, String userPW) {
+	public UserDTO(String userID, String userPW, String userEmail) {
 		super();
 		this.userID = userID;
 		this.userPW = userPW;
+		this.userEmail = userEmail;
 	}
+	
 }

@@ -26,11 +26,13 @@ import java.util.ArrayList;
 import java.util.Base64;
 
 public class MailSend {
-    public void MailSend(int surveyID, String imageURL) throws Exception {
+    public void MailSend(int surveyID, String imageURL, String userEmail) throws Exception {
     	System.out.print("surveyID : ");
     	System.out.println(surveyID);
     	System.out.print("imageURL : ");
     	System.out.println(imageURL);
+    	System.out.print("userEmail : ");
+    	System.out.println(userEmail);
     	
     	String formName = null;
     	CreateDAO dao = new CreateDAO();
@@ -60,7 +62,7 @@ public class MailSend {
         MimeMessage msg = new MimeMessage(session);
         msg.setSentDate(new Date());
         msg.setFrom(new InternetAddress("21900806@handong.ac.kr", "SurveyForm 관리자"));
-        InternetAddress to = new InternetAddress("21900806@handong.ac.kr");         
+        InternetAddress to = new InternetAddress(userEmail);         
         msg.setRecipient(Message.RecipientType.TO, to);            
         msg.setSubject("Survey Form Service - '" + formName + "'", "UTF-8");     
         

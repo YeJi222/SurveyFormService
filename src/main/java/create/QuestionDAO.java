@@ -472,6 +472,50 @@ public class QuestionDAO {
 		return -1; // error 
 	}
 	
+	public int getResultQuestionExist(int surveyID, int questionID) {
+		String SQL = "SELECT count(*) FROM resultContent WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setInt(1, surveyID);
+			stmt.setInt(2, questionID);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				return rs.getInt(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // error 
+	}
+	
 	public ArrayList<QuestionDTO> getRadioQuestion(int surveyID) {
 		ArrayList<QuestionDTO> dtoList = new ArrayList<QuestionDTO>();
 		
@@ -976,6 +1020,249 @@ public class QuestionDAO {
 		}
 		
 		return -1; // insert 실패 
+	}
+	
+	public int deleteResultContent_adminID(int surveyID, String adminID) {
+		String SQL = "DELETE FROM resultContent WHERE surveyID = ? AND adminID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setString(2, adminID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int deleteResultContent_option(int surveyID, int questionID, int optionID) {
+		String SQL = "DELETE FROM resultContent WHERE surveyID = ? AND questionID = ? AND optionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			pstmt.setInt(3, optionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int deleteResultContent_question(int surveyID, int questionID) {
+		String SQL = "DELETE FROM resultContent WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setInt(2, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int insertResultContent_option(int surveyID, String adminID, int questionID, String questionContent, int optionID) {
+		String SQL = "INSERT INTO resultContent VALUES (?, ?, ?, ?, ?, ?, ?)";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, surveyID);
+			pstmt.setString(2, adminID);
+			pstmt.setInt(3, questionID);
+			pstmt.setString(4, questionContent);
+			pstmt.setInt(5, optionID);
+			pstmt.setString(6, null);
+			pstmt.setString(7, null);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int updateOptionContent_resultContent(int surveyID, int questionID, int optionID, String inputData) {
+		String SQL = "UPDATE resultContent SET optionContent = ? WHERE surveyID = ? AND questionID = ? AND optionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputData);
+			pstmt.setInt(2, surveyID);
+			pstmt.setInt(3, questionID);
+			pstmt.setInt(4, optionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1; // insert 실패 
+	}
+	
+	public int updateQuestionContent_resultContent(int surveyID, int questionID, String inputData) {
+		String SQL = "UPDATE resultContent SET questionContent = ? WHERE surveyID = ? AND questionID = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, inputData);
+			pstmt.setInt(2, surveyID);
+			pstmt.setInt(3, questionID);
+			
+			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return -1;
 	}
 }
 

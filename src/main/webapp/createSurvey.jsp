@@ -311,9 +311,9 @@
 		
 		var existType = 0;
 		
-		function radioOptionAdd(questionID, optionID){
+		function radioOptionAdd(questionID, optionID, questionContent){
 			console.log("qid : " + questionID);
-			console.log("optionID : " + optionID);
+			console.log("questionContent : " + questionContent);
 			
 			radioOptionID = "Radio Option" + (optionID + 1);
 			
@@ -321,7 +321,7 @@
 				url : "actionJSP/addOptionAction.jsp",
 				type : "post",
 				async: false,
-				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : "radioType", "optionID" : optionID},
+				data : {"surveyID" : <%=surveyID%>, "questionID" : questionID, "type" : "radioType", "optionID" : optionID, "questionContent" : questionContent},
 				dataType : "text",
 				success : function(result){
 					console.log("Success to update Data");	
@@ -661,7 +661,7 @@
 									}
 						%>
 								</div>
-								<div onclick="radioOptionAdd(<%=questionID[i] %>, <%=nextOptionID %>)" class="addOption">
+								<div onclick="radioOptionAdd(<%=questionID[i] %>, <%=nextOptionID %>, '<%=question_content[i] %>')" class="addOption">
 									<div class="optionAdd">+</div> Add Option 
 								</div>
 						<%

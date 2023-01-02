@@ -38,13 +38,19 @@
 			font-size: 60px;
 			text-align: center;
 			margin-top: 5px;
-			margin-bottom: 50px;
+			margin-bottom: 40px;
 		}
 		.idSection{
 			margin-left: 25px;
+			margin-bottom: -10px;
 		}
 		.pwSection{
 			margin-left: 25px;
+			margin-bottom: -10px;
+		}
+		.emailSection{
+			margin-left: 25px;
+			margin-bottom: -10px;
 		}
 		.emoji{
 			width: 90px;
@@ -73,9 +79,13 @@
 			background-color: #F86B6B;
 			border-radius: 40px;
 			font-size: 38px;
-			margin-top: 20px;
-			width: 250px;
-			height: 60px;
+			text-align: center;
+			margin-bottom: 5px;
+			/* float: right; */
+			/* margin-right: 40px; */
+			margin-top: 10px;
+			width: 230px;
+			height: 55px;
 			border: none;
 			font-family: "DoHyeon";
 		}
@@ -86,6 +96,8 @@
 			color: #0C3E8A;
 			font-size: 40px;
 			text-decoration: none;
+			position: relative;
+			top: -15px;
 		}
 		.hrLeft{
 			margin-left: 50px;
@@ -107,6 +119,11 @@
 			bottom: 20px;
 			color: #969090;
 		}
+		.alertContent{
+			text-align: center;
+			color: red;
+			font-size: 30px;
+		}
 	</style>
 </head>
 <body>
@@ -117,23 +134,26 @@
 		<p class="registerTitle">
 			Register
 		</p>
-		<form action="./registerAction.jsp" method="post">
+		<form action="actionJSP/registerAction.jsp" method="post">
 			<div class="idSection">
 				<img class="emoji" src="images/idImg.png">
 				<input class="idBlank" type="text" placeholder="ID" name="userID" required>
 			</div>
 			<div class="pwSection">
 				<img class="emoji" src="images/pwImg.png">
-				<input class="idBlank" type="text" placeholder="Password" name="userPW" required>
+				<input class="idBlank" type="password" placeholder="Password" name="userPW" required>
+			</div>
+			<div class="emailSection">
+				<img class="emoji" src="images/email.png">
+				<input class="idBlank" type="email" placeholder="Email Address" name="userEmail" required>
 			</div>
 			<div class="registerBtnArea">
 				<button class="registerBtn">
 					Register
 				</button>
-			</div>
+			</div> 
 		</form>
-		
-		<br><br><br>
+		<br>
 		<hr class="hrLeft">&nbsp;&nbsp;
 		<span class="orText">or</span>
 		<hr class="hrRight">
@@ -142,7 +162,8 @@
 			<a class="loginHref" href="/SurveyForm/login.jsp">
 				Go To Login
 			</a>
-		</div>
+		</div> 
+		<!-- <div id="alertContent">ddd</div> -->
 	</div>
 </body>
 </html>

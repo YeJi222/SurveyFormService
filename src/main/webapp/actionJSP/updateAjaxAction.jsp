@@ -44,10 +44,6 @@
 	System.out.println(surveyID);
 	System.out.print("Admin ID : ");
 	System.out.println(adminID);
-	/* System.out.print("formName : ");
-	System.out.println(formName);
-	System.out.print("formDetail : ");
-	System.out.println(formDetail); */
 	
 	CreateDAO createDAO = new CreateDAO();
 	

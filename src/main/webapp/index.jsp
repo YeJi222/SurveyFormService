@@ -28,7 +28,7 @@
 			text-decoration:none;
 		}
 		.registerBtn{
-			background-color: #67C6FB;
+			background-color: #A4B2FF;
 			border: none;
 			display: block;
 			font-size: 30px;

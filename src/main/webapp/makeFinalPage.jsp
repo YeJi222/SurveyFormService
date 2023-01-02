@@ -44,13 +44,27 @@
 			margin: auto;
 			margin-top: 30px;
 			color: black;
-			/* background-color: yellow; */
 		}
 		.radioQquestion{
 			text-align: center;
 			font-size: 30px;
 			margin-top: 10px;
 			color: black;
+		}
+		
+		.tagUsingInfo{
+			background-color: white;
+			margin: auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			padding: 10px 20px 10px 20px;
+			border-radius: 15px;
+			border: 2px solid #E3E3E3;
+			font-size: 27px;
+		}
+		xmp{
+			/* font-family: 'Comic Sans MS'; */
+			font-family: "DoHyeon";
 		}
 		
 		.previewBtn{
@@ -380,16 +394,30 @@
 			</div>
 			
 			<textarea onchange="updateCommonText(this, 'commonContent')" class="finishTextarea" 
-	
+	<%
+			if(commonContent == null || (commonContent != null && commonContent.equals(""))){
+	%>
 			placeholder="폼 작성 완료 후, 페이지 내용"
-			
-			><%=commonContent %></textarea>
+	<%
+			}
+	%>	
+			><%if(commonContent != null && !commonContent.equals("")){ %><%=commonContent %><%} %></textarea>
 		</div>
 	</div>
 	
 	<div class="finalPageText">
 		응답자가 선택한 옵션에 따라 보여질 내용 &nbsp;
 		<button class="previewBtn">결과 안내 페이지 미리보기</button>
+		
+		<div class="tagUsingInfo">
+			기본적인 html 태그들과 아래의 사용자 태그들을 사용할 수 있습니다 :) <br>
+			(EX) 문의 연락처를 남겨두고 싶은 경우 :  <xmp> <contact>[문의] 21900806@handong.ac.kr</contact> </xmp> <br>
+			
+			<xmp>[1] <title></title> : 상단 제목을 나타내는 태그 </xmp> 
+			<xmp>[2] <headerText></headerText> : 상단 헤더 부분을 나타내는 태그 </xmp> 
+			<xmp>[3] <centerText></centerText> : 중간 본문을 나타내는 태그 </xmp> 
+			<xmp>[4] <contact></contact> : 문의 연락처를 남기는 태그 </xmp> 
+		</div>
 		
 		<div class="radioQquestion">
 			Radio Type 총 <%=radioQuestionSize %>개 &nbsp;

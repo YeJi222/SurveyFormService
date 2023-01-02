@@ -54,9 +54,51 @@ public class UserDAO {
 		return -2; // database 오류 
 	}
 	
+	public String getUserEmail(String userID) {
+		String SQL = "SELECT email FROM user_info WHERE userID = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		JDBConnect jdbc = new JDBConnect();
+		
+		try {
+			conn = jdbc.con;
+			stmt = conn.prepareStatement(SQL);
+			stmt.setString(1, userID);
+			
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return rs.getString(1);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally { // 자원 해제
+			try {
+				if(conn != null) conn.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(rs != null) rs.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null; // DTO 객체 반환 
+	}
+	
 	// 회원가입 해주는 함수 
 	public int join(UserDTO user) { // user 객체 받아서 그대로 회원가입 
-		String SQL = "INSERT INTO user_info VALUES (?, ?)";
+		String SQL = "INSERT INTO user_info VALUES (?, ?, ?)";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -67,6 +109,7 @@ public class UserDAO {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, user.getUserID());
 			pstmt.setString(2, user.getUserPW());
+			pstmt.setString(3, user.getUserEmail());
 			
 			return pstmt.executeUpdate(); // 업데이트된 개수가 반환 값 
 		} catch(Exception e){

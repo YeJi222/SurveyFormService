@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="create.CreateDTO" %>
 <%@ page import="create.CreateDAO" %>
+<%@ page import="create.QuestionDTO" %>
+<%@ page import="create.QuestionDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.util.Date" %>
 <%
@@ -63,5 +65,13 @@
 		script.println("</script>");
 		script.close();
 		// return;
+	}
+	
+	QuestionDAO resultDAO = new QuestionDAO();
+	int result2 = resultDAO.updateOptionContent_resultContent(surveyID, questionID, optionID, inputData);
+	if(result2 == -1){
+		System.out.println("sql error -1");
+	} else{
+		System.out.println("Success to update optionContent");
 	}
 %>

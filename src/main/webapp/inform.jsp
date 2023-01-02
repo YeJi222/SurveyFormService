@@ -261,11 +261,13 @@
 		
 		<%
 			for(int i = 0 ; i < radioAnswerSize ; i++){
+				if(answerResult[i] != null){
 		%>
 				<div class="radioAnswerResultDiv">
 					<%=answerResult[i] %>
 				</div>
 		<%
+				}
 			}
 		%>	
 		
