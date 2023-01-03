@@ -19,11 +19,11 @@
 > <li>폼 생성자에게 사용자 정의 태그를 사용가능하게 하여, 사용자 응답에 따른 최종 페이지를 꾸밀 수 있게 한다</li>
 
 ## 3. 서비스 대표 기능 소개 및 자세한 사용방법 페이지 첨부 
-### [🌱 전체적인 서비스 이용방법](https://github.com/YeJi222/SurveyFormService/blob/main/totalManual.md)
+### [📝 전체적인 서비스 이용방법](https://github.com/YeJi222/SurveyFormService/blob/main/totalManual.md)
 🎈 로그인을 하면 설문지를 생성(생성자 모드)할 수도 있고, 생성한 설문지에 응답(참여자 모드)할 수도 있습니다. <br>
 🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능합니다. <br>
 
-### [🧩 생성자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/creatorManual.md)
+### [📝 생성자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/creatorManual.md)
 * Survey Form 생성
 * Form Name, Form에 대한 설명 작성 가능
 * '+ 항목 추가하기' 버튼을 누르면 질문을 추가할 수 있고, 질문의 타입을 지정 가능
@@ -37,7 +37,7 @@
 * 참여자가 응답한 설문 전체 결과 페이지 확인 가능
 * 응답한 사람들의 전체 통계 페이지와, 응답한 사람들의 페이지를 따로 볼 수 페이지를 모두 제공
 
-### [📝 참여자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/respondentManual.md)
+### [📝 응답자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/respondentManual.md)
 * 생성된 Survey Form 링크로 들어가 답변을 작성하고 제출
 * 이미 응답한 설문이면 제출 버튼이 아닌 edit 버튼이 뜨게 하고, 기존에 응답했던 정보들을 불러와 보여준다
 * 제출한 Survey Form 응답 수정 가능
