@@ -1,4 +1,5 @@
-# 🔑 전체적인 서비스 이용방법 
+# 🌱 전체적인 서비스 이용방법
+![totalManualPage](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=Total-Manual&fontSize=90)
 
 ## 🎈 First Page (Before Login)
 <img src="https://ifh.cc/g/pZ7gVJ.jpg" width="600px;">
