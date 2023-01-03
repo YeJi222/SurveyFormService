@@ -39,7 +39,7 @@
 * 응답한 사람들의 전체 통계 페이지와, 응답한 사람들의 페이지를 따로 볼 수 페이지를 모두 제공
 <br>
 
-### [📝 참여자 모드 기능 및 사용방법]()
+### [📝 참여자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/respondentManual.md)
 * 생성된 Survey Form 링크로 들어가 답변을 작성하고 제출
 * 이미 응답한 설문이면 제출 버튼이 아닌 edit 버튼이 뜨게 하고, 기존에 응답했던 정보들을 불러와 보여준다
 * 제출한 Survey Form 응답 수정 가능
