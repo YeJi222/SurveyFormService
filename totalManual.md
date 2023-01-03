@@ -34,7 +34,7 @@
 </ul>
 
 ## 🎈 Home Page (After Login)
-<img src="" width="500px;">
+<img src="https://ifh.cc/g/vQKzPj.png" width="600px;">
 <ul>
   <li> 로그인에 성공하면, HomePage로 이동할 수 있게 된다 </li>
   <li> 로그인이 된 상태이므로 상단에 Logout이 뜨게 되고, 이 버튼을 누르면 로그아웃되어 로그인 전에 접속할 수 있는 첫 페이지로 이동하게 된다</li>
