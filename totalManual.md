@@ -42,5 +42,16 @@
   <li> 하단에 있는 + Create Survey 버튼을 누르면 구글폼을 생성할 수 있는 페이지로 이동하게 된다 </li>
 </ul>
 
+## 🎈 팝업창 관련
+<img src="https://ifh.cc/g/SkRcdm.jpg" width="500px;">
+<ul>
+  <li> 홈페이지나 폼 새성 화면에서 로그인이 된 상태인데 맨 첫 화면인 index 페이지로 이동하려고 하면, 위와 같은 팝업창을 띄운다. <br/>
+</ul>
+
+<img src="https://ifh.cc/g/dLWt4g.jpg" width="500px;">
+<ul>
+  <li> 로그인 전 상태인데, home 화면에 접근하려고 할 때, 로그인을 먼저 하라는 팝업창이 뜨게 한다.
+</ul>
+
 
 
