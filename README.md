@@ -68,6 +68,7 @@
 <b>(SurveyForm/src/main/webapp/images)</b> : 사용한 이미지 파일들 <br> 
 
 ## 6. Database
+* Mysql 연동 
 [👀 Database 구성](https://github.com/YeJi222/SurveyFormService/blob/main/DB.md)
 
 ## 7. Install
