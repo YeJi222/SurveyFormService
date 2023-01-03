@@ -1,107 +1,82 @@
-# Project Name : Survey Form Service
+# Project Name : Survey Form Service 
+
 ![serviceName](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=SurveyFormService&fontSize=90)
 
+<img src="https://img.shields.io/badge/JAVA-1572B6?style=for-the-badge&logo=JAVA&logoColor=white"> <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white"> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white"> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 
-<img src="https://img.shields.io/badge/JAVA-1572B6?style=for-the-badge&logo=JAVA&logoColor=white"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white"> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+## 1. 프로젝트의 소개 및 목적
+🌱 설문조사 폼을 만들 수 있고, 만든 설문에 응답이 가능하며 응답한 결과를 볼 수 있는 기존의 유사 서비스의 기본적인 기능에 <br>
+🌱 추가적인 프로그래밍적 기능이 들어간 Survey Form Service 입니다
+> <li>JSP 연습 Mini Project </li>
+> <li>유사 서비스 'Google Form' 또는 'MicroSoft Survey Form'과의 차별점이 있는 서비스 제작</li>
 
-## 1. 프로젝트의 목적 및 용도
-<li>JSP 연습 Mini Project</li>
-<li>유사 서비스 '구글폼'과의 차별점이 있는 서비스 제작</li>
+## 2. 유사 서비스와의 차별점
+> <li>생성한 설문지 뿐만 아니라 참여한 설문지 리스트도 확인 가능</li>
+> <li>사용자가 응답한 폼 다시 열람 가능</li>
+> <li>응답 페이지를 떠나면 수정이 불가했던 유사 서비스와 달리 언제든지 응답 수정 가능</li>
+> <li>Radio Type의 질문에서 사용자가 응답한 답변에 따라, 최종 결과 페이지를 다르게 보여줄 수 있다 </li>
+> <li>Survey Form을 만든 생성자는 사용자에게 보여줄 최종 페이지를 사용자의 응답에 따라 다르게 제공할 수 있다</li>
+> <li>폼 생성자에게 사용자 정의 태그를 사용가능하게 하여, 사용자 응답에 따른 최종 페이지를 꾸밀 수 있게 한다</li>
 
-## 2. 대표 기능
-<b>[관리자 모드]</b>
+## 3. 서비스 대표 기능 소개 및 자세한 사용방법 페이지 첨부 
+🎈 로그인을 하면 설문지를 생성(생성자 모드)할 수도 있고, 생성한 설문지에 응답(참여자 모드)할 수도 있습니다. <br>
+🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능합니다. <br>
+
+<b>[생성자 모드]</b>
 <li>Survey Form 생성</li>
 <li>Form Name, Form에 대한 설명 작성 가능</li>
 <li>'+ 항목 추가하기' 버튼을 누르면 질문을 추가할 수 있고, 질문의 타입을 지정 가능</li>
 <li>질문 타입의 종류는 3종류 - TextBox / Radio Box / Check Box</li>
 <li>Radio Box와 Check Box의 각 Option들을 추가 및 삭제 가능</li>
+<li>추가한 문항을 개별적으로 삭제 가능</li>
+<li>응답자가 Radio Type의 질문에 응답한 결과에 따라 사용자에게 보여줄 최종 페이지를 생성자가 구성할 수 있다</li>
+<li>최종 페이지 구성하는 부분에서 참여자의 응답에 관계없이 공통적으로 보여질 내용 부분과 참여자가 응답하는 라디오 타입의 질문 응답에 따라 보여질 페이지를 따로 구성할 수 있다</li>
+<li>사용자 정의 태그 4가지를 제공하고, 그 태그 안에서 기본적인 html 태그도 사용가능하게 한다</li>
 <li>만든 Survey Form 수정 및 삭제 가능</li>
-<li>참여자가 등록한 설문 결과 페이지 확인 가능</li>
+<li>참여자가 응답한 설문 전체 결과 페이지 확인 가능</li>
+<li>응답한 사람들의 전체 통계 페이지와, 응답한 사람들의 페이지를 따로 볼 수 페이지를 모두 제공</li>
 
 <br>
 
 <b>[참여자 모드]</b>
 <li>생성된 Survey Form 링크로 들어가 답변을 작성하고 제출</li>
-<li>Survey Form 생성자가 만든 최종 안내 페이지만 따로 열람 가능</li>
+<li>이미 응답한 설문이면 제출 버튼이 아닌 edit 버튼이 뜨게 하고, 기존에 응답했던 정보들을 불러와 보여준다</li>
 <li>제출한 Survey Form 응답 수정 가능</li>
 <li>Delete 버튼을 누르면, 자신의 홈 화면에서만 Survey 내역 삭제 가능</li>
+<li>Survey Form 생성자가 만든 최종 안내 페이지 따로 열람 가능</li>
+<li>최종 안내 페이지 다운로드 가능</li>
+<li>최종 안내 페이지 메일로 전송 가능</li>
 
-## 3. 사용 언어 및 사용환경
+## 4. 사용 언어 및 사용환경
 <li>JAVA</li>
 <li>HTML</li>
+<li>JavaScript</li>
+<li>jQuery</li>
 <li>CSS</li>
-<li>JSP(Java Server Page)</li>
-<b>(HTML 환경에서 JAVA 코드를 삽입하는 JSP를 통해 웹 서버에서 동적으로 웹 브라우저를 관리)</b>
+<li>MySQL</li>
+<li>JSP(Java Server Page)
+<b> : HTML 환경에서 JAVA 코드를 삽입하는 JSP를 통해 웹 서버에서 동적으로 웹 브라우저를 관리</b> </li>
 
-## 4. 유사 서비스와의 차별점
-<li>사용자가 참여한 구글폼 다시 열람 가능</li>
-<li>Survey Form을 생성한 관리자는 사용자에게 보여줄 최종 페이지를 제공할 수 있다</li>
-<li>관리자에게 사용자 정의 태그를 사용가능하게 하여, 사용자 응답에 따른 최종 페이지를 꾸밀 수 있게 한다</li>
-
-## 5. 프로젝트 구조 및 사용방법
+## 5. 프로젝트 구조
 <b>[프로젝트 구조]</b> <br>
-<b>(SurveyForm/src/main/java/) java 파일들 </b> <br>
-/common/JDBConnect.java <br>
-/create/CreateDAO.java <br>
-/create/CreateDTO.java <br>
-/userInfo/UserDAO.java <br>
-/userInfo/UserDTO.java <br>
+<b>(SurveyForm/src/main/java/)</b> : java 파일들 - DTO, DAO  <br>
+<b>(SurveyForm/src/main/webapp/WEB-INF/lib/)</b> : jar 파일들 <br>
+<b>(SurveyForm/src/main/webapp/)</b> : jsp 파일들  <br>
+<b>(SurveyForm/src/main/webapp/actionJSP)</b> : action이 이루어지는 jsp 파일들  <br>
+<b>(SurveyForm/src/main/webapp/css)</b> : css 파일  <br>
+<b>(SurveyForm/src/main/webapp/fonts)</b> : 사용한 폰트 파일  <br>
+<b>(SurveyForm/src/main/webapp/images)</b> : 사용한 이미지 파일들 <br> 
 
-<br>
+## 6. Install
+<b>jar 파일 다운로드</b>
+* mysql-connector-j-8.0.31.jar
+* mail-1.4.7.jar
+* activation.jar
 
-<b>(SurveyForm/src/main/webapp/) jsp 파일들 </b> <br>
-/ConnectionTest.jsp <br>
-/createAjaxAction.jsp <br>
-/createSurvey.jsp <br>
-/createSurveyAction.jsp <br>
-/enterForm.jsp <br>
-/home.jsp (로그인 후, 사용할 수 있는 홈 페이지) <br>
-/index.jsp (로그인, 회원가입 페이지) <br> 
-/inform.jsp <br>
-/login.jsp <br>
-/loginAction.jsp <br>
-/logoutAction.jsp <br>
-/popup_home.jsp <br>
-/popup.jsp <br>
-/register.jsp <br>
-/registerAction.jsp <br>
-/result.jsp <br>
-
-<br>
-
-<b>(SurveyForm/src/main/webapp/actionJSP) action이 이루어지는 jsp 파일들 </b> <br>
-/contentFirstRadioAction.jsp <br>
-/deleteSurveyAction.jsp <br>
-/insertQuestionAction.jsp <br>
-/loadSurveyIDAction.jsp <br>
-/radioFirstAction.jsp <br>
-/textAction.jsp <br>
-/updateAjaxAction.jsp <br>
-/updateQuestionAction.jsp <br>
-
-<br>
-
-<b>(SurveyForm/src/main/webapp/css) css 파일 </b> <br>
-/common.css <br>
-/popup.css <br>
-
-<br>
-
-<b>(SurveyForm/src/main/webapp/fonts) 사용한 폰트 파일 </b> <br>
-/DoHyeon-Regular.ttf <br>
-
-<br>
-
-<b>(SurveyForm/src/main/webapp/images) 사용한 이미지 파일들</b> <br> 
-/googleLogo.png <br>
-/homeLogo.png <br>
-/idImg.png <br>
-/pencil.png <br>
-/profile.png <br>
-/pwImg.png <br>
-/sendLogo.png <br>
-/surveyImg.png <br>
-/trash.png <br>
-
-## 6. Note
-<li>아직 완성되지 않은 프로젝트로, 개발하고 있는 프로젝트에 대한 설명</li>
+## 7. Note
+<b>[프로젝트 추후 더 개발할 부분]</b>
+* 폼 생성 페이지에서 결과 알림 페이지 미리보기 기능
+* 사용자에게 보여줄 팝업 내용
+* 다양한 예외 처리
+* 구글 로그인
+* 익명 응답도 가능하게 하였는데, 서비스적으로 더 고려해보기
