@@ -24,7 +24,7 @@
 🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능합니다. <br>
 <br>
 
-### [🧩 생성자 모드 기능 및 사용방법]()
+### [🧩 생성자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/creatorManual.md)
 * Survey Form 생성
 * Form Name, Form에 대한 설명 작성 가능
 * '+ 항목 추가하기' 버튼을 누르면 질문을 추가할 수 있고, 질문의 타입을 지정 가능
