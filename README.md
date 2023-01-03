@@ -1,11 +1,14 @@
 # Project Name : Survey Form Service
-![homepage_img](https://ifh.cc/g/gS3Nsx.png)
+![serviceName](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=SurveyFormService&fontSize=90)
+
+
+<img src="https://img.shields.io/badge/JAVA-1572B6?style=for-the-badge&logo=JAVA&logoColor=white"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white"> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 
 ### 1. 프로젝트의 목적 및 용도
 <li>JSP 연습 Mini Project</li>
 <li>유사 서비스 '구글폼'과의 차별점이 있는 서비스 제작</li>
 
-### 2. 대표 기능 (제작중)
+### 2. 대표 기능
 <b>[관리자 모드]</b>
 <li>Survey Form 생성</li>
 <li>Form Name, Form에 대한 설명 작성 가능</li>
