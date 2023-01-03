@@ -35,10 +35,45 @@
   <li>하단의 Make Final Page 버튼을 누르면, 응답자가 설문 응답에 완료한 후 보여지게 되는 결과 페이지를 직접 구성할 수 있는 페이지로 이동하게 된다 </li>
 </ul>
 
+## 🎈 Make Final Page (After Login)
 <img src="https://ifh.cc/g/GWyWAH.jpg" width="500px;">
 <ul>
   <li>응답자에게 보여질 결과 페이지를 구성하는 페이지이다 </li>
   <li>응답자가 Radio Type의 문항에 응답하는 선택지에 따라 결과 페이지를 달리 구성할 수 있고, 응답과 상관없이 공통적으로 보여질 내용도 입력할 수 있다 </li>
   <li>기본적인 html 태그들과 이 서비스에서 제공하는 사용자 정의 태그들을 사용하여 결과 페이지를 구성할 수 있다 </li>
-  <li></li>
+  <li>단, 주의할 점은 사용자 정의 태그들 속에서 텍스트를 입력해야 하며, html 태그들도 사용자 정의 태그들 안에서만 유효하다 </li>
 </ul>
+
+### 👀 사용자 정의 태그 사용방법
+- 총 4개의 사용자 정의 태그를 제공 
+1. <title></title> : 상단 제목을 나타내는 태그 
+2. <headerText></headerText> : 상단 헤더 부분을 나타내는 태그 
+3. <centerText></centerText> : 중간 본문을 나타내는 태그 
+4. <contact></contact> : 문의 연락처를 남기는 태그 
+
+(EX) 문의 연락처를 남기고 싶다면 <contact></contact> 태그 사이에 내용을 입력
+``` xml
+<contact>[문의] 21900806@handong.ac.kr</contact>
+```
+
+<div align=center>
+  <img src="https://ifh.cc/g/6axmjZ.png" width="50%">
+  <img src="https://ifh.cc/g/mVpstt.png" width="30%">
+</div>
+
+<ul>
+  <li>앞 페이지에서 생성한 라디오 타입의 문항을 선택할 수 있다 </li>
+  <li>앞 페이지에서 생성한 라디오 타입의 문항을 선택할 수 있다 </li>
+</ul>
+
+<img src="https://ifh.cc/g/hRKMMA.jpg" width="600px;">
+<ul>
+  <li>'2번 문제'를 선택하면 2번 문항의 옵션별로 결과 페이지에 보여질 내용을 입력할 수 있다 </li>
+  <li>사용자 정의 태그를 사용하여 내용을 입력할 수 있다</li>
+  <li>결과 안내 페이지 미리보기 버튼을 누르면 응답자가 보여질 예시 결과 페이지를 보여준다 (구현 전)</li>
+</ul>
+
+### 생성한 Survey Form 링크 복사 기능
+<img src="https://ifh.cc/g/BBzFnW.png" width="500px;">
+: 복사 아이콘을 클릭하면 링크를 복사해준다 
+
