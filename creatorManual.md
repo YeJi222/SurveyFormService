@@ -77,3 +77,5 @@
 <img src="https://ifh.cc/g/BBzFnW.png" width="500px;">
 : 복사 아이콘을 클릭하면 링크를 복사해준다 
 
+## 🎈 Result Page (응답자 결과 통계 페이지 & 응답자별 설문 페이지)
+
