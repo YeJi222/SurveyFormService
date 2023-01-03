@@ -1,3 +1,6 @@
+# 🌱 응답자 모드 기능 및 사용방법
+![totalManualPage](https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=Respondent-Manual&fontSize=90)
+
 ## 🎈 생성된 서베이 폼에 응답할 수 있는 Enter Form Page 
 <img src="https://ifh.cc/g/CTOA4D.png" width="600px;">
 <ul>
