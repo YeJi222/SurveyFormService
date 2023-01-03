@@ -72,7 +72,12 @@
 * [Database 구성 보러가기 👀](https://github.com/YeJi222/SurveyFormService/blob/main/DB.md)
 
 ## 7. Install
-<b>jar 파일 다운로드</b>
+<b>🍄 Clone this 'Survey Form Service' Repository</b>
+```xml
+git clone https://github.com/YeJi222/SurveyFormService.git
+```
+
+<b>🍄 jar 파일 다운로드</b>
 * mysql-connector-j-8.0.31.jar
 * mail-1.4.7.jar
 * activation.jar
