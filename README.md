@@ -4,11 +4,11 @@
 
 <img src="https://img.shields.io/badge/JAVA-1572B6?style=for-the-badge&logo=JAVA&logoColor=white"> <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white"> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 
-### 1. 프로젝트의 목적 및 용도
+## 1. 프로젝트의 목적 및 용도
 <li>JSP 연습 Mini Project</li>
 <li>유사 서비스 '구글폼'과의 차별점이 있는 서비스 제작</li>
 
-### 2. 대표 기능
+## 2. 대표 기능
 <b>[관리자 모드]</b>
 <li>Survey Form 생성</li>
 <li>Form Name, Form에 대한 설명 작성 가능</li>
@@ -26,19 +26,19 @@
 <li>제출한 Survey Form 응답 수정 가능</li>
 <li>Delete 버튼을 누르면, 자신의 홈 화면에서만 Survey 내역 삭제 가능</li>
 
-### 3. 사용 언어 및 사용환경
+## 3. 사용 언어 및 사용환경
 <li>JAVA</li>
 <li>HTML</li>
 <li>CSS</li>
 <li>JSP(Java Server Page)</li>
 <b>(HTML 환경에서 JAVA 코드를 삽입하는 JSP를 통해 웹 서버에서 동적으로 웹 브라우저를 관리)</b>
 
-### 4. 유사 서비스와의 차별점
+## 4. 유사 서비스와의 차별점
 <li>사용자가 참여한 구글폼 다시 열람 가능</li>
 <li>Survey Form을 생성한 관리자는 사용자에게 보여줄 최종 페이지를 제공할 수 있다</li>
 <li>관리자에게 사용자 정의 태그를 사용가능하게 하여, 사용자 응답에 따른 최종 페이지를 꾸밀 수 있게 한다</li>
 
-### 5. 프로젝트 구조 및 사용방법
+## 5. 프로젝트 구조 및 사용방법
 <b>[프로젝트 구조]</b> <br>
 <b>(SurveyForm/src/main/java/) java 파일들 </b> <br>
 /common/JDBConnect.java <br>
@@ -103,5 +103,5 @@
 /surveyImg.png <br>
 /trash.png <br>
 
-### 6. Note
+## 6. Note
 <li>아직 완성되지 않은 프로젝트로, 개발하고 있는 프로젝트에 대한 설명</li>
