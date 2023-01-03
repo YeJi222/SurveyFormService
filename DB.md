@@ -1,4 +1,4 @@
-# DATABASE Name : survey_DB
+# DATABASE NAME : survey_DB
 
 CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 
@@ -8,6 +8,7 @@ CREATE DATABASE survey_DB default CHARACTER SET UTF8;
 ### user_info
 <li>userID</li>
 <li>userPW</li>
+<li>user_info</li>
 
 ### adminList
 <li>surveyID (survey 번호 - PK)</li>
