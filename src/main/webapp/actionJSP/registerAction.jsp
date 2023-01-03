@@ -11,8 +11,8 @@
 	if(userID != null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("alert('로그인이 된 상태입니다.');");
-		script.println("location.href = 'index.jsp';");
+		// script.println("alert('로그인이 된 상태입니다.');");
+		script.println("location.href = '/SurveyForm/index.jsp';");
 		script.println("</script>");
 		script.close();
 		return;
@@ -56,7 +56,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		// script.println("alert('회원가입 완료! 자동으로 로그인이 되었습니다:) ');");
-		script.println("location.href = 'home.jsp'");
+		script.println("location.href = '/SurveyForm/home.jsp'");
 		script.println("</script>");
 		script.close();
 		return;

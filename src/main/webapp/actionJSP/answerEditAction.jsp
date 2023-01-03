@@ -143,41 +143,5 @@
 		}
 	}
 	
-	/* 
-	// 중복 데이터 있는지 확인 
-	int check = enterDAO.checkDuplicateAnswer(surveyID, answerUser);
-	System.out.print("check : ");
-	System.out.println(check); */
 	
-	// check가 0이면 중복 응답 없는 것 
-	
-	/* if(check == 0){
-		// insert할 data : surveyID, answerUser, type[i], answerID_int[i], answerList[i]
-		for(int j = 0 ; j < answerList.length ; j++){
-			System.out.println(answerList[j]);
-			
-			int result =  enterDAO.insertAnswer(surveyID, answerUser, type[j], answerID_int[j], answerList[j]);
-			if(result == -1){
-				System.out.println("sql error -1");
-
-				return;
-			} else{
-				System.out.println("success to insert answer");
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("location.href = '/SurveyForm/home.jsp';");
-				script.println("</script>");
-				script.close();
-			}
-		}
-	} else{
-		System.out.println("이미 응답한 설문으로, edit만 가능합니다 :)");
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		// script.println("window.open('/SurveyForm/popup.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');");
-		script.println("location.href = '/SurveyForm/home.jsp';");
-		script.println("</script>");
-		script.close();
-		
-	} */
 %>

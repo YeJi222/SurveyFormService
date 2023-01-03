@@ -332,6 +332,7 @@ public class EnterDAO {
 		return -1;
 	}
 	
+	
 	public int updateAnswer(int surveyID, String answerUser, int answerID, String answer) {
 		String SQL = "UPDATE answerSurvey SET answer = ? WHERE surveyID = ? AND answerUser = ? AND answerID = ?";
 		Connection conn = null;

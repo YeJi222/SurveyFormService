@@ -70,7 +70,19 @@
 				<div class="questionDiv">
 					<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 					<div class="textAns" style="text-align: left;">
-						<label class="questionText"><%=answerValue %></label>
+						<label class="questionText">
+	<%
+							if(answerValue != null){
+	%>
+								<%=answerValue %>
+	<%
+							} else{
+	%>
+								응답 미입력 
+	<%							
+							}
+	%>
+						</label>
 					</div>
 				</div>	
 	<%	
@@ -141,11 +153,6 @@
 					<p style="text-align: left;"> Q<%=i+1 %>. <%=questionContent[i] %> </p>
 					<div class="textAns" style="text-align: left;">
 	<%
-					/* System.out.print("optionID_count : ");
-					System.out.println(optionID_count);
-					System.out.print("max_OptionID : ");
-					System.out.println(max_OptionID); */
-					
 					int j = 0;
 					while(j < max_OptionID + 1){
 						// get optionContent type
@@ -168,7 +175,6 @@
 								}
 							}
 	%>
-							
 							>
 							<label for="checkbox"><%=dbOptionContent %></label><br>
 	<%

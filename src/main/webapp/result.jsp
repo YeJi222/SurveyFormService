@@ -183,7 +183,6 @@
 	%>
 	<script>
 		function popup(){
-			// alert('before popup function');
 			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
 		} 
 		
@@ -290,7 +289,6 @@
 	<%
 					for(int j = 0 ; j < textAnswerLen ; j++){
 	%>
-						<%-- <div class="textAnswerUserDiv"><%=textAnswerUser[j] %></div> --%>
 						<div class="textAnswerDiv">
 							<%=textAnswer[j] %> 
 						</div>
@@ -303,9 +301,6 @@
 				// get optionContent list
 				CreateDAO optionDAO = new CreateDAO();
 				ArrayList<CreateDTO> optionArr = optionDAO.getAnswerOptionContent(surveyID, questionID[i], type[i]);
-				
-				/* System.out.print("optionArr 개수 : ");
-				System.out.println(optionArr.size()); */
 				
 				int radioOptionLen = optionArr.size();
 				
