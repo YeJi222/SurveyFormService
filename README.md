@@ -69,7 +69,7 @@
 
 ## 6. Database
 * Mysql 연동 
-[👀 Database 구성](https://github.com/YeJi222/SurveyFormService/blob/main/DB.md)
+* [Database 구성 보러가기 👀](https://github.com/YeJi222/SurveyFormService/blob/main/DB.md)
 
 ## 7. Install
 <b>jar 파일 다운로드</b>
