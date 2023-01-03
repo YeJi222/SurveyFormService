@@ -67,13 +67,16 @@
 <b>(SurveyForm/src/main/webapp/fonts)</b> : 사용한 폰트 파일  <br>
 <b>(SurveyForm/src/main/webapp/images)</b> : 사용한 이미지 파일들 <br> 
 
-## 6. Install
+## 6. Database
+[👀 Database 구성](https://github.com/YeJi222/SurveyFormService/blob/main/DB.md)
+
+## 7. Install
 <b>jar 파일 다운로드</b>
 * mysql-connector-j-8.0.31.jar
 * mail-1.4.7.jar
 * activation.jar
 
-## 7. Note
+## 8. Note
 <b>[프로젝트 추후 더 개발할 부분]</b>
 * 폼 생성 페이지에서 결과 알림 페이지 미리보기 기능
 * 사용자에게 보여줄 팝업 내용
