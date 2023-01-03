@@ -22,7 +22,6 @@
 ### [🌱 전체적인 서비스 이용방법](https://github.com/YeJi222/SurveyFormService/blob/main/totalManual.md)
 🎈 로그인을 하면 설문지를 생성(생성자 모드)할 수도 있고, 생성한 설문지에 응답(참여자 모드)할 수도 있습니다. <br>
 🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능합니다. <br>
-<br>
 
 ### [🧩 생성자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/creatorManual.md)
 * Survey Form 생성
@@ -37,7 +36,6 @@
 * 만든 Survey Form 수정 및 삭제 가능
 * 참여자가 응답한 설문 전체 결과 페이지 확인 가능
 * 응답한 사람들의 전체 통계 페이지와, 응답한 사람들의 페이지를 따로 볼 수 페이지를 모두 제공
-<br>
 
 ### [📝 참여자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/respondentManual.md)
 * 생성된 Survey Form 링크로 들어가 답변을 작성하고 제출
