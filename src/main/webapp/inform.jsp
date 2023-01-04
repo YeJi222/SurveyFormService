@@ -273,6 +273,10 @@
 		function sendMail(){
 			console.log("send mail");
 			var promise = getImageURL();
+			
+			var alertContent = "메일이 성공적으로 전송되었습니다 :)";
+			var alertContentErr = "메일 전송에 실패하였습니다. <br> 등록된 메일 주소를 다시 확인해주세요 :)";
+			
 			var getData = () => {
 				promise.then((imageURL) => {
 					$.ajax({
@@ -282,11 +286,13 @@
 						dataType : "text",
 						success : function(result){
 							console.log("Success to send mail");	
+							window.open('popup.jsp?alertContent='+alertContent, '팝업', 'width=400, height=280, top=10, left=200');
 							// console.log(result);
 							// window.location.reload();
 						},
 						error: function(error){
 							console.log("Fail to send mail");
+							window.open('popup.jsp?alertContent='+alertContentErr, '팝업', 'width=400, height=280, top=10, left=200');
 						}
 					})
 				})

@@ -57,7 +57,29 @@
 			height: 90px;
 			/* background-color: red; */
 		}
-		.idBlank{
+		#idBlank{
+			position: relative;
+			bottom: 30px;
+			width: 470px;
+			height: 70px;
+			background-color: #EEE0E0;
+			border-radius: 15px;
+			border: none;
+			padding-left: 20px;
+			font-size: 2em;
+		}
+		#pwBlank{
+			position: relative;
+			bottom: 30px;
+			width: 470px;
+			height: 70px;
+			background-color: #EEE0E0;
+			border-radius: 15px;
+			border: none;
+			padding-left: 20px;
+			font-size: 2em;
+		}
+		#emailBlank{
 			position: relative;
 			bottom: 30px;
 			width: 470px;
@@ -124,9 +146,49 @@
 			color: red;
 			font-size: 30px;
 		}
+		#alertArea{
+			position: relative;
+			top: 200px;
+			color: tomato;
+			font-size: 25px;
+			text-align: center;
+		}
 	</style>
 </head>
 <body>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		function popup(){
+			var alertContent = "회원가입 완료! 자동으로 로그인이 되었습니다 :)";
+			window.open('popup.jsp?alertContent='+alertContent, '팝업', 'width=450, height=330, top=10, left=10');
+		}
+	
+		function checkRegister(){
+			var idBlank = document.getElementById("idBlank").value;
+			var pwBlank = document.getElementById("pwBlank").value;
+			var emailBlank = document.getElementById("emailBlank").value;
+			
+			$.ajax({
+				url : "actionJSP/registerAction.jsp",
+				type : "post",
+				async: false,
+				data : {"userID" : idBlank, "userPW" : pwBlank, "userEmail" : emailBlank},
+				dataType : "text",
+				success : function(result){
+					if(result == '0'){ // 회원가입 완료 
+						popup();
+						location.href = 'home.jsp'
+					} else if(result == '1'){ // 이미 존재하는 아이디 
+						document.getElementById("alertArea").innerHTML = "# 이미 존재하는 아이디입니다";
+					} 
+				},
+				error: function(error){
+					console.log("Fail to login");
+				}
+			})
+		}
+	</script>
+	<div id="alertArea"></div>
 	<div class="registerBox">
 		<a class="closeBtn" href="/SurveyForm/index.jsp">
 			X
@@ -134,25 +196,25 @@
 		<p class="registerTitle">
 			Register
 		</p>
-		<form action="actionJSP/registerAction.jsp" method="post">
+		<!-- <form action="actionJSP/registerAction.jsp" method="post"> -->
 			<div class="idSection">
 				<img class="emoji" src="images/idImg.png">
-				<input class="idBlank" type="text" placeholder="ID" name="userID" required>
+				<input id="idBlank" type="text" placeholder="ID" name="userID" required>
 			</div>
 			<div class="pwSection">
 				<img class="emoji" src="images/pwImg.png">
-				<input class="idBlank" type="password" placeholder="Password" name="userPW" required>
+				<input id="pwBlank" type="password" placeholder="Password" name="userPW" required>
 			</div>
 			<div class="emailSection">
 				<img class="emoji" src="images/email.png">
-				<input class="idBlank" type="email" placeholder="Email Address" name="userEmail" required>
+				<input id="emailBlank" type="email" placeholder="Email Address" name="userEmail" required>
 			</div>
 			<div class="registerBtnArea">
-				<button class="registerBtn">
+				<button class="registerBtn" onclick="checkRegister()">
 					Register
 				</button>
 			</div> 
-		</form>
+		<!-- </form> -->
 		<br>
 		<hr class="hrLeft">&nbsp;&nbsp;
 		<span class="orText">or</span>
@@ -163,7 +225,6 @@
 				Go To Login
 			</a>
 		</div> 
-		<!-- <div id="alertContent">ddd</div> -->
 	</div>
 </body>
 </html>

@@ -51,7 +51,18 @@
 			height: 90px;
 			/* background-color: red; */
 		}
-		.idBlank{
+		#idBlank{
+			position: relative;
+			bottom: 30px;
+			width: 470px;
+			height: 70px;
+			background-color: #EEE0E0;
+			border-radius: 15px;
+			border: none;
+			padding-left: 20px;
+			font-size: 2em;
+		}
+		#pwBlank{
 			position: relative;
 			bottom: 30px;
 			width: 470px;
@@ -121,34 +132,71 @@
 		}
 		.googleText{
 			display: inline;
-			font-size: 40px;
+			font-size: 30px;
 			font-family: "DoHyeon";
 			position: relative;
 			bottom: 9px;
 		}
+		#alertArea{
+			position: relative;
+			top: 200px;
+			color: tomato;
+			font-size: 25px;
+			text-align: center;
+		}
 	</style>
 </head>
 <body>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		function checkLogin(){
+			var idBlank = document.getElementById("idBlank").value;
+			var pwBlank = document.getElementById("pwBlank").value;
+			
+			$.ajax({
+				url : "actionJSP/loginAction.jsp",
+				type : "post",
+				async: false,
+				data : {"userID" : idBlank, "userPW" : pwBlank},
+				dataType : "text",
+				success : function(result){
+					if(result == '0'){ // 로그인 성공 
+						location.href = 'home.jsp'
+					} else if(result == '1'){ // 패스워드 틀림 
+						document.getElementById("alertArea").innerHTML = "# 비밀번호를 다시 확인해주세요";
+					} else if(result == "2"){
+						document.getElementById("alertArea").innerHTML = "# 아이디를 다시 확인해주세요";
+					}
+				},
+				error: function(error){
+					console.log("Fail to login");
+				}
+			})
+		}
+	</script>
+	<div id="alertArea"></div>
 	<div class="loginBox">
 		<a class="closeBtn" href="/SurveyForm/index.jsp">
 			X
 		</a>
+		
 		<p class="loginTitle">
 			LOGIN
 		</p>
-		<form action="loginAction.jsp" method="post">
+		<!-- <form> -->
 			<div class="idSection">
 				<img class="emoji" src="images/idImg.png">
-				<input class="idBlank" type="text" placeholder="ID" name="userID" required>
+				<input id="idBlank" type="text" placeholder="ID" name="userID" required>
 			</div>
+			
 			<div class="pwSection">
 				<img class="emoji" src="images/pwImg.png">
-				<input class="idBlank" type="password" placeholder="Password" name="userPW" required>
+				<input id="pwBlank" type="password" placeholder="Password" name="userPW" required>
 			</div>
-			<button class="loginBtn">
+			<button class="loginBtn" onclick="checkLogin()">
 				Login
 			</button>
-		</form>
+		<!-- </form> -->
 		<a class="registerHref" href="/SurveyForm/register.jsp">
 			Register
 		</a>

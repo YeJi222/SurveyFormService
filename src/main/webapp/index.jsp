@@ -54,8 +54,8 @@
 	%>
 	<script>
 		function popup(){
-			// alert('before popup function');
-			window.open('popup.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
+			var alertContent = "이미 로그인 된 상태입니다. <br>Home 화면으로 이동합니다 :)";
+			window.open('popup.jsp?alertContent='+alertContent, '팝업 테스트', 'width=400, height=300, top=10, left=10');
 		} 
 		
 		// alert("<%=userID%>");

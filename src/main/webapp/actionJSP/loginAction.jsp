@@ -28,25 +28,17 @@
 	if(result == 1){
 		session.setAttribute("userID", userID);
 		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("location.href = 'home.jsp'");
-		script.println("</script>");
+		script.print(0); // 로그인 성공 
 		script.close();
 		return;
 	} else if (result == 0){
 		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		// script.println("alert('비밀번호가 틀립니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+		script.print(1); // 비밀번호 틀림 
+		script.close(); 
 		return;
 	} else if (result == -1){
 		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		// script.println("alert('존재하지 않는 아이디입니다.');");
-		script.println("history.back();");
-		script.println("</script>");
+		script.print(2); // 아이디 존재하지 않음 
 		script.close();
 		return;
 	} else if (result == -2){

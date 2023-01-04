@@ -184,9 +184,10 @@
 		}
 	%>
 	<script>
-		function popup(){
-			window.open('popup_enter.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
-		} 
+		/* function popup(){
+			var alertContent = "이미 응답한 Survey Form 입니다 <br><br>Home으로 가는 버튼을 누르세요 :)";
+			window.open('popup.jsp?alertContent='+alertContent, '팝업', 'width=400, height=300, top=10, left=10');
+		}  */
 		
 		var user_id = "<%=userID%>";
 		var enterID = "";

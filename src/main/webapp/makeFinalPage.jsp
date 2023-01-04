@@ -252,7 +252,8 @@
 	%>
 	<script>
 		function popup(){
-			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
+			var alertContent = "로그인을 하셔야<br>서비스를 이용하실 수 있습니다 :)";
+			window.open('popup.jsp?alertContent='+alertContent, '팝업 테스트', 'width=400, height=300, top=10, left=10');
 		} 
 		
 		// alert("<%=userID%>");
