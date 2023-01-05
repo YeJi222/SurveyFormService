@@ -47,7 +47,7 @@
 		#informBox{
 			position: relative;
 			margin: auto;
-			margin-top: 120px;
+			margin-top: 90px;
 			width: 900px;
 			min-height: 900px;
 			/* height: 1000px; */
@@ -157,7 +157,6 @@
 		}
 		
 		.btnArea{
-			/* background-color: yellow; */
 			text-align: center;
 		}
 	</style>
@@ -174,28 +173,25 @@
 			surveyID = Integer.parseInt(request.getParameter("surveyID"));
 		}
 		
-		// 참여자가 응답한 라디오타입 응답 결과 가져오기
-		// surveyID, answerUser, radioType으로 answerSurvey 테이블에서 조회하고 
-		// answerID, answer 가져오기
-		AnswerDAO answerDAO = new AnswerDAO();	
-		ArrayList<AnswerDTO> radioAnswer = answerDAO.getAnswer(surveyID, userID, "radioType");
+		String previewOptionList = null;
+		if(request.getParameter("previewOptionList") != null){
+			previewOptionList = request.getParameter("previewOptionList");
+		}
+		System.out.print("previewOptionList : ");
+		System.out.println(previewOptionList);
 		
-		int radioAnswerSize = radioAnswer.size();
-		System.out.print("radioAnswerSize : ");
-		System.out.println(radioAnswerSize);
+		String[] previewOption = previewOptionList.split(",");
+		int previewOptionListSize = previewOption.length;
 		
-		int[] answerID = new int[radioAnswerSize];
-		String[] answer = new String[radioAnswerSize];
-		String[] answerResult = new String[radioAnswerSize];
+		// 응답한 라디오타입 응답 결과 가져오기
+		String[] answer = new String[previewOptionListSize];
+		String[] answerResult = new String[previewOptionListSize];
 		
-		for(int i = 0 ; i < radioAnswerSize ; i++){
-			answerID[i] = radioAnswer.get(i).getAnswerID();
-			answer[i] = radioAnswer.get(i).getAnswer();
-			
-			System.out.println(answerID[i]);
+		for(int i = 0 ; i < previewOptionListSize ; i++){
+			answer[i] = previewOption[i];
 			System.out.println(answer[i]);
 			
-			// surveyID, answer로 resultContent 테이블에서 resultContent 알아내
+			// surveyID, answer로 resultContent 테이블에서 resultContent 알아내기 
 			QuestionDAO questionDAO = new QuestionDAO();	
 			answerResult[i] = questionDAO.geResultContent(surveyID, answer[i]);
 			
@@ -207,7 +203,7 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		function popup(){
-			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=300, top=10, left=10');
+			window.open('popup_home.jsp', '팝업 테스트', 'width=400, height=600, top=10, left=10');
 		} 
 		
 		var user_id = "<%=userID%>";
@@ -256,15 +252,11 @@
 			    scale: 1
 			  }).then(function (canvas) {
 			    imageURL = canvas.toDataURL('image/jpeg');
-			    // console.log("In getUmageURL() : " + imageURL);
-			   	
-			    // console.log(imageURL);
 			  }).catch(function (err) {
 			    console.log(err);
 			  });
 			
 			let result = await promise;
-			// console.log("In getImageURL() : " + imageURL);
 			return imageURL;
 		}
 		
@@ -298,15 +290,6 @@
 			getData();
 		}
 	</script>
-	<div class="header">
-		<a href="home.jsp" class="serviceName">
-			Survey Form Service
-		</a>
-		<img class="profileImg" src="images/profile.png">
-		<div class="logInOut" onclick="location.href='logoutAction.jsp'">
-			Logout
-		</div>
-	</div>
 		<%
 			QuestionDAO commonDTO = new QuestionDAO();
 			String commonTitle = commonDTO.getCommonText(surveyID, "commonTitle");
@@ -315,12 +298,12 @@
 		
 		<div id="captureDiv">
 			<div id="informBox">
-				<a class="closeBtn" href="/SurveyForm/home.jsp">
-					X
-				</a>
+			<a class="closeBtn" onclick="window.close();">
+				X
+			</a>
 		<%
 			String displayResultText = commonTitle + commonContent;
-				for(int i = 0 ; i < radioAnswerSize ; i++){
+				for(int i = 0 ; i < previewOptionListSize ; i++){
 					// 사용자 정의 태그 check 
 					System.out.println();
 					System.out.print("radio question ");
@@ -349,7 +332,6 @@
 					System.out.println(matcher4.group(2));
 					String titleStr = matcher4.group(2);
 		%>
-	
 					<div class="titleTag"> <%=titleStr %></div>
 		<%
 					if(matcher4.group(2) == null){
@@ -399,7 +381,6 @@
 					System.out.println(matcher.group(2));
 					String contactStr = matcher.group(2);
 		%>
-	
 					<div class="contactTag"> <%=contactStr %></div>
 		<%
 					if(matcher.group(2) == null){

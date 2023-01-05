@@ -55,12 +55,13 @@
 		.tagUsingInfo{
 			background-color: white;
 			margin: auto;
-			margin-top: 20px;
+			margin-top: 30px;
 			margin-bottom: 20px;
 			padding: 10px 20px 10px 20px;
 			border-radius: 15px;
 			border: 2px solid #E3E3E3;
 			font-size: 25px;
+			width: 80%;
 		}
 		xmp{
 			/* font-family: 'Comic Sans MS'; */
@@ -68,13 +69,22 @@
 		}
 		
 		.previewBtn{
+			width: 100%;
+			text-align: center;
+			margin: auto;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding: 10px 20px 10px 20px;
 			background-color: tomato;
 			border: none;
 			border-radius: 15px;
 			font-size: 25px;
 			color: white;
-			padding: 10px;
 			font-family: "DoHyeon";
+		}
+		.previewBtnText{
+			font-size: 20px;
+			color: white;
 		}
 		
 		.questionDiv{
@@ -351,6 +361,8 @@
 				}
 			})
 		}
+		
+		
 	</script>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -364,11 +376,29 @@
 		</div>
 	</div>
 	
+	<div class="tagUsingInfo">
+		<div style="color: tomato;">
+		기본적인 html 태그들과 아래의 사용자 정의 태그들을 사용할 수 있습니다 :) <br>
+		단, 아래에 정의된 태그들 안에서 기본적인 html 태그를 사용하여야 적용됩니다!! <br>
+		</div><br>
+		(EX) 문의 연락처를 남겨두고 싶은 경우 :
+		<xmp><contact>[문의] 21900806@handong.ac.kr</contact></xmp><br>
+		
+		<xmp>[1] <title></title> : 상단 제목을 나타내는 태그 </xmp> 
+		<xmp>[2] <headerText></headerText> : 상단 헤더 부분을 나타내는 태그 </xmp> 
+		<xmp>[3] <centerText></centerText> : 중간 본문을 나타내는 태그 </xmp> 
+		<xmp>[4] <contact></contact> : 문의 연락처를 남기는 태그 </xmp> 
+		
+		<button class="previewBtn" onclick="resultPreview()">
+			결과 안내 페이지 미리보기<br>
+			<div class="previewBtnText">(아래의 Radio Type의 질문별로 미리보기 하고 싶은 option을 선택한 후, '결과 안내 페이지 미리보기' 버튼을 눌러주세요)</div>
+		</button>
+	</div>
+	
 	<%
 		QuestionDAO commonDTO = new QuestionDAO();
 		String commonTitle = commonDTO.getCommonText(surveyID, "commonTitle");
 		String commonContent = commonDTO.getCommonText(surveyID, "commonContent");
-	
 	%>
 	
 	<div class="finalPageText">
@@ -408,9 +438,10 @@
 	
 	<div class="finalPageText">
 		응답자가 선택한 옵션에 따라 보여질 내용 &nbsp;
-		<button class="previewBtn">결과 안내 페이지 미리보기</button>
 		
-		<div class="tagUsingInfo">
+		<!-- <button class="previewBtn" onclick="resultPreview()">결과 안내 페이지 미리보기</button> -->
+		
+		<!-- <div class="tagUsingInfo">
 			<div style="color: tomato;">
 			기본적인 html 태그들과 아래의 사용자 정의 태그들을 사용할 수 있습니다 :) <br>
 			단, 아래에 정의된 태그들 안에서 기본적인 html 태그를 사용하여야 적용됩니다!! <br>
@@ -422,7 +453,7 @@
 			<xmp>[2] <headerText></headerText> : 상단 헤더 부분을 나타내는 태그 </xmp> 
 			<xmp>[3] <centerText></centerText> : 중간 본문을 나타내는 태그 </xmp> 
 			<xmp>[4] <contact></contact> : 문의 연락처를 남기는 태그 </xmp> 
-		</div>
+		</div> -->
 		
 		<div class="radioQquestion">
 			Radio Type 총 <%=radioQuestionSize %>개 &nbsp;
@@ -454,6 +485,33 @@
 			questionID_InResult[i] = questionInResult.get(i).getQuestionID();
 			questionContent_InResult[i] = questionInResult.get(i).getQuestionContent();
 		}
+		
+		%>
+			<script>
+				function resultPreview(){
+					console.log("resultPreview");
+					var previewOptionList = new Array();
+		<%
+					for(int k = 0 ; k < questionInResultSize ; k++){
+		%>
+						var optionList = document.getElementsByName("previewRadio<%=questionID_InResult[k]%>");
+						
+						for(var j = 0 ; j < optionList.length ; j++){
+							console.log("optionList value : " + optionList[j].value);
+							console.log("option 체크 여부 : " + optionList[j].checked);
+							
+							if(optionList[j].checked == true){
+								previewOptionList.push(optionList[j].value);
+							}
+						}
+		<%
+					}	
+		%>			
+					console.log(previewOptionList);
+					window.open("/SurveyForm/resultPreview.jsp?surveyID="+<%=surveyID%>+"&previewOptionList="+previewOptionList, '팝업 테스트', 'width=700, height=800, top=10, left=10');
+				}
+			</script>
+		<%
 	
 		for(int i = 0 ; i < questionInResultSize ; i++){
 			ArrayList<QuestionDTO> radioOptionInfo = radio_dto.getRadioResult(surveyID, questionID_InResult[i]);
@@ -487,7 +545,7 @@
 									<div style="margin-top: 30px;">
 										[ Radio Option <%=optionID[j] + 1 %> ]
 										<div class="optionDiv">
-											<%=optionContent[j] %>
+											<input type="radio" id="previewRadio" value="<%=optionContent[j] %>" name="previewRadio<%=questionID_InResult[i]%>"/> <%=optionContent[j] %>
 										</div>
 									</div>
 								</td>
@@ -517,7 +575,10 @@
 	<%
 		}
 	%>
-	
+	<!-- <button class="previewBtn" onclick="resultPreview()">
+		결과 안내 페이지 미리보기<br>
+		<div class="previewBtnText">(질문별로 미리보기 하고 싶은 option을 선택한 후, '결과 안내 페이지 미리보기' 버튼을 눌러주세요)</div>
+	</button> -->
 	<br>
 	<div class="shareLinkDiv">
 		<div class="linkText">Survey Form Link &nbsp; 
