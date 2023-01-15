@@ -18,17 +18,34 @@
 <img src="https://ifh.cc/g/MgrBPO.jpg" width="600px;">
 <ul>
   <li>text/radio/checkbox 타입의 문항들을 하나씩 추가해본 결과이다</li>
-  <li> 텍스트 타입을 지정하게 되면, 텍스트를 입력할 수 있는 양식이 뜨게 된다 </li>
-  
-  <li> Radio 타입을 지정하게 되면, Radio Option 내용을 입력할 수 있는 양식이 뜨게 된다 </li>
-  <li> Add Option 버튼을 클릭하여 Radio Type의 Option들을 하나씩 추가할 수 있다</li>
-  <li> 추가한 Option들 옆에 있는 -버튼을 누르면 해당 option을 지울 수 있다</li>
-  
-  <li> Checkbox 타입을 지정하게 되면, Checkbox Option 내용을 입력할 수 있는  양식이 뜨게 된다 </li>
-  <li> Add Option 버튼을 클릭하여 Checkbox Type의 Option들을 하나씩 추가할 수 있다 </li>
-  <li> Radio Type과 마찬가지로 추가한 Option들 옆에 있는 -버튼으로 해당 checkbox option을 지울 수 있다. </li>
-</ul>
+  <details>
+    <summary><b>Text Type 지정</b></summary>
+    <ul>
+      <li> 텍스트 타입을 지정하게 되면, 텍스트를 입력할 수 있는 양식이 뜨게 된다 </li>
+    </ul>
+  </details>
 
+  <details>
+    <summary><b>Radio Type 지정</b></summary>
+    <ul>
+      <li> Radio 타입을 지정하게 되면, Radio Option 내용을 입력할 수 있는 양식이 뜨게 된다 </li>
+      <li> Add Option 버튼을 클릭하여 Radio Type의 Option들을 하나씩 추가할 수 있다</li>
+      <li> 추가한 Option들 옆에 있는 -버튼을 누르면 해당 option을 지울 수 있다</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary><b>Checkbox Type 지정</b></summary>
+    <ul>
+      <li> Checkbox 타입을 지정하게 되면, Checkbox Option 내용을 입력할 수 있는  양식이 뜨게 된다 </li>
+      <li> Add Option 버튼을 클릭하여 Checkbox Type의 Option들을 하나씩 추가할 수 있다 </li>
+      <li> Radio Type과 마찬가지로 추가한 Option들 옆에 있는 -버튼으로 해당 checkbox option을 지울 수 있다. </li>
+    </ul>
+  </details>
+</ul>  
+
+
+## ( + Radio Type 문항 추가 )
 <img src="https://ifh.cc/g/owFt8S.jpg" width="500px;">
 <ul>
   <li>Radio Type의 문항을 하나 더 추가한 후, 총 4개의 문항을 가진 Survey Form을 생성하였다</li>
