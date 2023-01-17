@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/JAVA-1572B6?style=for-the-badge&logo=JAVA&logoColor=white"> <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"> <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white"> <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white"> <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 
 ## 1. 프로젝트의 소개 및 목적
-🌱 설문조사 폼을 만들 수 있고, 만든 설문에 응답이 가능하며 응답한 결과를 볼 수 있는 기존의 유사 서비스의 기본적인 기능에 추가적인 프로그래밍적 기능이 들어간 Survey Form Service 입니다
+🌱 설문조사 폼을 만들 수 있고, 만든 설문에 응답이 가능하며 응답한 결과를 볼 수 있는 기존의 유사 서비스의 기본적인 기능에 추가적인 프로그래밍적 기능이 들어간 Survey Form Service
 > <li>JSP 연습 Mini Project </li>
 > <li>유사 서비스 'Google Form' 또는 'MicroSoft Survey Form'과의 차별점이 있는 서비스 제작</li>
 
@@ -19,8 +19,8 @@
 
 ## 3. 서비스 대표 기능 소개 및 자세한 사용방법 페이지 첨부 
 ### [📝 전체적인 서비스 이용방법](https://github.com/YeJi222/SurveyFormService/blob/main/totalManual.md)
-🎈 로그인을 하면 설문지를 생성(생성자 모드)할 수도 있고, 생성한 설문지에 응답(참여자 모드)할 수도 있습니다. <br>
-🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능합니다. <br>
+🎈 로그인을 하면 설문지를 생성(생성자 모드)할 수도 있고, 생성한 설문지에 응답(참여자 모드)할 수도 있다 <br>
+🎈 생성한 설문지와 참여한 설문지 리스트를 각각 확인가능 <br>
 
 ### [📝 생성자 모드 기능 및 사용방법](https://github.com/YeJi222/SurveyFormService/blob/main/creatorManual.md)
 * Survey Form 생성
